@@ -1,5 +1,6 @@
 using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
 
 namespace Rogui.Containers
 {
@@ -99,6 +100,48 @@ namespace Rogui.Containers
                     a.Draw(t, s);
                 }
             }
+        }
+
+        public override bool ProcessKey(object? sender, EventArgs e)
+        {
+            bool stop = false;
+            foreach(Aspect a in this.Children)
+            {   
+                stop = a.ProcessKey(sender, e);
+                if(stop)
+                {
+                    return true;
+                }
+            }
+            return base.ProcessKey(sender, e);
+        }
+
+        public override bool ProcessMouseMove(object? sender, MouseMoveEventArgs e)
+        {
+            bool stop = false;
+            foreach(Aspect a in this.Children)
+            {   
+                stop = a.ProcessMouseMove(sender, e);
+                if(stop)
+                {
+                    return true;
+                }
+            }
+            return base.ProcessMouseMove(sender, e);
+        }
+
+        public override bool ProcessMouseButton(object? sender, MouseButtonEventArgs e)
+        {
+            bool stop = false;
+            foreach(Aspect a in this.Children)
+            {   
+                stop = a.ProcessMouseButton(sender, e);
+                if(stop)
+                {
+                    return true;
+                }
+            }
+            return base.ProcessMouseButton(sender, e);
         }
     }
 }

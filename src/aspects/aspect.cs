@@ -1,5 +1,6 @@
 using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
 
 namespace Rogui
 {
@@ -16,6 +17,7 @@ namespace Rogui
         }
 
         public virtual bool Visible { get; set; } = true;
+        public virtual bool BlockInput { get; set; }
         public virtual FloatRect Bounds { get; }
         public virtual Vector2f Position { get; set; }
         public virtual Vector2f Size { get; }
@@ -28,6 +30,21 @@ namespace Rogui
             {
                 this.Shape.Draw(t, s);
             }
+        }
+
+        public virtual bool ProcessKey(object? sender, EventArgs e)
+        {
+            return this.BlockInput;
+        }
+
+        public virtual bool ProcessMouseMove(object? sender, MouseMoveEventArgs e)
+        {
+            return this.BlockInput;
+        }
+
+        public virtual bool ProcessMouseButton(object? sender, MouseButtonEventArgs e)
+        {
+            return this.BlockInput;
         }
     }
 }
