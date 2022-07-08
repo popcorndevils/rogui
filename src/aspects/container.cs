@@ -6,7 +6,6 @@ namespace Rogui
 {
     public class Container : Aspect
     {
-        public override event EventHandler? OnTransform;
         public List<Aspect> Children = new List<Aspect>();
 
         public float MarginSeparator = 0f;
@@ -69,7 +68,7 @@ namespace Rogui
 
         protected virtual void UpdateLayout()
         { 
-            this.OnTransform?.Invoke(this, EventArgs.Empty);
+            // this.InvokeTransform(EventArgs.Empty);
         }
 
         public override void Update(float? ms)

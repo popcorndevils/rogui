@@ -9,55 +9,64 @@ namespace Rogui
     {
         public event EventHandler? OnClick;
 
-        public RectangleShape BtnBody = new RectangleShape();
+        public Panel BtnBody = new Panel();
         public Label BtnText;
 
-        public override FloatRect Bounds => this.BtnBody.GetGlobalBounds();
+        public override FloatRect Bounds => this.BtnBody.Bounds;
 
         public override Vector2f Position { 
-            get => base.Position;
+            get => this.BtnBody.Position;
             set {
-                base.Position = value;
                 this.BtnBody.Position = value;                
                 this.BtnText.Position = new Vector2f(
-                    value.X + this.MarginLeft, value.Y + this.MarginTop);
+                    value.X + this.MarginLeft + this.BorderWidth,
+                    value.Y + this.MarginTop + this.BorderWidth);
             }
         }
 
         public override float MarginBottom {
-            get => base.MarginBottom;
+            get => this.BtnBody.MarginBottom;
             set {
-                base.MarginBottom = value;
+                this.BtnBody.MarginBottom = value;
                 this.SetBody();
-                this.SetColor();
             }
         }
 
         public override float MarginLeft {
-            get => base.MarginLeft; 
+            get => this.BtnBody.MarginLeft; 
             set {
-                base.MarginLeft = value; 
+                this.BtnBody.MarginLeft = value; 
                 this.SetBody();
-                this.SetColor();
             }
         }
 
         public override float MarginRight {
-            get => base.MarginRight;
+            get => this.BtnBody.MarginRight;
             set {
-                base.MarginRight = value;
+                this.BtnBody.MarginRight = value;
                 this.SetBody();
-                this.SetColor();
             }
         }
 
         public override float MarginTop {
-            get => base.MarginTop; 
+            get => this.BtnBody.MarginTop; 
             set {
-                base.MarginTop = value; 
+                this.BtnBody.MarginTop = value; 
                 this.SetBody();
-                this.SetColor();
             }
+        }
+
+        public override float BorderWidth {
+            get => this.BtnBody.BorderWidth;
+            set {
+                this.BtnBody.BorderWidth = value;
+                this.SetBody();
+            }
+        }
+
+        public override Color BorderColor {
+            get => this.BtnBody.BorderColor;
+            set => this.BtnBody.BorderColor = value;
         }
 
         private Color _ColorNormal;
@@ -87,7 +96,7 @@ namespace Rogui
             }
         }
 
-        public Color FillColor {
+        public override Color FillColor {
             get => this.BtnBody.FillColor;
             set => this.BtnBody.FillColor = value;
         }
@@ -173,10 +182,7 @@ namespace Rogui
         private void SetBody()
         {
             var _bnds = this.BtnText.Bounds;
-            this.BtnBody = new RectangleShape(
-                new Vector2f(
-                    _bnds.Width + this.MarginLeft + this.MarginRight,
-                    _bnds.Height + this.MarginTop + this.MarginBottom));
+            this.BtnBody.Size =  new Vector2f(_bnds.Width, _bnds.Height);
             this.Position = this.Position;
         }
 

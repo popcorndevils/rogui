@@ -6,26 +6,28 @@ namespace Rogui
 {
     public abstract class Aspect : Drawable
     {
-        public virtual event EventHandler OnTransform {
-            add {}
-            remove {}
-        }
-
-        public virtual Drawable Shape {
-            get { return new RectangleShape(); }
-            set { }
-        }
-
+        // common aspect properties
+        public virtual float BorderWidth { get; set; }
+        public virtual Color BorderColor { get; set; }
+        public virtual Color FillColor { get; set; }
         public virtual bool Visible { get; set; } = true;
         public virtual bool BlockInput { get; set; }
         public virtual FloatRect Bounds { get; }
         public virtual Vector2f Position { get; set; }
-        public virtual Vector2f Size { get; }
+        public virtual Vector2f Size { get; set; }
         public virtual Aspect? Parent { get; set; }
         public virtual float MarginLeft { get; set; }
         public virtual float MarginRight { get; set; }
         public virtual float MarginTop { get; set; }
         public virtual float MarginBottom { get; set; }
+
+        // a default shape for drawing
+        public virtual Drawable Shape {
+            get { return new RectangleShape(); }
+            set { }
+        }
+
+        // helper to set all margins at once
         public virtual float Margin {
             set {
                 this.MarginBottom = value;
@@ -37,6 +39,7 @@ namespace Rogui
 
         public virtual void Update(float? ms) { }
 
+        // default draw action, just draw the shape if aspect is visible
         public virtual void Draw(RenderTarget t, RenderStates s)
         {
             if(this.Visible)
@@ -45,6 +48,7 @@ namespace Rogui
             }
         }
 
+        // handlers for input events received from parents
         public virtual bool ProcessKey(object? sender, EventArgs e)
         {
             return this.BlockInput;
