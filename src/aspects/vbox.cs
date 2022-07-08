@@ -1,6 +1,6 @@
 using SFML.System;
 
-namespace Rogui.Containers
+namespace Rogui
 {
     public class VBox : Container
     {

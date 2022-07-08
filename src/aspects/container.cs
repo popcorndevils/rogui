@@ -2,7 +2,7 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 
-namespace Rogui.Containers
+namespace Rogui
 {
     public class Container : Aspect
     {
@@ -10,18 +10,6 @@ namespace Rogui.Containers
         public List<Aspect> Children = new List<Aspect>();
 
         public float MarginSeparator = 0f;
-        public float MarginLeft = 0f;
-        public float MarginRight = 0f;
-        public float MarginTop = 0f;
-        public float MarginBottom = 0f;
-        public float Margin {
-            set {
-                this.MarginBottom = value;
-                this.MarginTop = value;
-                this.MarginLeft = value;
-                this.MarginRight = value;
-            }
-        }
 
         public override FloatRect Bounds {
             get {
@@ -73,6 +61,7 @@ namespace Rogui.Containers
         {
             foreach(Aspect a in aspects)
             {
+                a.Parent = this;
                 this.Children.Add(a);
             }
             this.UpdateLayout();
@@ -130,18 +119,32 @@ namespace Rogui.Containers
             return base.ProcessMouseMove(sender, e);
         }
 
-        public override bool ProcessMouseButton(object? sender, MouseButtonEventArgs e)
+        public override bool ProcessMouseRelease(object? sender, MouseButtonEventArgs e)
         {
             bool stop = false;
             foreach(Aspect a in this.Children)
             {   
-                stop = a.ProcessMouseButton(sender, e);
+                stop = a.ProcessMouseRelease(sender, e);
                 if(stop)
                 {
                     return true;
                 }
             }
-            return base.ProcessMouseButton(sender, e);
+            return base.ProcessMouseRelease(sender, e);
+        }
+
+        public override bool ProcessMousePress(object? sender, MouseButtonEventArgs e)
+        {
+            bool stop = false;
+            foreach(Aspect a in this.Children)
+            {   
+                stop = a.ProcessMousePress(sender, e);
+                if(stop)
+                {
+                    return true;
+                }
+            }
+            return base.ProcessMousePress(sender, e);
         }
     }
 }

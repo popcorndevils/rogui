@@ -1,30 +1,41 @@
 using SFML.System;
 using SFML.Graphics;
 
-namespace Rogui.Primitives
+namespace Rogui
 {
     public class Label : Aspect
     {
         public Font Font;
-        private Text GText;
+        public Text GText;
         public override Drawable Shape {
             get => this.GText;
         }
 
         public override FloatRect Bounds {
-            get => this.GText.GetGlobalBounds();
+            get {
+                var _bnds = this.GText.GetLocalBounds();
+                var _pos = this.Position;
+                return new FloatRect(
+                    _pos.X,
+                    _pos.Y,
+                    _bnds.Width + (_bnds.Left * 2),
+                    _bnds.Height + (_bnds.Top * 2));
+            }
         } 
 
         public override Vector2f Size {
             get {
-                var _bnds = this.GText.GetGlobalBounds();
+                var _bnds = this.Bounds;
                 return new Vector2f(_bnds.Width, _bnds.Height);
             }
         }
 
         public override Vector2f Position {
-            get => this.GText.Position;
-            set => this.GText.Position = value;
+            get => base.Position;
+            set {
+                base.Position = value;
+                this.GText.Position = value;
+            }
         }
 
         public string DisplayedString {

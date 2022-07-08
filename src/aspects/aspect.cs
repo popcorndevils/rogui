@@ -21,6 +21,19 @@ namespace Rogui
         public virtual FloatRect Bounds { get; }
         public virtual Vector2f Position { get; set; }
         public virtual Vector2f Size { get; }
+        public virtual Aspect? Parent { get; set; }
+        public virtual float MarginLeft { get; set; }
+        public virtual float MarginRight { get; set; }
+        public virtual float MarginTop { get; set; }
+        public virtual float MarginBottom { get; set; }
+        public virtual float Margin {
+            set {
+                this.MarginBottom = value;
+                this.MarginTop = value;
+                this.MarginLeft = value;
+                this.MarginRight = value;
+            }
+        }
 
         public virtual void Update(float? ms) { }
 
@@ -42,7 +55,12 @@ namespace Rogui
             return this.BlockInput;
         }
 
-        public virtual bool ProcessMouseButton(object? sender, MouseButtonEventArgs e)
+        public virtual bool ProcessMousePress(object? sender, MouseButtonEventArgs e)
+        {
+            return this.BlockInput;
+        }
+
+        public virtual bool ProcessMouseRelease(object? sender, MouseButtonEventArgs e)
         {
             return this.BlockInput;
         }

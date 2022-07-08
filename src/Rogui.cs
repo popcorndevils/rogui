@@ -1,6 +1,5 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
-using Rogui.Containers;
 
 namespace Rogui
 {
@@ -36,12 +35,12 @@ namespace Rogui
 
         public void OnMouseButtonPressed(object? sender, MouseButtonEventArgs e)
         {
-            this.MainUI.ProcessMouseButton(sender, e);
+            this.MainUI.ProcessMousePress(sender, e);
         }
 
         public void OnMouseButtonReleased(object? sender, MouseButtonEventArgs e)
         {
-            this.MainUI.ProcessMouseButton(sender, e);
+            this.MainUI.ProcessMouseRelease(sender, e);
         }
     }
 }
