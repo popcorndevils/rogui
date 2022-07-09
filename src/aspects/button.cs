@@ -2,6 +2,7 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using Rogui.Extensions;
+using Rogui.Themes;
 
 namespace Rogui
 {
@@ -123,33 +124,6 @@ namespace Rogui
             set => this.BtnBody.BorderColor = value;
         }
 
-        private Color _ColorNormal;
-        public Color ColorNormal {
-            get => this._ColorNormal;
-            set {
-                this._ColorNormal = value;
-                this.SetColor();
-            }
-        }
-
-        private Color _ColorHover;
-        public Color ColorHover {
-            get => this._ColorHover;
-            set {
-                this._ColorHover = value;
-                this.SetColor();
-            }
-        }
-
-        private Color _ColorPressed;
-        public Color ColorPressed {
-            get => this._ColorPressed;
-            set {
-                this._ColorPressed = value;
-                this.SetColor();
-            }
-        }
-
         public override Color FillColor {
             get => this.BtnBody.FillColor;
             set => this.BtnBody.FillColor = value;
@@ -170,6 +144,45 @@ namespace Rogui
             set {
                 this._Pressed = value;
                 this.SetColor();
+            }
+        }
+
+        private ThemeButton _ThemeNormal;
+        public ThemeButton ThemeNormal { 
+            get => this._ThemeNormal;
+            set {
+                this._ThemeNormal = value;
+                this.Theme = value;
+            }
+        }
+
+        public ThemeButton ThemeHover { get; set; }
+        public ThemeButton ThemePressed { get; set; }
+
+        public ThemeButton Theme {
+            set {
+                if(value.FillColor is not null) 
+                    { this.FillColor = (Color)value.FillColor; }
+                if(value.BorderColor is not null) 
+                    { this.BorderColor = (Color)value.BorderColor; }
+                if(value.BorderWidth is not null) 
+                    { this.BorderWidth = (float)value.BorderWidth; }
+                if(value.MarginLeft is not null) 
+                    { this.MarginLeft = (float)value.MarginLeft; }
+                if(value.MarginTop is not null) 
+                    { this.MarginTop = (float)value.MarginTop; }
+                if(value.MarginRight is not null) 
+                    { this.MarginRight = (float)value.MarginRight; }
+                if(value.MarginBottom is not null) 
+                    { this.MarginBottom = (float)value.MarginBottom; }
+                if(value.PaddingLeft is not null) 
+                    { this.PaddingLeft = (float)value.PaddingLeft; }
+                if(value.PaddingTop is not null) 
+                    { this.PaddingTop = (float)value.PaddingTop; }
+                if(value.PaddingRight is not null) 
+                    { this.PaddingRight = (float)value.PaddingRight; }
+                if(value.PaddingBottom is not null) 
+                    { this.PaddingBottom = (float)value.PaddingBottom; }
             }
         }
 
@@ -239,15 +252,15 @@ namespace Rogui
         {
             if(this.Pressed)
             {
-                this.FillColor = this.ColorPressed;
+                this.Theme = this.ThemePressed;
             }
             else if(this.Hover)
             {
-                this.FillColor = this.ColorHover;
+                this.Theme = this.ThemeHover;
             }
             else 
             {
-                this.FillColor = this.ColorNormal;
+                this.Theme = this.ThemeNormal;
             }
         }
 
