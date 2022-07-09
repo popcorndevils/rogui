@@ -5,18 +5,10 @@ namespace Rogui
 {
     public class Panel : Aspect
     {
-        private RectangleShape BodyBG = new RectangleShape();
-        private RectangleShape BodyFG = new RectangleShape();
+        private Rectangle BodyBG = new Rectangle();
+        private Rectangle BodyFG = new Rectangle();
 
-        public override FloatRect Bounds => this.BodyBG.GetGlobalBounds();
-
-        public override float BorderWidth { 
-            get => base.BorderWidth; 
-            set {
-                base.BorderWidth = value;
-                this.SetBorder();
-            }
-        }
+        public override FloatRect Bounds => this.BodyBG.Bounds;
         
         public override Color FillColor {
             get => this.BodyFG.FillColor;
@@ -30,37 +22,31 @@ namespace Rogui
 
         public override Vector2f Position {
             get => this.BodyBG.Position;
-            set { 
-                this.BodyBG.Position = value;
-                this.SetBorder();
+            set {
+                this.BodyBG.Position = new Vector2f(
+                    value.X + this.MarginLeft,
+                    value.Y + this.MarginTop
+                );
+                this.BodyFG.Position = new Vector2f(
+                    value.X + this.MarginLeft + this.BorderWidth,
+                    value.Y + this.MarginTop + this.BorderWidth
+                );
             }
         }
 
         public override Vector2f Size {
-            get => base.Size;
+            get => this.BodyFG.Size;
             set {
-                base.Size = new Vector2f(
+                this.BodyFG.Size = value;
+                this.BodyBG.Size = new Vector2f(
                     value.X + (this.BorderWidth * 2),
                     value.Y + (this.BorderWidth * 2));
-                this.SetBorder();
             }
         }
 
-        public override void Draw(RenderTarget t, RenderStates s)
+        public Panel()
         {
-            this.BodyBG.Draw(t, s);
-            this.BodyFG.Draw(t, s);
-        }
-
-        private void SetBorder()
-        {
-            this.BodyBG.Size = new Vector2f(
-                    this.Size.X + (this.BorderWidth * 2),
-                    this.Size.Y + (this.BorderWidth * 2));
-            this.BodyFG.Size = this.Size;
-            this.BodyFG.Position = new Vector2f(
-                this.Position.X + this.BorderWidth,
-                this.Position.Y + this.BorderWidth);
+            this.Add(this.BodyBG, this.BodyFG);
         }
     }
 }

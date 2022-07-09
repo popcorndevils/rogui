@@ -4,69 +4,152 @@ using SFML.Window;
 
 namespace Rogui
 {
-    public abstract class Aspect : Drawable
+    public abstract class Aspect : BaseAspect
     {
-        // common aspect properties
-        public virtual float BorderWidth { get; set; }
-        public virtual Color BorderColor { get; set; }
-        public virtual Color FillColor { get; set; }
-        public virtual bool Visible { get; set; } = true;
-        public virtual bool BlockInput { get; set; }
-        public virtual FloatRect Bounds { get; }
-        public virtual Vector2f Position { get; set; }
-        public virtual Vector2f Size { get; set; }
-        public virtual Aspect? Parent { get; set; }
-        public virtual float MarginLeft { get; set; }
-        public virtual float MarginRight { get; set; }
-        public virtual float MarginTop { get; set; }
-        public virtual float MarginBottom { get; set; }
+        public List<Aspect> Children = new List<Aspect>();
 
-        // a default shape for drawing
-        public virtual Drawable Shape {
-            get { return new RectangleShape(); }
-            set { }
-        }
-
-        // helper to set all margins at once
-        public virtual float Margin {
+        public override Vector2f Position {
+            get => base.Position;
             set {
-                this.MarginBottom = value;
-                this.MarginTop = value;
-                this.MarginLeft = value;
-                this.MarginRight = value;
+                base.Position = new Vector2f(
+                    value.X + this.MarginLeft,
+                    value.Y + this.MarginTop);
+
+                foreach(Aspect c in this.Children)
+                {
+                    c.Position = new Vector2f
+                    (this.Position.X + this.PaddingLeft,
+                    this.Position.Y + this.PaddingTop);
+                }
             }
         }
 
-        public virtual void Update(float? ms) { }
+        public override Vector2f Size {
+            get => base.Size;
+            set {
+                base.Size = value;
+                this.UpdateLayout();
+            }
+        }
 
-        // default draw action, just draw the shape if aspect is visible
-        public virtual void Draw(RenderTarget t, RenderStates s)
+        public override FloatRect Bounds {
+            get {
+                var _x = new float[this.Children.Count];
+                var _y = new float[this.Children.Count];
+                var _x2 = new float[this.Children.Count];
+                var _y2 = new float[this.Children.Count];
+
+                for(int i = 0; i < this.Children.Count; i++)
+                {
+                    var _bnd = this.Children[i].Bounds;
+                    _x[i] = _bnd.Left;
+                    _y[i] = _bnd.Top;
+                    _x2[i] = _bnd.Left + _bnd.Width;
+                    _y2[i] = _bnd.Top + _bnd.Height;
+                }
+
+                return new FloatRect(
+                    _x.Min(),
+                    _y.Min(),
+                    _x2.Max() - _x.Min(),
+                    _y2.Max() - _y.Min());
+            }
+        }
+
+        public Aspect() {}
+        public Aspect(params Aspect[] aspects)
+        {
+            this.Add(aspects);
+        }
+
+        public void Add(params Aspect[] aspects)
+        {
+            foreach(Aspect a in aspects)
+            {
+                a.Parent = this;
+                this.Children.Add(a);
+            }
+            this.UpdateLayout();
+        }
+
+        protected virtual void UpdateLayout()
+        { 
+            this.Position = this.Position;
+        }
+
+        public override void Update(float? ms)
+        { 
+            foreach(Aspect a in this.Children)
+            {
+                a.Update(ms);
+            }
+        }
+
+        public override void Draw(RenderTarget t, RenderStates s)
         {
             if(this.Visible)
             {
-                this.Shape.Draw(t, s);
+                foreach(Aspect a in this.Children)
+                {
+                    a.Draw(t, s);
+                }
             }
         }
 
-        // handlers for input events received from parents
-        public virtual bool ProcessKey(object? sender, EventArgs e)
+        public override bool ProcessKey(object? sender, EventArgs e)
         {
-            return this.BlockInput;
+            bool stop = false;
+            foreach(Aspect a in this.Children)
+            {   
+                stop = a.ProcessKey(sender, e);
+                if(stop)
+                {
+                    return true;
+                }
+            }
+            return base.ProcessKey(sender, e);
         }
 
-        public virtual bool ProcessMouseMove(object? sender, MouseMoveEventArgs e)
+        public override bool ProcessMouseMove(object? sender, MouseMoveEventArgs e)
         {
-            return this.BlockInput;
+            bool stop = false;
+            foreach(Aspect a in this.Children)
+            {   
+                stop = a.ProcessMouseMove(sender, e);
+                if(stop)
+                {
+                    return true;
+                }
+            }
+            return base.ProcessMouseMove(sender, e);
         }
 
-        public virtual bool ProcessMousePress(object? sender, MouseButtonEventArgs e)
+        public override bool ProcessMouseRelease(object? sender, MouseButtonEventArgs e)
         {
-            return this.BlockInput;
+            bool stop = false;
+            foreach(Aspect a in this.Children)
+            {   
+                stop = a.ProcessMouseRelease(sender, e);
+                if(stop)
+                {
+                    return true;
+                }
+            }
+            return base.ProcessMouseRelease(sender, e);
         }
 
-        public virtual bool ProcessMouseRelease(object? sender, MouseButtonEventArgs e)
+        public override bool ProcessMousePress(object? sender, MouseButtonEventArgs e)
         {
-            return this.BlockInput;
+            bool stop = false;
+            foreach(Aspect a in this.Children)
+            {   
+                stop = a.ProcessMousePress(sender, e);
+                if(stop)
+                {
+                    return true;
+                }
+            }
+            return base.ProcessMousePress(sender, e);
         }
     }
 }

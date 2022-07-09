@@ -7,52 +7,106 @@ namespace Rogui
 {
     public class Button : Aspect
     {
+        private bool CanSetBody = true;
+
         public event EventHandler? OnClick;
 
         public Panel BtnBody = new Panel();
-        public Label BtnText;
+        public Label BtnText = new Label();
 
-        public override FloatRect Bounds => this.BtnBody.Bounds;
-
-        public override Vector2f Position { 
-            get => this.BtnBody.Position;
+        public override float Padding {
             set {
-                this.BtnBody.Position = value;                
+                this.BtnText.Margin = value;
+                this.HandleTextChange(this, EventArgs.Empty);
+            }
+        }
+
+        public override Vector2f Position {
+            get => base.Position;
+            set {
+                base.Position = new Vector2f(
+                    value.X + this.MarginLeft,
+                    value.Y + this.MarginTop);
+
+                this.BtnBody.Position = new Vector2f(
+                    base.Position.X,
+                    base.Position.Y);
+
                 this.BtnText.Position = new Vector2f(
-                    value.X + this.MarginLeft + this.BorderWidth,
-                    value.Y + this.MarginTop + this.BorderWidth);
+                    base.Position.X + this.BorderWidth,
+                    base.Position.Y + this.BorderWidth);
+            }
+        }
+
+        public override float Margin {
+            set {
+                this.CanSetBody = false;
+                base.Margin = value;
+                this.HandleTextChange(this, EventArgs.Empty);
+            }
+        }
+
+        public override float PaddingBottom {
+            get => this.BtnText.MarginBottom;
+            set { 
+                this.BtnText.MarginBottom = value;
+                this.HandleTextChange(this, EventArgs.Empty);
+            }
+        }
+
+        public override float PaddingTop {
+            get => this.BtnText.MarginTop;
+            set { 
+                this.BtnText.MarginTop = value;
+                this.HandleTextChange(this, EventArgs.Empty);
+            }
+        }
+
+        public override float PaddingLeft {
+            get => this.BtnText.MarginLeft;
+            set { 
+                this.BtnText.MarginLeft = value;
+                this.HandleTextChange(this, EventArgs.Empty);
+            }
+        }
+
+        public override float PaddingRight {
+            get => this.BtnText.MarginRight;
+            set { 
+                this.BtnText.MarginRight = value;
+                this.HandleTextChange(this, EventArgs.Empty);
             }
         }
 
         public override float MarginBottom {
-            get => this.BtnBody.MarginBottom;
+            get => base.MarginBottom;
             set {
-                this.BtnBody.MarginBottom = value;
-                this.SetBody();
+                base.MarginBottom = value;
+                this.HandleTextChange(this, EventArgs.Empty);
             }
         }
 
         public override float MarginLeft {
-            get => this.BtnBody.MarginLeft; 
+            get => base.MarginLeft; 
             set {
-                this.BtnBody.MarginLeft = value; 
-                this.SetBody();
+                base.MarginLeft = value; 
+                this.HandleTextChange(this, EventArgs.Empty);
             }
         }
 
         public override float MarginRight {
-            get => this.BtnBody.MarginRight;
+            get => base.MarginRight;
             set {
-                this.BtnBody.MarginRight = value;
-                this.SetBody();
+                base.MarginRight = value;
+                this.HandleTextChange(this, EventArgs.Empty);
             }
         }
 
         public override float MarginTop {
-            get => this.BtnBody.MarginTop; 
+            get => base.MarginTop; 
             set {
-                this.BtnBody.MarginTop = value; 
-                this.SetBody();
+                base.MarginTop = value; 
+                this.HandleTextChange(this, EventArgs.Empty);
             }
         }
 
@@ -60,7 +114,7 @@ namespace Rogui
             get => this.BtnBody.BorderWidth;
             set {
                 this.BtnBody.BorderWidth = value;
-                this.SetBody();
+                this.HandleTextChange(this, EventArgs.Empty);
             }
         }
 
@@ -119,16 +173,12 @@ namespace Rogui
             }
         }
 
-        public Button(string text)
+        public Button(string text) : base()
         {
-            this.BtnText = new Label(text);
-            this.SetBody();
-        }
-
-        public override void Draw(RenderTarget t, RenderStates s)
-        {
-            this.BtnBody.Draw(t, s);
-            this.BtnText.Draw(t, s);
+            this.BtnText.StringChanged += this.HandleTextChange;
+            this.BtnText.DisplayedString = text;
+            base.Add(this.BtnBody, this.BtnText);
+            this.SetColor();
         }
 
         public override bool ProcessMouseMove(object? sender, MouseMoveEventArgs e)
@@ -179,11 +229,10 @@ namespace Rogui
             return false;
         }
 
-        private void SetBody()
+        private void HandleTextChange(object? sender, EventArgs e)
         {
             var _bnds = this.BtnText.Bounds;
             this.BtnBody.Size =  new Vector2f(_bnds.Width, _bnds.Height);
-            this.Position = this.Position;
         }
 
         private void SetColor()
