@@ -1,6 +1,7 @@
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using Rogui.Primitives;
 
 namespace Rogui
 {
@@ -12,8 +13,8 @@ namespace Rogui
             get => base.Position;
             set {
                 base.Position = new Vector2f(
-                    value.X + this.MarginLeft,
-                    value.Y + this.MarginTop);
+                    value.X + this.MarginLeft + this.RelativePosition.X,
+                    value.Y + this.MarginTop + this.RelativePosition.Y);
 
                 foreach(Aspect c in this.Children)
                 {
@@ -96,60 +97,51 @@ namespace Rogui
             }
         }
 
-        public override bool ProcessKey(object? sender, EventArgs e)
+        public override EventArgs? ProcessKey(
+            object? sender, EventArgs? e)
         {
-            bool stop = false;
+            EventArgs? prev = e;
             foreach(Aspect a in this.Children)
             {   
-                stop = a.ProcessKey(sender, e);
-                if(stop)
-                {
-                    return true;
-                }
+                prev = a.ProcessKey(sender, e);
             }
             return base.ProcessKey(sender, e);
         }
 
-        public override bool ProcessMouseMove(object? sender, MouseMoveEventArgs e)
+        public override MouseMoveEventArgs? ProcessMouseMove(
+            object? sender, MouseMoveEventArgs? e)
         {
-            bool stop = false;
-            foreach(Aspect a in this.Children)
-            {   
-                stop = a.ProcessMouseMove(sender, e);
-                if(stop)
-                {
-                    return true;
-                }
+            MouseMoveEventArgs? prev = e;
+            for(int i = this.Children.Count - 1; i >= 0; i--)
+            {
+                Aspect a = this.Children[i];
+                prev = a.ProcessMouseMove(sender, prev);
             }
-            return base.ProcessMouseMove(sender, e);
+            return base.ProcessMouseMove(sender, prev);
         }
 
-        public override bool ProcessMouseRelease(object? sender, MouseButtonEventArgs e)
+        public override MouseButtonEventArgs? ProcessMousePress(
+            object? sender, MouseButtonEventArgs? e)
         {
-            bool stop = false;
-            foreach(Aspect a in this.Children)
-            {   
-                stop = a.ProcessMouseRelease(sender, e);
-                if(stop)
-                {
-                    return true;
-                }
-            }
-            return base.ProcessMouseRelease(sender, e);
-        }
-
-        public override bool ProcessMousePress(object? sender, MouseButtonEventArgs e)
-        {
-            bool stop = false;
-            foreach(Aspect a in this.Children)
-            {   
-                stop = a.ProcessMousePress(sender, e);
-                if(stop)
-                {
-                    return true;
-                }
+            MouseButtonEventArgs? prev = e;
+            for(int i = this.Children.Count - 1; i >= 0; i--)
+            {
+                Aspect a = this.Children[i];
+                prev = a.ProcessMousePress(sender, prev);
             }
             return base.ProcessMousePress(sender, e);
+        }
+
+        public override MouseButtonEventArgs? ProcessMouseRelease(
+            object? sender, MouseButtonEventArgs? e)
+        {
+            MouseButtonEventArgs? prev = e;
+            for(int i = this.Children.Count - 1; i >= 0; i--)
+            {
+                Aspect a = this.Children[i];
+                prev = a.ProcessMouseRelease(sender, prev);
+            }
+            return base.ProcessMouseRelease(sender, e);
         }
     }
 }

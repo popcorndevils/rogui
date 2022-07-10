@@ -1,8 +1,9 @@
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using Rogui.Extensions;
 
-namespace Rogui
+namespace Rogui.Primitives
 {
     public abstract class BaseAspect : Drawable
     {
@@ -11,9 +12,11 @@ namespace Rogui
         public virtual Color BorderColor { get; set; }
         public virtual Color FillColor { get; set; }
         public virtual bool Visible { get; set; } = true;
+        public virtual bool Hover { get; set; }
         public virtual bool BlockInput { get; set; }
         public virtual FloatRect Bounds { get; }
         public virtual Vector2f Position { get; set; }
+        public virtual Vector2f RelativePosition { get; set; }
         public virtual Vector2f Size { get; set; }
         public virtual Aspect? Parent { get; set; }
         public virtual float MarginLeft { get; set; }
@@ -63,24 +66,52 @@ namespace Rogui
         }
 
         // handlers for input events received from parents
-        public virtual bool ProcessKey(object? sender, EventArgs e)
+        public virtual EventArgs? ProcessKey(object? sender, EventArgs? e)
         {
-            return this.BlockInput;
+            if(this.BlockInput)
+            {
+                return EventArgs.Empty;
+            }
+            return e;
+        }
+        
+
+        public virtual MouseMoveEventArgs? ProcessMouseMove(object? sender, MouseMoveEventArgs? e)
+        {
+            if(e is not null && this.Bounds.Contains(e))
+            {
+                this.Hover = true;
+            }
+            else
+            {
+                this.Hover = false;
+            }
+
+            if(this.Hover && this.BlockInput)
+            {
+                return null;
+            }
+
+            return e;
         }
 
-        public virtual bool ProcessMouseMove(object? sender, MouseMoveEventArgs e)
+        public virtual MouseButtonEventArgs? ProcessMousePress(
+            object? sender, MouseButtonEventArgs? e)
         {
-            return this.BlockInput;
+            if(this.BlockInput)
+            {
+                return e;
+            }
+            return e;
         }
 
-        public virtual bool ProcessMousePress(object? sender, MouseButtonEventArgs e)
+        public virtual MouseButtonEventArgs? ProcessMouseRelease(object? sender, MouseButtonEventArgs? e)
         {
-            return this.BlockInput;
-        }
-
-        public virtual bool ProcessMouseRelease(object? sender, MouseButtonEventArgs e)
-        {
-            return this.BlockInput;
+            if(this.BlockInput)
+            {
+                return e;
+            }
+            return e;
         }
     }
 }

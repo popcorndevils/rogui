@@ -1,7 +1,7 @@
 using SFML.Graphics;
 using SFML.System;
 
-namespace Rogui
+namespace Rogui.Primitives
 {
     public class Rectangle : Aspect
     {

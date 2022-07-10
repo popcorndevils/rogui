@@ -3,17 +3,17 @@ using SFML.System;
 using SFML.Window;
 using Rogui.Extensions;
 using Rogui.Themes;
+using Rogui.Primitives;
 
 namespace Rogui
 {
     public class Button : Aspect
     {
-        private bool CanSetBody = true;
-
         public event EventHandler? OnClick;
 
         public Panel BtnBody = new Panel();
         public Label BtnText = new Label();
+        public override bool BlockInput { get; set; } = true;
 
         public override float Padding {
             set {
@@ -41,7 +41,6 @@ namespace Rogui
 
         public override float Margin {
             set {
-                this.CanSetBody = false;
                 base.Margin = value;
                 this.HandleTextChange(this, EventArgs.Empty);
             }
@@ -129,11 +128,14 @@ namespace Rogui
             set => this.BtnBody.FillColor = value;
         }
 
-        private bool _Hover;
-        public bool Hover {
-            get => this._Hover;
+        public override bool Hover {
+            get => base.Hover;
             set {
-                this._Hover = value;
+                base.Hover = value;
+                if(!value && this.Pressed)
+                {
+                    this.Pressed = false;
+                }
                 this.SetColor();
             }
         }
@@ -191,55 +193,29 @@ namespace Rogui
             this.BtnText.StringChanged += this.HandleTextChange;
             this.BtnText.DisplayedString = text;
             base.Add(this.BtnBody, this.BtnText);
+            this.BlockInput = true;
             this.SetColor();
         }
 
-        public override bool ProcessMouseMove(object? sender, MouseMoveEventArgs e)
+        public override MouseButtonEventArgs? ProcessMousePress(
+            object? sender, MouseButtonEventArgs? e)
         {
-            var _hover = this.Bounds.Contains(e);
-
-            if(this.Hover != _hover)
-            {
-                this.Hover = _hover;
-            }
-
-            if(this.Hover)
-            {
-                return this.BlockInput;
-            }
+            if(this.QueryPress(e))
+                { this.Pressed = true; }
             else
-            {
-                if(this.Pressed)
-                {
-                    this.Pressed = false;
-                }
-            }
-
-            return false;
+                { this.Pressed = false; }
+            return base.ProcessMousePress(sender, e);
         }
 
-        public override bool ProcessMousePress(object? sender, MouseButtonEventArgs e)
+        public override MouseButtonEventArgs? ProcessMouseRelease(
+            object? sender, MouseButtonEventArgs? e)
         {
-            if(this.Hover && e.Button == Mouse.Button.Left && !this.Pressed)
+            if(this.QueryRelease(e))
             {
-                this.Pressed = true;
+                this.Pressed = false;
+                this.OnClick?.Invoke(this, EventArgs.Empty);
             }
-            return this.BlockInput;
-        }
-
-        public override bool ProcessMouseRelease(object? sender, MouseButtonEventArgs e)
-        {
-            if(this.Hover)
-            {
-                if(this.Pressed && e.Button == Mouse.Button.Left)
-                {
-                    this.Pressed = false;
-                    this.OnClick?.Invoke(this, EventArgs.Empty);
-                }
-                return this.BlockInput;
-            }
-
-            return false;
+            return base.ProcessMouseRelease(sender, e);
         }
 
         private void HandleTextChange(object? sender, EventArgs e)
@@ -267,6 +243,16 @@ namespace Rogui
         public override string ToString()
         {
             return $"{this.GetType()}: {this.BtnText.DisplayedString}";
+        }
+
+        private bool QueryPress(MouseButtonEventArgs? e)
+        {
+            return e is not null && this.Hover && e.Button == Mouse.Button.Left && !this.Pressed;
+        }
+
+        private bool QueryRelease(MouseButtonEventArgs? e)
+        {
+            return e is not null && this.Hover && e.Button == Mouse.Button.Left && this.Pressed;
         }
     }
 }

@@ -1,7 +1,7 @@
 using SFML.System;
 using SFML.Graphics;
 
-namespace Rogui
+namespace Rogui.Primitives
 {
     public class Label : Aspect
     {
