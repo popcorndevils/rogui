@@ -5,8 +5,8 @@ namespace Rogui
 {
     public class Panel : Aspect
     {
-        private Rectangle BodyBG = new Rectangle();
-        private Rectangle BodyFG = new Rectangle();
+        private Shapes.Rectangle BodyBG = new Shapes.Rectangle();
+        private Shapes.Rectangle BodyFG = new Shapes.Rectangle();
 
         public override FloatRect Bounds => this.BodyBG.Bounds;
         
