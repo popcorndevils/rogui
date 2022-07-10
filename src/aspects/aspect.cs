@@ -1,26 +1,25 @@
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using Rogui.Primitives;
 
 namespace Rogui
 {
-    public abstract class Aspect : BaseAspect
+    public abstract class Aspect : Primitive
     {
         public List<Aspect> Children = new List<Aspect>();
 
-        public override Vector2f Position {
-            get => base.Position;
+        public override Vector2f AbsolutePosition {
+            get => base.AbsolutePosition;
             set {
-                base.Position = new Vector2f(
-                    value.X + this.MarginLeft + this.RelativePosition.X,
-                    value.Y + this.MarginTop + this.RelativePosition.Y);
+                base.AbsolutePosition = new Vector2f(
+                    value.X + this.MarginLeft + this.Position.X,
+                    value.Y + this.MarginTop + this.Position.Y);
 
                 foreach(Aspect c in this.Children)
                 {
-                    c.Position = new Vector2f
-                    (this.Position.X + this.PaddingLeft,
-                    this.Position.Y + this.PaddingTop);
+                    c.AbsolutePosition = new Vector2f
+                    (this.AbsolutePosition.X + this.PaddingLeft,
+                    this.AbsolutePosition.Y + this.PaddingTop);
                 }
             }
         }
@@ -75,7 +74,7 @@ namespace Rogui
 
         protected virtual void UpdateLayout()
         { 
-            this.Position = this.Position;
+            this.AbsolutePosition = this.AbsolutePosition;
         }
 
         public override void Update(float? ms)

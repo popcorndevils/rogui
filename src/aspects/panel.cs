@@ -1,6 +1,5 @@
 using SFML.Graphics;
 using SFML.System;
-using Rogui.Primitives;
 
 namespace Rogui
 {
@@ -21,14 +20,14 @@ namespace Rogui
             set => this.BodyBG.FillColor = value;
         }
 
-        public override Vector2f Position {
-            get => this.BodyBG.Position;
+        public override Vector2f AbsolutePosition {
+            get => this.BodyBG.AbsolutePosition;
             set {
-                this.BodyBG.Position = new Vector2f(
+                this.BodyBG.AbsolutePosition = new Vector2f(
                     value.X + this.MarginLeft,
                     value.Y + this.MarginTop
                 );
-                this.BodyFG.Position = new Vector2f(
+                this.BodyFG.AbsolutePosition = new Vector2f(
                     value.X + this.MarginLeft + this.BorderLeft,
                     value.Y + this.MarginTop + this.BorderTop
                 );

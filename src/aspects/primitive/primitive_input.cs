@@ -1,9 +1,9 @@
 using SFML.Window;
 using Rogui.Extensions;
 
-namespace Rogui.Primitives
+namespace Rogui
 {
-    public abstract partial class BaseAspect
+    public abstract partial class Primitive
     {
         public event EventHandler? OnClick;
         // handlers for input events received from parents

@@ -1,14 +1,16 @@
 using SFML.System;
 using SFML.Graphics;
+using Rogui.Themes;
 
-namespace Rogui.Primitives
+namespace Rogui
 {
-    public abstract partial class BaseAspect
+    public abstract partial class Primitive
     {
         public event EventHandler? Transformed;
         // aspect transform
-        private Vector2f _Position;
         private Vector2f _RelativePosition;
+        private Vector2f _AbsolutePosition;
+        // private Vector2f _Position;
         private Vector2f _Size;
         private float _MarginLeft;
         private float _MarginTop;
@@ -24,6 +26,7 @@ namespace Rogui.Primitives
         private float _BorderBottom;
         private Color _BorderColor;
         private Color _FillColor;
+        private Theme _Theme = new Theme();
 
         // helpers to set multiple properties at once.
         public virtual float Margin {
@@ -59,17 +62,17 @@ namespace Rogui.Primitives
         }
 
         public virtual Vector2f Position {
-            get => this._Position;
+            get => this._RelativePosition;
             set {
-                this._Position = value;
+                this._RelativePosition = value;
                 this.Transformed?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public virtual Vector2f RelativePosition {
-            get => this._RelativePosition;
+        public virtual Vector2f AbsolutePosition {
+            get => this._AbsolutePosition;
             set {
-                this._RelativePosition = value;
+                this._AbsolutePosition = value;
                 this.Transformed?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -190,6 +193,14 @@ namespace Rogui.Primitives
             get => this._FillColor;
             set {
                 this._FillColor = value;
+                this.Transformed?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public virtual Theme Theme {
+            get => this._Theme;
+            set {
+                this._Theme = value;
                 this.Transformed?.Invoke(this, EventArgs.Empty);
             }
         }

@@ -1,8 +1,6 @@
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 using Rogui.Themes;
-using Rogui.Primitives;
 
 namespace Rogui
 {
@@ -12,20 +10,20 @@ namespace Rogui
         public Panel BtnBody = new Panel();
         public Label BtnText = new Label();
 
-        public override Vector2f Position {
-            get => base.Position;
+        public override Vector2f AbsolutePosition {
+            get => base.AbsolutePosition;
             set {
-                base.Position = new Vector2f(
+                base.AbsolutePosition = new Vector2f(
                     value.X + this.MarginLeft,
                     value.Y + this.MarginTop);
 
-                this.BtnBody.Position = new Vector2f(
-                    base.Position.X,
-                    base.Position.Y);
+                this.BtnBody.AbsolutePosition = new Vector2f(
+                    base.AbsolutePosition.X,
+                    base.AbsolutePosition.Y);
 
-                this.BtnText.Position = new Vector2f(
-                    base.Position.X + this.BorderLeft,
-                    base.Position.Y + this.BorderTop);
+                this.BtnText.AbsolutePosition = new Vector2f(
+                    base.AbsolutePosition.X + this.BorderLeft,
+                    base.AbsolutePosition.Y + this.BorderTop);
             }
         }
 
@@ -80,19 +78,19 @@ namespace Rogui
             set => this.BtnText.DisplayedString = value;
         }
 
-        private ThemeButton _ThemeNormal;
-        public ThemeButton ThemeNormal { 
-            get => this._ThemeNormal;
+        private ThemeButton? _Theme;
+        public new ThemeButton? Theme {
+            get => this._Theme;
             set {
-                this._ThemeNormal = value;
-                this.Theme = value;
+                this._Theme = value;
+                if(value is not null && value.Normal is not null)
+                {
+                    this.DisplayTheme = value.Normal;
+                }
             }
         }
 
-        public ThemeButton ThemeHover { get; set; }
-        public ThemeButton ThemePressed { get; set; }
-
-        public ThemeButton Theme {
+        public ThemePanel DisplayTheme {
             set {
                 if(value.FillColor is not null) 
                     { this.FillColor = (Color)value.FillColor; }
@@ -145,17 +143,20 @@ namespace Rogui
 
         private void OnStateChange(object? sender, EventArgs e)
         {
-            if(this.Pressed)
+            if(this.Theme is not null)
             {
-                this.Theme = this.ThemePressed;
-            }
-            else if(this.Hover)
-            {
-                this.Theme = this.ThemeHover;
-            }
-            else 
-            {
-                this.Theme = this.ThemeNormal;
+                if(this.Pressed && this.Theme.Pressed is not null)
+                {
+                    this.DisplayTheme = this.Theme.Pressed;
+                }
+                else if(this.Hover && this.Theme.Hover is not null)
+                {
+                    this.DisplayTheme = this.Theme.Hover;
+                }
+                else if(this.Theme.Normal is not null)
+                {
+                    this.DisplayTheme = this.Theme.Normal;
+                }
             }
         }
 

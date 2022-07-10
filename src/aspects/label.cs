@@ -1,7 +1,7 @@
 using SFML.System;
 using SFML.Graphics;
 
-namespace Rogui.Primitives
+namespace Rogui
 {
     public class Label : Aspect
     {
@@ -15,7 +15,7 @@ namespace Rogui.Primitives
         public override FloatRect Bounds {
             get {
                 var _bnds = this.GText.GetLocalBounds();
-                var _pos = this.Position;
+                var _pos = this.AbsolutePosition;
                 return new FloatRect(
                     _pos.X - this.MarginLeft,
                     _pos.Y - this.MarginTop,
@@ -24,14 +24,14 @@ namespace Rogui.Primitives
             }
         } 
 
-        public override Vector2f Position {
-            get => base.Position;
+        public override Vector2f AbsolutePosition {
+            get => base.AbsolutePosition;
             set {
                 this.GText.Position = new Vector2f(
                     value.X + this.MarginLeft,
                     value.Y + this.MarginTop
                 );
-                base.Position = value;
+                base.AbsolutePosition = value;
             }
         }
 

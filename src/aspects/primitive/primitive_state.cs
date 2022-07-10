@@ -1,8 +1,8 @@
 using SFML.System;
 
-namespace Rogui.Primitives
+namespace Rogui
 {
-    public abstract partial class BaseAspect
+    public abstract partial class Primitive
     {
         // aspect events
         public event EventHandler? StateChanged;

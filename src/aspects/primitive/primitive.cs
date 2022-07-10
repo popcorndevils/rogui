@@ -3,9 +3,9 @@ using SFML.System;
 using SFML.Window;
 using Rogui.Extensions;
 
-namespace Rogui.Primitives
+namespace Rogui
 {
-    public abstract partial class BaseAspect : Drawable
+    public abstract partial class Primitive : Drawable
     {
         // common aspect properties
         public virtual Aspect? Parent { get; set; }

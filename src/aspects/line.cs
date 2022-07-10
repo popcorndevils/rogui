@@ -1,7 +1,7 @@
 using SFML.Graphics;
 using SFML.System;
 
-namespace Rogui.Primitives
+namespace Rogui
 {
     public class Line : Aspect
     {

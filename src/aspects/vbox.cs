@@ -6,10 +6,10 @@ namespace Rogui
     {
         public float MarginSeparator;
 
-        public override Vector2f Position {
-            get => base.Position;
+        public override Vector2f AbsolutePosition {
+            get => base.AbsolutePosition;
             set {
-                base.Position = new Vector2f(
+                base.AbsolutePosition = new Vector2f(
                     value.X + this.MarginLeft,
                     value.Y + this.MarginTop);
 
@@ -26,11 +26,11 @@ namespace Rogui
 
         protected override void UpdateLayout()
         {
-            float _bottom = this.Position.Y + this.MarginTop;
+            float _bottom = this.AbsolutePosition.Y + this.MarginTop;
             foreach(Aspect a in this.Children)
             {
-                a.Position = new Vector2f(
-                    this.Position.X + this.MarginLeft, _bottom + this.MarginSeparator);
+                a.AbsolutePosition = new Vector2f(
+                    this.AbsolutePosition.X + this.MarginLeft, _bottom + this.MarginSeparator);
                 var _bnds = a.Bounds;
                 _bottom = _bnds.Top + _bnds.Height;
             }

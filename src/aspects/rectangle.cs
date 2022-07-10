@@ -1,7 +1,7 @@
 using SFML.Graphics;
 using SFML.System;
 
-namespace Rogui.Primitives
+namespace Rogui
 {
     public class Rectangle : Aspect
     {
@@ -28,7 +28,7 @@ namespace Rogui.Primitives
             set => this.Shape.FillColor = value;
         }
 
-        public override Vector2f Position {
+        public override Vector2f AbsolutePosition {
             get => this.Shape.Position;
             set {
                 this.Shape.Position = new Vector2f(
