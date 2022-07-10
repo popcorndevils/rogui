@@ -5,7 +5,7 @@ namespace Rogui.Primitives
 {
     public class Rectangle : Aspect
     {
-        private new RectangleShape Shape = new RectangleShape();
+        private RectangleShape Shape = new RectangleShape();
 
         public override FloatRect Bounds {
             get {

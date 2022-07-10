@@ -1,12 +1,12 @@
 using SFML.Graphics;
 using SFML.System;
 
-namespace Rogui
+namespace Rogui.Primitives
 {
     public class Line : Aspect
     {
         private RectangleShape LineShape;
-        public override Drawable Shape => this.LineShape;
+        public Drawable Shape => this.LineShape;
 
         public Line(int x, int y, int w, int h)
         {

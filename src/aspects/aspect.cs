@@ -129,7 +129,7 @@ namespace Rogui
                 Aspect a = this.Children[i];
                 prev = a.ProcessMousePress(sender, prev);
             }
-            return base.ProcessMousePress(sender, e);
+            return base.ProcessMousePress(sender, prev);
         }
 
         public override MouseButtonEventArgs? ProcessMouseRelease(
@@ -141,7 +141,7 @@ namespace Rogui
                 Aspect a = this.Children[i];
                 prev = a.ProcessMouseRelease(sender, prev);
             }
-            return base.ProcessMouseRelease(sender, e);
+            return base.ProcessMouseRelease(sender, prev);
         }
     }
 }

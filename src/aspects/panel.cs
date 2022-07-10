@@ -29,8 +29,8 @@ namespace Rogui
                     value.Y + this.MarginTop
                 );
                 this.BodyFG.Position = new Vector2f(
-                    value.X + this.MarginLeft + this.BorderWidth,
-                    value.Y + this.MarginTop + this.BorderWidth
+                    value.X + this.MarginLeft + this.BorderLeft,
+                    value.Y + this.MarginTop + this.BorderTop
                 );
             }
         }
@@ -40,8 +40,8 @@ namespace Rogui
             set {
                 this.BodyFG.Size = value;
                 this.BodyBG.Size = new Vector2f(
-                    value.X + (this.BorderWidth * 2),
-                    value.Y + (this.BorderWidth * 2));
+                    value.X + this.BorderLeft + this.BorderRight,
+                    value.Y + this.BorderTop + this.BorderBottom);
             }
         }
 

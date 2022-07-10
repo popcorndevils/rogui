@@ -5,10 +5,10 @@ namespace Rogui.Primitives
 {
     public class Label : Aspect
     {
-        public event EventHandler? StringChanged;
+        public new event EventHandler? Transformed;
         public Font Font;
         public Text GText;
-        public override Drawable Shape {
+        public Drawable Shape {
             get => this.GText;
         }
 
@@ -24,22 +24,14 @@ namespace Rogui.Primitives
             }
         } 
 
-        public override Vector2f Size {
-            get {
-                var _bnds = this.Bounds;
-                return new Vector2f(_bnds.Width, _bnds.Height);
-            }
-        }
-
         public override Vector2f Position {
             get => base.Position;
             set {
-                base.Position = value;
                 this.GText.Position = new Vector2f(
                     value.X + this.MarginLeft,
                     value.Y + this.MarginTop
                 );
-                
+                base.Position = value;
             }
         }
 
@@ -47,7 +39,7 @@ namespace Rogui.Primitives
             get => this.GText.DisplayedString;
             set {
                 this.GText.DisplayedString = value;
-                this.StringChanged?.Invoke(this, EventArgs.Empty);
+                this.Transformed?.Invoke(this, EventArgs.Empty);
             }
         }
 

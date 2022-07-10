@@ -6,7 +6,6 @@ namespace Rogui.Themes
     {
         public Color? FillColor;
         public Color? BorderColor;
-        public float? BorderWidth;
         public float? MarginLeft;
         public float? MarginTop;
         public float? MarginRight;
@@ -15,6 +14,10 @@ namespace Rogui.Themes
         public float? PaddingTop;
         public float? PaddingRight;
         public float? PaddingBottom;
+        public float? BorderLeft;
+        public float? BorderTop;
+        public float? BorderRight;
+        public float? BorderBottom;
 
         public float Margin {
             set {
@@ -31,6 +34,15 @@ namespace Rogui.Themes
                 this.PaddingTop = value;
                 this.PaddingRight = value;
                 this.PaddingBottom = value;
+            }
+        }
+
+        public float Border {
+            set {
+                this.BorderLeft = value;
+                this.BorderTop = value;
+                this.BorderRight = value;
+                this.BorderBottom = value;
             }
         }
     }
