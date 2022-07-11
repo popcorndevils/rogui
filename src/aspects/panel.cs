@@ -5,8 +5,8 @@ namespace Rogui
 {
     public class Panel : Aspect
     {
-        private Shapes.Rectangle BodyBG = new Shapes.Rectangle();
-        private Shapes.Rectangle BodyFG = new Shapes.Rectangle();
+        protected Shapes.Rectangle BodyBG = new Shapes.Rectangle();
+        protected Shapes.Rectangle BodyFG = new Shapes.Rectangle();
 
         public override FloatRect Bounds => this.BodyBG.Bounds;
         
@@ -24,12 +24,12 @@ namespace Rogui
             get => this.BodyBG.AbsolutePosition;
             set {
                 this.BodyBG.AbsolutePosition = new Vector2f(
-                    value.X + this.MarginLeft,
-                    value.Y + this.MarginTop
+                    value.X + this.MarginLeft + this.Position.X,
+                    value.Y + this.MarginTop + this.Position.Y
                 );
                 this.BodyFG.AbsolutePosition = new Vector2f(
-                    value.X + this.MarginLeft + this.BorderLeft,
-                    value.Y + this.MarginTop + this.BorderTop
+                    value.X + this.MarginLeft + this.BorderLeft + this.Position.X,
+                    value.Y + this.MarginTop + this.BorderTop + this.Position.Y
                 );
             }
         }

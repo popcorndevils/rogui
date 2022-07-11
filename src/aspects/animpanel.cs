@@ -1,10 +1,10 @@
 using SFML.System;
-using Rogui.Extensions;
 
-namespace Rogui.Shapes
+namespace Rogui
 {
-    public class AnimLine : Line
+    public class AnimPanel : Panel
     {
+        
         // ███████╗██╗   ██╗███████╗███╗   ██╗████████╗███████╗
         // ██╔════╝██║   ██║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
         // █████╗  ██║   ██║█████╗  ██╔██╗ ██║   ██║   ███████╗
@@ -26,10 +26,10 @@ namespace Rogui.Shapes
         public bool IsClosing { get; private set; }
         public bool IsOpening { get; private set; }
 
-        public float MaxLength {  
-            get => this._MaxLength;
+        public Vector2f MaxSize {  
+            get => this._MaxSize;
             private set {
-                this._MaxLength = value;
+                this._MaxSize = value;
                 this._MSGrowth = value / this.AnimSpeed / 1000;
             }
         }
@@ -38,7 +38,24 @@ namespace Rogui.Shapes
             get => this._AnimSpeed;
             set {
                 this._AnimSpeed = value;
-                this._MSGrowth = this.MaxLength / value / 1000;
+                this._MSGrowth = this.MaxSize / value / 1000;
+            }
+        }
+
+        private Vector2f CurrentSize {
+            get => base.BodyFG.Size;
+            set {
+                base.BodyFG.Size = value;
+                this.BodyBG.Size = new Vector2f(
+                    value.X + this.BorderLeft + this.BorderRight,
+                    value.Y + this.BorderTop + this.BorderBottom);
+            }
+        }
+
+        public override Vector2f Size {
+            get => this.MaxSize;
+            set {
+                this.MaxSize = value;
             }
         }
 
@@ -49,18 +66,10 @@ namespace Rogui.Shapes
         // ██║     ██║   ██║██║╚██╗██║╚════██║   ██║   ██╔══██╗██║   ██║██║        ██║   
         // ╚██████╗╚██████╔╝██║ ╚████║███████║   ██║   ██║  ██║╚██████╔╝╚██████╗   ██║   
         //  ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝  ╚═════╝   ╚═╝   
-        public AnimLine(Vector2f start, Vector2f end, float width = 1) :
-        base(start, end, width) 
+        public AnimPanel() :
+        base() 
         {
-            this.Size = new Vector2f(0, width);
-            this.AnimSpeed = 1f;
-        }
-
-        public AnimLine(float x1, float y1, float x2, float y2, float width = 1) :
-        base(x1, y1, x2, y2, width)
-        {
-            this.MaxLength = this.PointStart.GetDistanceTo(this.PointEnd);
-            this.Size = new Vector2f(0, width);
+            this.CurrentSize = new Vector2f(0, 0);
             this.AnimSpeed = 1f;
         }
 
@@ -75,28 +84,28 @@ namespace Rogui.Shapes
         {
             if(ms is not null)
             {
-                float _growth_amt = this._MSGrowth * (float)ms;
+                Vector2f _growth_amt = this._MSGrowth * (float)ms;
                 if(this.IsOpening)
                 {
-                    var _new_len = this.Length + _growth_amt;
-                    if(_new_len > this.MaxLength)
+                    var _new_len = this.CurrentSize + _growth_amt;
+                    if(_new_len.X > this.MaxSize.X || _new_len.Y > this.MaxSize.Y)
                     {
-                        this.Length = this.MaxLength;
+                        this.CurrentSize = this.MaxSize;
                         this.IsOpening = false;
                         this.IsOpen = true;
                         this.Opened?.Invoke(this, EventArgs.Empty);
                     }
                     else
                     {
-                        this.Length = _new_len;
+                        this.CurrentSize = _new_len;
                     }
                 }
                 else if(this.IsClosing)
                 {
-                    var _new_len = this.Length - _growth_amt;
-                    if(_new_len < 0)
+                    var _new_len = this.CurrentSize - _growth_amt;
+                    if(_new_len.X < 0 || _new_len.Y < 0)
                     {
-                        this.Length = 0;
+                        this.CurrentSize = new Vector2f();
                         this.Visible = false;
                         this.IsClosing = false;
                         this.IsClosed = true;
@@ -104,22 +113,11 @@ namespace Rogui.Shapes
                     }
                     else
                     {
-                        this.Length = _new_len;
+                        this.CurrentSize = _new_len;
                     }
                 }
                 // Console.WriteLine(this.Bounds);
             }
-        }
-
-        protected override void CalculateDimensions()
-        {
-            this.MaxLength = this.PointStart.GetDistanceTo(this.PointEnd);
-            if(this.IsOpen)
-            {
-                this.Length = this.MaxLength;
-            }
-            this.Origin = new Vector2f(0, this.Width / 2);
-            this.Rotation = this.PointStart.GetAngleTo(this.PointEnd);
         }
 
 
@@ -131,6 +129,7 @@ namespace Rogui.Shapes
         // ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝
         public void Open()
         {
+            Console.WriteLine("OPENING");
             this.Visible = true;
             this.IsClosed = false;
             this.IsClosing = false;
@@ -140,6 +139,7 @@ namespace Rogui.Shapes
 
         public void Close()
         {
+            Console.WriteLine("OPENING");
             this.Visible = true;
             this.IsClosed = false;
             this.IsOpen = false;
@@ -147,14 +147,15 @@ namespace Rogui.Shapes
             this.IsClosing = true;
         }
 
+
         // ██╗  ██╗██╗██████╗ ██████╗ ███████╗███╗   ██╗
         // ██║  ██║██║██╔══██╗██╔══██╗██╔════╝████╗  ██║
         // ███████║██║██║  ██║██║  ██║█████╗  ██╔██╗ ██║
         // ██╔══██║██║██║  ██║██║  ██║██╔══╝  ██║╚██╗██║
         // ██║  ██║██║██████╔╝██████╔╝███████╗██║ ╚████║
         // ╚═╝  ╚═╝╚═╝╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝
-        private float _MaxLength;
         private float _AnimSpeed;
-        private float _MSGrowth;
+        private Vector2f _MSGrowth;
+        private Vector2f _MaxSize;
     }
 }
