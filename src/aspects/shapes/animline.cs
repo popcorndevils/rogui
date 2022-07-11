@@ -6,31 +6,50 @@ namespace Rogui.Shapes
 {
     public class AnimLine : Line
     {
+        // ███████╗██╗   ██╗███████╗███╗   ██╗████████╗███████╗
+        // ██╔════╝██║   ██║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
+        // █████╗  ██║   ██║█████╗  ██╔██╗ ██║   ██║   ███████╗
+        // ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ╚════██║
+        // ███████╗ ╚████╔╝ ███████╗██║ ╚████║   ██║   ███████║
+        // ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
         public event EventHandler? Closed;
         public event EventHandler? Opened;
 
+
+        // ██████╗ ██████╗  ██████╗ ██████╗ ███████╗██████╗ ████████╗██╗███████╗███████╗
+        // ██╔══██╗██╔══██╗██╔═══██╗██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██║██╔════╝██╔════╝
+        // ██████╔╝██████╔╝██║   ██║██████╔╝█████╗  ██████╔╝   ██║   ██║█████╗  ███████╗
+        // ██╔═══╝ ██╔══██╗██║   ██║██╔═══╝ ██╔══╝  ██╔══██╗   ██║   ██║██╔══╝  ╚════██║
+        // ██║     ██║  ██║╚██████╔╝██║     ███████╗██║  ██║   ██║   ██║███████╗███████║
+        // ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚══════╝╚══════╝
         public bool IsOpen { get; private set; }
         public bool IsClosed {get; private set; }
         public bool IsClosing { get; private set; }
         public bool IsOpening { get; private set; }
-        private float _MaxLength;
-        private float MaxLength {  
+
+        public float MaxLength {  
             get => this._MaxLength;
-            set {
+            private set {
                 this._MaxLength = value;
-                this.MSGrowth = value / this.AnimSpeed / 1000;
+                this._MSGrowth = value / this.AnimSpeed / 1000;
             }
         }
-        private float MSGrowth { get; set; }
-        private float _AnimSpeed;
+
         public float AnimSpeed {
             get => this._AnimSpeed;
             set {
                 this._AnimSpeed = value;
-                this.MSGrowth = this.MaxLength / value / 1000;
+                this._MSGrowth = this.MaxLength / value / 1000;
             }
         }
 
+
+        //  ██████╗ ██████╗ ███╗   ██╗███████╗████████╗██████╗ ██╗   ██╗ ██████╗████████╗
+        // ██╔════╝██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║   ██║██╔════╝╚══██╔══╝
+        // ██║     ██║   ██║██╔██╗ ██║███████╗   ██║   ██████╔╝██║   ██║██║        ██║   
+        // ██║     ██║   ██║██║╚██╗██║╚════██║   ██║   ██╔══██╗██║   ██║██║        ██║   
+        // ╚██████╗╚██████╔╝██║ ╚████║███████║   ██║   ██║  ██║╚██████╔╝╚██████╗   ██║   
+        //  ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝  ╚═════╝   ╚═╝   
         public AnimLine(Vector2f start, Vector2f end, float width = 1) :
         base(start, end, width) 
         {
@@ -46,11 +65,18 @@ namespace Rogui.Shapes
             this.AnimSpeed = 1f;
         }
 
+
+        //  ██████╗ ██╗   ██╗███████╗██████╗ ██████╗ ██╗██████╗ ███████╗███████╗
+        // ██╔═══██╗██║   ██║██╔════╝██╔══██╗██╔══██╗██║██╔══██╗██╔════╝██╔════╝
+        // ██║   ██║██║   ██║█████╗  ██████╔╝██████╔╝██║██║  ██║█████╗  ███████╗
+        // ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗██╔══██╗██║██║  ██║██╔══╝  ╚════██║
+        // ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║██║  ██║██║██████╔╝███████╗███████║
+        //  ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═════╝ ╚══════╝╚══════╝
         public override void Update(float? ms)
         {
             if(ms is not null)
             {
-                float _growth_amt = this.MSGrowth * (float)ms;
+                float _growth_amt = this._MSGrowth * (float)ms;
                 if(this.IsOpening)
                 {
                     var _new_len = this.Length + _growth_amt;
@@ -85,6 +111,24 @@ namespace Rogui.Shapes
             }
         }
 
+        protected override void CalculateDimensions()
+        {
+            this.MaxLength = this.PointStart.GetDistanceTo(this.PointEnd);
+            if(this.IsOpen)
+            {
+                this.Length = this.MaxLength;
+            }
+            this.Origin = new Vector2f(0, this.Width / 2);
+            this.Rotation = this.PointStart.GetAngleTo(this.PointEnd);
+        }
+
+
+        // ███╗   ███╗███████╗████████╗██╗  ██╗ ██████╗ ██████╗ ███████╗
+        // ████╗ ████║██╔════╝╚══██╔══╝██║  ██║██╔═══██╗██╔══██╗██╔════╝
+        // ██╔████╔██║█████╗     ██║   ███████║██║   ██║██║  ██║███████╗
+        // ██║╚██╔╝██║██╔══╝     ██║   ██╔══██║██║   ██║██║  ██║╚════██║
+        // ██║ ╚═╝ ██║███████╗   ██║   ██║  ██║╚██████╔╝██████╔╝███████║
+        // ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝
         public void Open()
         {
             this.Visible = true;
@@ -103,15 +147,14 @@ namespace Rogui.Shapes
             this.IsClosing = true;
         }
 
-        protected override void CalculateDimensions()
-        {
-            this.MaxLength = this.PointStart.GetDistanceTo(this.PointEnd);
-            if(this.IsOpen)
-            {
-                this.Length = this.MaxLength;
-            }
-            this.Origin = new Vector2f(0, this.Width / 2);
-            this.Rotation = this.PointStart.GetAngleTo(this.PointEnd);
-        }
+        // ██╗  ██╗██╗██████╗ ██████╗ ███████╗███╗   ██╗
+        // ██║  ██║██║██╔══██╗██╔══██╗██╔════╝████╗  ██║
+        // ███████║██║██║  ██║██║  ██║█████╗  ██╔██╗ ██║
+        // ██╔══██║██║██║  ██║██║  ██║██╔══╝  ██║╚██╗██║
+        // ██║  ██║██║██████╔╝██████╔╝███████╗██║ ╚████║
+        // ╚═╝  ╚═╝╚═╝╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝
+        private float _MaxLength;
+        private float _AnimSpeed;
+        private float _MSGrowth;
     }
 }
