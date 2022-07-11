@@ -5,7 +5,20 @@ namespace Rogui
 {
     public class UIController : Aspect
     {
-        // private RenderWindow? _Window;
+        private RenderWindow? _Window;
+        public RenderWindow? Window {
+            get => this._Window;
+            set {
+                this._Window = value;
+                if(value is not null)
+                {
+                    value.KeyPressed += this.OnKeyPressed;
+                    value.MouseMoved += this.OnMouseMoved;
+                    value.MouseButtonPressed += this.OnMouseButtonPressed;
+                    value.MouseButtonReleased += this.OnMouseButtonReleased;
+                }
+            }
+        }
 
         public void OnKeyPressed(object? sender, EventArgs e)
         {
