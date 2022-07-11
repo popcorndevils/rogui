@@ -20,7 +20,6 @@ namespace Rogui.Shapes
             set {
                 this.Size = new Vector2f(this.Length, value);
                 this.Origin = new Vector2f(0, value / 2);
-                this.Position = this.PointStart - new Vector2f(0, value / 2);
             }
         }
 
@@ -35,14 +34,15 @@ namespace Rogui.Shapes
             get => this._PointStart;
             set {
                 this._PointStart = value;
-                this.Resize();
+                this.Position = this.PointStart - new Vector2f(0, this.Width / 2);
+                this.CalculateDimensions();
             }
         }
         protected Vector2f PointEnd {
             get => this._PointEnd;
             set {
                 this._PointEnd = value;
-                this.Resize();
+                this.CalculateDimensions();
             }
         }
 
@@ -59,7 +59,11 @@ namespace Rogui.Shapes
 
         public override Vector2f Size {
             get => this.Shape.Size;
-            set => this.Shape.Size = value;
+            set {
+                this.Shape.Size = value;
+                this.Origin = new Vector2f(0, value.Y / 2);
+                this.Position = this.PointStart - new Vector2f(0, value.Y / 2);
+            }
         }
 
         public override Color FillColor {
@@ -91,10 +95,10 @@ namespace Rogui.Shapes
             { this.Init(x1, y1, x2, y2, width); }
         private void Init(float x1, float y1, float x2, float y2, float width)
         {
+            this.Width = width;
             this._PointStart = new Vector2f(x1, y1);
             this._PointEnd = new Vector2f(x2, y2);
-            this.Width = width;
-            this.Resize();
+            this.CalculateDimensions();
         }
 
 
@@ -118,11 +122,9 @@ namespace Rogui.Shapes
         // ██╔══██║██╔══╝  ██║     ██╔═══╝ ██╔══╝  ██╔══██╗╚════██║
         // ██║  ██║███████╗███████╗██║     ███████╗██║  ██║███████║
         // ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝
-        protected virtual void Resize()
+        protected virtual void CalculateDimensions()
         {
             this.Length = this.PointStart.GetDistanceTo(this.PointEnd);
-            this.Size = new Vector2f(this.Length, this.Width);
-            this.Origin = new Vector2f(0, this.Width / 2);
             this.Rotation = this.PointStart.GetAngleTo(this.PointEnd);
         }                                                
 

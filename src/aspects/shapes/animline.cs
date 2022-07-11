@@ -103,14 +103,13 @@ namespace Rogui.Shapes
             this.IsClosing = true;
         }
 
-        protected override void Resize()
+        protected override void CalculateDimensions()
         {
             this.MaxLength = this.PointStart.GetDistanceTo(this.PointEnd);
             if(this.IsOpen)
             {
                 this.Length = this.MaxLength;
             }
-            // this.Size = new Vector2f(this.Length, this.Width);
             this.Origin = new Vector2f(0, this.Width / 2);
             this.Rotation = this.PointStart.GetAngleTo(this.PointEnd);
         }
