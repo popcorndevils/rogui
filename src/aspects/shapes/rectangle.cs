@@ -32,8 +32,8 @@ namespace Rogui.Shapes
             get => this.Shape.Position;
             set {
                 this.Shape.Position = new Vector2f(
-                    value.X + this.MarginLeft,
-                    value.Y + this.MarginTop
+                    value.X + this.MarginLeft + this.Position.X,
+                    value.Y + this.MarginTop + this.Position.Y
                 );
             }
         }

@@ -28,8 +28,8 @@ namespace Rogui
             get => base.AbsolutePosition;
             set {
                 this.GText.Position = new Vector2f(
-                    value.X + this.MarginLeft,
-                    value.Y + this.MarginTop
+                    value.X + this.MarginLeft + this.Position.X,
+                    value.Y + this.MarginTop + this.Position.Y
                 );
                 base.AbsolutePosition = value;
             }
