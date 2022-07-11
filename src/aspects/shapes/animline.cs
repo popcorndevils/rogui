@@ -1,4 +1,6 @@
 using SFML.System;
+using SFML.Window;
+using Rogui.Extensions;
 
 namespace Rogui.Shapes
 {
@@ -7,32 +9,40 @@ namespace Rogui.Shapes
         public event EventHandler? Closed;
         public event EventHandler? Opened;
 
-
         public bool IsOpen { get; private set; }
         public bool IsClosed {get; private set; }
         public bool IsClosing { get; private set; }
         public bool IsOpening { get; private set; }
+        private float _MaxLength;
+        private float MaxLength {  
+            get => this._MaxLength;
+            set {
+                this._MaxLength = value;
+                this.MSGrowth = value / this.AnimSpeed / 1000;
+            }
+        }
         private float MSGrowth { get; set; }
         private float _AnimSpeed;
         public float AnimSpeed {
             get => this._AnimSpeed;
             set {
                 this._AnimSpeed = value;
-                this.MSGrowth = this.Length / value / 1000;
+                this.MSGrowth = this.MaxLength / value / 1000;
             }
         }
 
         public AnimLine(Vector2f start, Vector2f end, float width = 1) :
         base(start, end, width) 
         {
-            this.Shape.Size = new Vector2f(0, width);
+            this.Size = new Vector2f(0, width);
             this.AnimSpeed = 1f;
         }
 
         public AnimLine(float x1, float y1, float x2, float y2, float width = 1) :
         base(x1, y1, x2, y2, width)
         {
-            this.Shape.Size = new Vector2f(0, width);
+            this.MaxLength = this.PointStart.GetDistanceTo(this.PointEnd);
+            this.Size = new Vector2f(0, width);
             this.AnimSpeed = 1f;
         }
 
@@ -43,25 +53,25 @@ namespace Rogui.Shapes
                 float _growth_amt = this.MSGrowth * (float)ms;
                 if(this.IsOpening)
                 {
-                    var _new_len = this.Shape.Size.X + _growth_amt;
-                    if(_new_len > this.Length)
+                    var _new_len = this.Length + _growth_amt;
+                    if(_new_len > this.MaxLength)
                     {
-                        this.Shape.Size = new Vector2f(this.Length, this.Width);
+                        this.Length = this.MaxLength;
                         this.IsOpening = false;
                         this.IsOpen = true;
                         this.Opened?.Invoke(this, EventArgs.Empty);
                     }
                     else
                     {
-                        this.Shape.Size = new Vector2f(_new_len, this.Shape.Size.Y);
+                        this.Length = _new_len;
                     }
                 }
                 else if(this.IsClosing)
                 {
-                    var _new_len = this.Shape.Size.X - _growth_amt;
+                    var _new_len = this.Length - _growth_amt;
                     if(_new_len < 0)
                     {
-                        this.Shape.Size = new Vector2f(0, this.Width);
+                        this.Length = 0;
                         this.Visible = false;
                         this.IsClosing = false;
                         this.IsClosed = true;
@@ -69,7 +79,7 @@ namespace Rogui.Shapes
                     }
                     else
                     {
-                        this.Shape.Size = new Vector2f(_new_len, this.Shape.Size.Y);
+                        this.Length = _new_len;
                     }
                 }
             }
@@ -91,6 +101,18 @@ namespace Rogui.Shapes
             this.IsOpen = false;
             this.IsOpening = false;
             this.IsClosing = true;
+        }
+
+        protected override void Resize()
+        {
+            this.MaxLength = this.PointStart.GetDistanceTo(this.PointEnd);
+            if(this.IsOpen)
+            {
+                this.Length = this.MaxLength;
+            }
+            // this.Size = new Vector2f(this.Length, this.Width);
+            this.Origin = new Vector2f(0, this.Width / 2);
+            this.Rotation = this.PointStart.GetAngleTo(this.PointEnd);
         }
     }
 }
