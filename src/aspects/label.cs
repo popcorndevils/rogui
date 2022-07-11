@@ -45,7 +45,10 @@ namespace Rogui
 
         public override void Draw(RenderTarget t, RenderStates s)
         {
-            this.GText.Draw(t, s);
+            if(this.Visible)
+            {
+                this.GText.Draw(t, s);
+            }
         }
 
         public Label()

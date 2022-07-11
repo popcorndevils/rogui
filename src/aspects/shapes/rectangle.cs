@@ -40,7 +40,10 @@ namespace Rogui.Shapes
 
         public override void Draw(RenderTarget t, RenderStates s)
         {
-            this.Shape.Draw(t, s);
+            if(this.Visible)
+            {
+                this.Shape.Draw(t, s);
+            }
         }
     }
 }

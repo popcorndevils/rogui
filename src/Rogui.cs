@@ -5,7 +5,7 @@ namespace Rogui
 {
     public class UIController : Aspect
     {
-        private RenderWindow? _Window;
+        // private RenderWindow? _Window;
 
         public void OnKeyPressed(object? sender, EventArgs e)
         {
