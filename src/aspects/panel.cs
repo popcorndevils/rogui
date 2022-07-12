@@ -25,13 +25,11 @@ namespace Rogui
             get => this.BodyBG.AbsolutePosition;
             set {
                 this.BodyBG.AbsolutePosition = new Vector2f(
-                    value.X + this.MarginLeft + this.Position.X,
-                    value.Y + this.MarginTop + this.Position.Y
-                );
+                    value.X + this.MarginLeft,
+                    value.Y + this.MarginTop) + this.Position;
                 this.BodyFG.AbsolutePosition = new Vector2f(
-                    value.X + this.MarginLeft + this.BorderLeft + this.Position.X,
-                    value.Y + this.MarginTop + this.BorderTop + this.Position.Y
-                );
+                    value.X + this.MarginLeft + this.BorderLeft,
+                    value.Y + this.MarginTop + this.BorderTop) + this.Position;
             }
         }
 

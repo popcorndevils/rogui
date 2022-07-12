@@ -11,15 +11,12 @@ namespace Rogui
         public override Vector2f AbsolutePosition {
             get => base.AbsolutePosition;
             set {
-                base.AbsolutePosition = new Vector2f(
-                    value.X + this.MarginLeft + this.Position.X,
-                    value.Y + this.MarginTop + this.Position.Y);
-
+                base.AbsolutePosition = value;
                 foreach(Aspect c in this.Children)
                 {
                     c.AbsolutePosition = new Vector2f
-                    (this.AbsolutePosition.X + this.PaddingLeft,
-                    this.AbsolutePosition.Y + this.PaddingTop);
+                    (this.AbsolutePosition.X + this.MarginLeft + this.Position.X,
+                    this.AbsolutePosition.Y + this.MarginTop + this.Position.Y);
                 }
             }
         }

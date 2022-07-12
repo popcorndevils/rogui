@@ -29,8 +29,9 @@ namespace Rogui.Shapes
         }
 
         public override Vector2f AbsolutePosition {
-            get => this.Shape.Position;
+            get => base.AbsolutePosition;
             set {
+                base.AbsolutePosition = value;
                 this.Shape.Position = new Vector2f(
                     value.X + this.MarginLeft + this.Position.X,
                     value.Y + this.MarginTop + this.Position.Y

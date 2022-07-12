@@ -10,20 +10,18 @@ namespace Rogui
         public Panel BtnBody = new Panel();
         public Label BtnText = new Label();
 
-        public override Vector2f AbsolutePosition {
-            get => base.AbsolutePosition;
-            set {
-                base.AbsolutePosition = new Vector2f(
-                    value.X + this.MarginLeft,
-                    value.Y + this.MarginTop);
+        public override FloatRect Bounds => this.BtnBody.Bounds;
 
+        public override Vector2f AbsolutePosition {
+            get => this.BtnBody.AbsolutePosition;
+            set {
                 this.BtnBody.AbsolutePosition = new Vector2f(
-                    base.AbsolutePosition.X,
-                    base.AbsolutePosition.Y);
+                    value.X + this.MarginLeft,
+                    value.Y + this.MarginTop) + this.Position;
 
                 this.BtnText.AbsolutePosition = new Vector2f(
-                    base.AbsolutePosition.X + this.BorderLeft,
-                    base.AbsolutePosition.Y + this.BorderTop);
+                    value.X + this.MarginLeft + this.BorderLeft,
+                    value.Y + this.MarginTop + this.BorderTop) + this.Position;
             }
         }
 
