@@ -12,12 +12,23 @@ namespace Rogui
             get => base.AbsolutePosition;
             set {
                 base.AbsolutePosition = value;
-                foreach(Aspect c in this.Children)
-                {
-                    c.AbsolutePosition = new Vector2f
-                    (this.AbsolutePosition.X + this.MarginLeft + this.Position.X,
-                    this.AbsolutePosition.Y + this.MarginTop + this.Position.Y);
-                }
+                this.UpdateLayout();
+            }
+        }
+        
+        public override Vector2f Position {
+            get => base.Position;
+            set {
+                base.Position = value;
+                this.UpdateLayout();
+            }
+        }
+        
+        public override Vector2f OffsetPosition {
+            get => base.OffsetPosition;
+            set {
+                base.OffsetPosition = value;
+                this.UpdateLayout();
             }
         }
 
@@ -70,8 +81,11 @@ namespace Rogui
         }
 
         protected virtual void UpdateLayout()
-        { 
-            this.AbsolutePosition = this.AbsolutePosition;
+        {            
+            foreach(Aspect c in this.Children)
+            {
+                c.AbsolutePosition = this.AbsolutePosition + this.MarginPosition + this.Position;
+            }
         }
 
         public override void Update(float? ms)

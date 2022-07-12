@@ -24,12 +24,28 @@ namespace Rogui
         public override Vector2f AbsolutePosition {
             get => this.BodyBG.AbsolutePosition;
             set {
-                this.BodyBG.AbsolutePosition = new Vector2f(
-                    value.X + this.MarginLeft,
-                    value.Y + this.MarginTop) + this.Position;
-                this.BodyFG.AbsolutePosition = new Vector2f(
-                    value.X + this.MarginLeft + this.BorderLeft,
-                    value.Y + this.MarginTop + this.BorderTop) + this.Position;
+                this.BodyBG.AbsolutePosition = value + this.MarginPosition;
+                this.BodyFG.AbsolutePosition = value + this.MarginPosition + this.BorderPosition;
+            }
+        }
+
+        public override Vector2f Position {
+            get => this.BodyBG.Position;
+            set {
+                this.BodyBG.Position = value;
+                this.BodyFG.Position = value;
+                // this.BodyBG.AbsolutePosition = value + this.MarginPosition + this.Position;
+                // this.BodyFG.AbsolutePosition = value + this.MarginPosition + this.Position + this.BorderPosition;
+            }
+        }
+
+        public override Vector2f OffsetPosition {
+            get => this.BodyBG.OffsetPosition;
+            set {
+                this.BodyBG.OffsetPosition = value;
+                this.BodyFG.OffsetPosition = value;
+                // this.BodyBG.AbsolutePosition = value + this.MarginPosition + this.Position;
+                // this.BodyFG.AbsolutePosition = value + this.MarginPosition + this.Position + this.BorderPosition;
             }
         }
 

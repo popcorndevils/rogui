@@ -46,16 +46,16 @@ namespace Rogui.Shapes
             }
         }
 
-        public override Vector2f AbsolutePosition {
-            get => base.AbsolutePosition;
-            set {
-                this.Shape.Position = new Vector2f(
-                    value.X + this.MarginLeft + this.Position.X,
-                    value.Y + this.MarginTop + this.Position.Y
-                );
-                base.AbsolutePosition = value;
-            }
-        }
+        // public override Vector2f AbsolutePosition {
+        //     get => base.AbsolutePosition;
+        //     set {
+        //         this.Shape.Position = new Vector2f(
+        //             value.X + this.MarginLeft + this.Position.X,
+        //             value.Y + this.MarginTop + this.Position.Y
+        //         );
+        //         base.AbsolutePosition = value;
+        //     }
+        // }
 
         public override Vector2f Size {
             get => this.Shape.Size;
@@ -112,6 +112,7 @@ namespace Rogui.Shapes
         {
             if(this.Visible)
             {
+                this.Shape.Position = this.AbsolutePosition + this.Position + this.MarginPosition + this.OffsetPosition;
                 this.Shape.Draw(t, s);
             }
         }

@@ -107,7 +107,6 @@ namespace Rogui.Shapes
                         this.Length = _new_len;
                     }
                 }
-                // Console.WriteLine(this.Bounds);
             }
         }
 

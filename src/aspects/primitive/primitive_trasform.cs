@@ -10,6 +10,7 @@ namespace Rogui
         // aspect transform
         private Vector2f _RelativePosition;
         private Vector2f _AbsolutePosition;
+        private Vector2f _OffsetPosition;
         // private Vector2f _Position;
         private Vector2f _Size;
         private float _MarginLeft;
@@ -77,12 +78,24 @@ namespace Rogui
             }
         }
 
+        public virtual Vector2f OffsetPosition {
+            get => this._OffsetPosition;
+            set {
+                this._OffsetPosition = value;
+                this.Transformed?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
         public virtual Vector2f Size {
             get => this._Size;
             set {
                 this._Size = value;
                 this.Transformed?.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        public virtual Vector2f MarginPosition {
+            get => new Vector2f(this.MarginLeft, this.MarginTop);
         }
 
         public virtual float MarginLeft {
@@ -147,6 +160,10 @@ namespace Rogui
                 this._PaddingBottom = value;
                 this.Transformed?.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        public virtual Vector2f BorderPosition {
+            get => new Vector2f(this.BorderLeft, this.BorderTop);
         }
 
         public virtual float BorderLeft {

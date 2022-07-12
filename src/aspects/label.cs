@@ -47,6 +47,7 @@ namespace Rogui
         {
             if(this.Visible)
             {
+                this.GText.Position = this.AbsolutePosition + this.Position + this.MarginPosition + this.OffsetPosition;
                 this.GText.Draw(t, s);
             }
         }

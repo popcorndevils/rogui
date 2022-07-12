@@ -138,7 +138,7 @@ namespace Rogui
                 this.CurrentSize = this.MaxSize;
                 this.IsOpening = false;
                 this.IsOpen = true;
-                // this.Position = new Vector2f(0, 0);
+                this.OffsetPosition = new Vector2f(0, 0);
                 this.Opened?.Invoke(this, EventArgs.Empty);
             }
             else
@@ -147,6 +147,7 @@ namespace Rogui
                 switch(this.AnimDirection)
                 {
                     case AnimDirection.CENTER:
+                        this.OffsetPosition = (this.MaxSize / 2) + (_new_size / -2);
                         break;
                 }
                 
@@ -155,8 +156,8 @@ namespace Rogui
 
         private void AnimClose(Vector2f shr_amt)
         {
-            var _new_len = this.CurrentSize - shr_amt;
-            if(_new_len.X < 0 || _new_len.Y < 0)
+            var _new_size = this.CurrentSize - shr_amt;
+            if(_new_size.X < 0 || _new_size.Y < 0)
             {
                 this.CurrentSize = new Vector2f();
                 this.Visible = false;
@@ -166,7 +167,13 @@ namespace Rogui
             }
             else
             {
-                this.CurrentSize = _new_len;
+                this.CurrentSize = _new_size;
+                switch(this.AnimDirection)
+                {
+                    case AnimDirection.CENTER:
+                        this.OffsetPosition = (this.MaxSize / 2) + (_new_size / -2);
+                        break;
+                }
             }
         }
 
