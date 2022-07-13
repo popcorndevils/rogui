@@ -4,46 +4,47 @@ namespace Rogui
 {
     public class AnimButton : Button
     {
-        public new AnimPanel BtnBody { get; set; }
+        protected new AnimPanel Body { get; set; }
 
         public event EventHandler Opened {
             add {
-                this.BtnBody.Opened += value;
+                this.Body.Opened += value;
             }
             remove {
-                this.BtnBody.Opened -= value;
+                this.Body.Opened -= value;
             }
         }
 
         public event EventHandler Closed {
             add {
-                this.BtnBody.Closed += value;
+                this.Body.Closed += value;
             }
             remove {
-                this.BtnBody.Closed -= value;
+                this.Body.Closed -= value;
             }
         }
 
-        public bool IsOpen => this.BtnBody.IsOpen;
-        public bool IsClosed => this.BtnBody.IsClosed;
-        public bool IsOpening => this.BtnBody.IsOpening;
-        public bool IsClosing => this.BtnBody.IsClosing;
+        public bool IsOpen => this.Body.IsOpen;
+        public bool IsClosed => this.Body.IsClosed;
+        public bool IsOpening => this.Body.IsOpening;
+        public bool IsClosing => this.Body.IsClosing;
 
-        public AnimButton(string text) : base(text) 
+        public AnimButton(string text)
         {
-            this.BtnBody = new AnimPanel();
-            this.BtnBody.CurrentSize = new Vector2f();
+            this.Body = new AnimPanel();
+            this.Body.Add(new Label(text));
+            this.Body.CurrentSize = new Vector2f();
             // TODO edit animated panel in order to close and open button.
         }
 
         public void Open()
         {
-            this.BtnBody.Open();
+            this.Body.Open();
         }
 
         public void Close()
         {
-            this.BtnBody.Close();
+            this.Body.Close();
         }
     }
 }

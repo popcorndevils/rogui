@@ -2,6 +2,7 @@ using SFML.System;
 
 namespace Rogui
 {
+    // TODO change to inherit from Aspect and just use Panel as container?
     public class AnimPanel : Panel
     {
         
@@ -49,16 +50,10 @@ namespace Rogui
         }
 
         public Vector2f CurrentSize {
-            get => base.BodyBG.Size;
+            get => base.BodyFG.Size;
             set {
-                // base.BodyBG.Size = value;
-                // this.BodyFG.Size = new Vector2f(
-                //     value.X - this.BorderLeft - this.BorderRight,
-                //     value.Y - this.BorderTop - this.BorderBottom);
-                this.BodyBG.Size = value;
-                this.BodyFG.Size = new Vector2f(
-                    value.X - this.BorderLeft - this.BorderRight + base.PaddingLeft + base.PaddingRight,
-                    value.Y - this.BorderTop - this.BorderBottom + base.PaddingTop + base.PaddingBottom);
+                this.BodyFG.Size = value;
+                this.BodyBG.Size = value + this.BorderSize;
             }
         }
 

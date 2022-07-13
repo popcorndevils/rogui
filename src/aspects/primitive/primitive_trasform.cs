@@ -162,9 +162,11 @@ namespace Rogui
             }
         }
 
-        public virtual Vector2f BorderPosition {
-            get => new Vector2f(this.BorderLeft, this.BorderTop);
-        }
+        public virtual Vector2f BorderPosition  => new Vector2f(this.BorderLeft, this.BorderTop);
+        public virtual Vector2f BorderSize => new Vector2f(this.BorderLR, this.BorderTB);
+        public virtual float BorderLR => this.BorderLeft + this.BorderTop;
+        public virtual float BorderTB => this.BorderTop + this.BorderBottom;
+        
 
         public virtual float BorderLeft {
             get => this._BorderLeft;

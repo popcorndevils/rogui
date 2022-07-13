@@ -94,22 +94,16 @@ namespace Rogui
                         { this.BorderRight = (float)value.BorderRight; }
                     if(value.BorderBottom is not null) 
                         { this.BorderBottom = (float)value.BorderBottom; }
-                    this.Resize();
                 }
             }
         }
 
-        // TODO TESTING
         public override float Padding { 
             set {
                 foreach(Aspect a in this.Children)
                 {
                     a.Margin = value;
                 }
-                // foreach(Aspect a in this.Contents.Children)
-                // {
-                //     a.Margin = value;
-                // }
             }
         }
 
@@ -123,6 +117,7 @@ namespace Rogui
                 base.PaddingLeft = value;
             }
         }
+
         public override float PaddingTop {
             get => base.PaddingTop;
             set {
@@ -133,6 +128,7 @@ namespace Rogui
                 base.PaddingTop = value;
             }
         }
+
         public override float PaddingRight {
             get => base.PaddingRight;
             set {
@@ -143,6 +139,7 @@ namespace Rogui
                 base.PaddingRight = value;
             }
         }
+
         public override float PaddingBottom {
             get => base.PaddingBottom;
             set {
@@ -168,7 +165,6 @@ namespace Rogui
                     base.Add(a);
                 }
             }
-            this.Resize();
         }
 
         public Panel()
@@ -178,12 +174,6 @@ namespace Rogui
 
         public void OnTransformed(object? sender, EventArgs e)
         {
-            this.Resize();
-        }
-
-        private void Resize()
-        {
-            Console.WriteLine(this.ContentBounds);
             this.Size = this.ContentBounds.GetSize();
         }
     }

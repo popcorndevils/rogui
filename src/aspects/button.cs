@@ -17,19 +17,6 @@ namespace Rogui
             set => this.Body.Theme = value;
         }
 
-        // public override Vector2f AbsolutePosition {
-        //     get => this.Body.AbsolutePosition;
-        //     set {
-        //         this.Body.AbsolutePosition = new Vector2f(
-        //             value.X + this.MarginLeft,
-        //             value.Y + this.MarginTop) + this.Position;
-
-        //         // this.BtnText.AbsolutePosition = new Vector2f(
-        //         //     value.X + this.MarginLeft + this.BorderLeft,
-        //         //     value.Y + this.MarginTop + this.BorderTop) + this.Position;
-        //     }
-        // }
-
         public override float Border { set => this.Body.Border = value; }
         public override float BorderLeft {
             get => this.Body.BorderLeft;
@@ -75,7 +62,15 @@ namespace Rogui
             }
         }
 
-        public Button(string text) : base()
+        public Button()
+        {
+            this.BlockInput = true;
+            this.Body = new Panel();
+            base.StateChanged += this.OnStateChange;
+            this.Body.Add(this.BtnText);
+            base.Add(this.Body);
+        }
+        public Button(string text)
         {
             this.BlockInput = true;
             this.Body = new Panel();
