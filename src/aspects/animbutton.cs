@@ -1,3 +1,4 @@
+using SFML.System;
 
 namespace Rogui
 {
@@ -31,6 +32,7 @@ namespace Rogui
         public AnimButton(string text) : base(text) 
         {
             this.BtnBody = new AnimPanel();
+            this.BtnBody.CurrentSize = new Vector2f();
             // TODO edit animated panel in order to close and open button.
         }
 

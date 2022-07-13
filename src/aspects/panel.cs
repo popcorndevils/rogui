@@ -34,8 +34,6 @@ namespace Rogui
             set {
                 this.BodyBG.Position = value;
                 this.BodyFG.Position = value;
-                // this.BodyBG.AbsolutePosition = value + this.MarginPosition + this.Position;
-                // this.BodyFG.AbsolutePosition = value + this.MarginPosition + this.Position + this.BorderPosition;
             }
         }
 
@@ -44,8 +42,6 @@ namespace Rogui
             set {
                 this.BodyBG.OffsetPosition = value;
                 this.BodyFG.OffsetPosition = value;
-                // this.BodyBG.AbsolutePosition = value + this.MarginPosition + this.Position;
-                // this.BodyFG.AbsolutePosition = value + this.MarginPosition + this.Position + this.BorderPosition;
             }
         }
 
@@ -56,39 +52,6 @@ namespace Rogui
                 this.BodyBG.Size = new Vector2f(
                     value.X + this.BorderLeft + this.BorderRight,
                     value.Y + this.BorderTop + this.BorderBottom);
-            }
-        }
-
-        public new ThemePanel Theme {
-            set {
-                if(value.FillColor is not null) 
-                    { this.FillColor = (Color)value.FillColor; }
-                if(value.BorderColor is not null) 
-                    { this.BorderColor = (Color)value.BorderColor; }
-                if(value.MarginLeft is not null) 
-                    { this.MarginLeft = (float)value.MarginLeft; }
-                if(value.MarginTop is not null) 
-                    { this.MarginTop = (float)value.MarginTop; }
-                if(value.MarginRight is not null) 
-                    { this.MarginRight = (float)value.MarginRight; }
-                if(value.MarginBottom is not null) 
-                    { this.MarginBottom = (float)value.MarginBottom; }
-                if(value.PaddingLeft is not null) 
-                    { this.PaddingLeft = (float)value.PaddingLeft; }
-                if(value.PaddingTop is not null) 
-                    { this.PaddingTop = (float)value.PaddingTop; }
-                if(value.PaddingRight is not null) 
-                    { this.PaddingRight = (float)value.PaddingRight; }
-                if(value.PaddingBottom is not null) 
-                    { this.PaddingBottom = (float)value.PaddingBottom; }
-                if(value.BorderLeft is not null) 
-                    { this.BorderLeft = (float)value.BorderLeft; }
-                if(value.BorderTop is not null) 
-                    { this.BorderTop = (float)value.BorderTop; }
-                if(value.BorderRight is not null) 
-                    { this.BorderRight = (float)value.BorderRight; }
-                if(value.BorderBottom is not null) 
-                    { this.BorderBottom = (float)value.BorderBottom; }
             }
         }
 

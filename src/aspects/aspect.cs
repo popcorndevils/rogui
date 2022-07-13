@@ -70,7 +70,7 @@ namespace Rogui
             this.Add(aspects);
         }
 
-        public void Add(params Aspect[] aspects)
+        public virtual void Add(params Aspect[] aspects)
         {
             foreach(Aspect a in aspects)
             {

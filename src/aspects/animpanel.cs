@@ -48,7 +48,7 @@ namespace Rogui
             }
         }
 
-        private Vector2f CurrentSize {
+        public Vector2f CurrentSize {
             get => base.BodyFG.Size;
             set {
                 base.BodyFG.Size = value;
