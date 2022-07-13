@@ -2,7 +2,7 @@ using SFML.System;
 
 namespace Rogui
 {
-    public class AnimPanel : Panel_BKUP
+    public class AnimPanel : Panel
     {
         
         // ███████╗██╗   ██╗███████╗███╗   ██╗████████╗███████╗
@@ -49,12 +49,16 @@ namespace Rogui
         }
 
         public Vector2f CurrentSize {
-            get => base.BodyFG.Size;
+            get => base.BodyBG.Size;
             set {
-                base.BodyFG.Size = value;
-                this.BodyBG.Size = new Vector2f(
-                    value.X + this.BorderLeft + this.BorderRight,
-                    value.Y + this.BorderTop + this.BorderBottom);
+                // base.BodyBG.Size = value;
+                // this.BodyFG.Size = new Vector2f(
+                //     value.X - this.BorderLeft - this.BorderRight,
+                //     value.Y - this.BorderTop - this.BorderBottom);
+                this.BodyBG.Size = value;
+                this.BodyFG.Size = new Vector2f(
+                    value.X - this.BorderLeft - this.BorderRight + base.PaddingLeft + base.PaddingRight,
+                    value.Y - this.BorderTop - this.BorderBottom + base.PaddingTop + base.PaddingBottom);
             }
         }
 

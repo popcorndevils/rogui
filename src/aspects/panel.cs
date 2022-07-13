@@ -1,16 +1,18 @@
 using SFML.Graphics;
 using SFML.System;
 using Rogui.Themes;
+using Rogui.Extensions;
 
 namespace Rogui
 {
     public class Panel : Aspect
     {
-        protected Aspect Box = new Aspect();
+        protected Aspect Contents = new Aspect();
         protected Shapes.Rectangle BodyBG = new Shapes.Rectangle();
         protected Shapes.Rectangle BodyFG = new Shapes.Rectangle();
 
         public override FloatRect Bounds => this.BodyBG.Bounds;
+        public FloatRect ContentBounds => this.Contents.Bounds;
         
         public override Color FillColor {
             get => this.BodyFG.FillColor;
@@ -27,6 +29,7 @@ namespace Rogui
             set {
                 this.BodyBG.AbsolutePosition = value + this.MarginPosition;
                 this.BodyFG.AbsolutePosition = value + this.MarginPosition + this.BorderPosition;
+                this.Contents.AbsolutePosition = value + this.MarginPosition + this.BorderPosition;
             }
         }
 
@@ -56,24 +59,132 @@ namespace Rogui
             }
         }
 
+        private ThemePanel? _Theme;
+        public new ThemePanel? Theme {
+            get { return this._Theme;}
+            set {
+                this._Theme = value;
+                if(value is not null)
+                {
+                    if(value.FillColor is not null) 
+                        { this.FillColor = (Color)value.FillColor; }
+                    if(value.BorderColor is not null) 
+                        { this.BorderColor = (Color)value.BorderColor; }
+                    if(value.MarginLeft is not null) 
+                        { this.MarginLeft = (float)value.MarginLeft; }
+                    if(value.MarginTop is not null) 
+                        { this.MarginTop = (float)value.MarginTop; }
+                    if(value.MarginRight is not null) 
+                        { this.MarginRight = (float)value.MarginRight; }
+                    if(value.MarginBottom is not null) 
+                        { this.MarginBottom = (float)value.MarginBottom; }
+                    if(value.PaddingLeft is not null) 
+                        { this.PaddingLeft = (float)value.PaddingLeft; }
+                    if(value.PaddingTop is not null) 
+                        { this.PaddingTop = (float)value.PaddingTop; }
+                    if(value.PaddingRight is not null) 
+                        { this.PaddingRight = (float)value.PaddingRight; }
+                    if(value.PaddingBottom is not null) 
+                        { this.PaddingBottom = (float)value.PaddingBottom; }
+                    if(value.BorderLeft is not null) 
+                        { this.BorderLeft = (float)value.BorderLeft; }
+                    if(value.BorderTop is not null) 
+                        { this.BorderTop = (float)value.BorderTop; }
+                    if(value.BorderRight is not null) 
+                        { this.BorderRight = (float)value.BorderRight; }
+                    if(value.BorderBottom is not null) 
+                        { this.BorderBottom = (float)value.BorderBottom; }
+                    this.Resize();
+                }
+            }
+        }
+
+        // TODO TESTING
+        public override float Padding { 
+            set {
+                foreach(Aspect a in this.Children)
+                {
+                    a.Margin = value;
+                }
+                // foreach(Aspect a in this.Contents.Children)
+                // {
+                //     a.Margin = value;
+                // }
+            }
+        }
+
+        public override float PaddingLeft {
+            get => base.PaddingLeft;
+            set {
+                foreach(Aspect a in this.Contents.Children)
+                {
+                    a.MarginLeft = value;
+                }
+                base.PaddingLeft = value;
+            }
+        }
+        public override float PaddingTop {
+            get => base.PaddingTop;
+            set {
+                foreach(Aspect a in this.Contents.Children)
+                {
+                    a.MarginTop = value;
+                }
+                base.PaddingTop = value;
+            }
+        }
+        public override float PaddingRight {
+            get => base.PaddingRight;
+            set {
+                foreach(Aspect a in this.Contents.Children)
+                {
+                    a.MarginRight = value;
+                }
+                base.PaddingRight = value;
+            }
+        }
+        public override float PaddingBottom {
+            get => base.PaddingBottom;
+            set {
+                foreach(Aspect a in this.Contents.Children)
+                {
+                    a.MarginBottom = value;
+                }
+                base.PaddingBottom = value;
+            }
+        }
+
         public override void Add(params Aspect[] aspects)
         {
             foreach(Aspect a in aspects)
             {
-                a.Transformed += this.OnTransformed;
+                if(a != this.BodyBG && a != this.BodyFG&& a != this.Contents)
+                {
+                    a.Transformed += this.OnTransformed;
+                    this.Contents.Add(a);
+                }
+                else
+                {
+                    base.Add(a);
+                }
             }
-            base.Add(aspects);
+            this.Resize();
         }
 
         public Panel()
         {
-            base.Add(this.BodyBG, this.BodyFG);
-            this.Add(this.Box);
+            this.Add(this.BodyBG, this.BodyFG, this.Contents);
         }
 
         public void OnTransformed(object? sender, EventArgs e)
         {
-            Console.WriteLine(sender);
+            this.Resize();
+        }
+
+        private void Resize()
+        {
+            Console.WriteLine(this.ContentBounds);
+            this.Size = this.ContentBounds.GetSize();
         }
     }
 }
