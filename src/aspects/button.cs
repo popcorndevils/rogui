@@ -7,7 +7,7 @@ namespace Rogui
     public class Button : Aspect
     {
 
-        public Panel BtnBody = new Panel();
+        public virtual Panel BtnBody { get; set; }
         public Label BtnText = new Label();
 
         public override FloatRect Bounds => this.BtnBody.Bounds;
@@ -123,6 +123,7 @@ namespace Rogui
 
         public Button(string text) : base()
         {
+            this.BtnBody = new Panel();
             // this.BtnText.TextChanged += this.OnTransform;
             this.BtnText.Transformed += this.OnTransform;
             this.BtnBody.Transformed += this.OnTransform;

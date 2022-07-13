@@ -77,7 +77,6 @@ namespace Rogui
         {
             this.CurrentSize = new Vector2f(0, 0);
             this.AnimSpeed = 1f;
-            Console.WriteLine(this.AnimDirection);
         }
 
 
