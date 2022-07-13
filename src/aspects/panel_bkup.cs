@@ -4,9 +4,8 @@ using Rogui.Themes;
 
 namespace Rogui
 {
-    public class Panel : Aspect
+    public class Panel_BKUP : Aspect
     {
-        protected Aspect Box = new Aspect();
         protected Shapes.Rectangle BodyBG = new Shapes.Rectangle();
         protected Shapes.Rectangle BodyFG = new Shapes.Rectangle();
 
@@ -56,24 +55,9 @@ namespace Rogui
             }
         }
 
-        public override void Add(params Aspect[] aspects)
+        public Panel_BKUP()
         {
-            foreach(Aspect a in aspects)
-            {
-                a.Transformed += this.OnTransformed;
-            }
-            base.Add(aspects);
-        }
-
-        public Panel()
-        {
-            base.Add(this.BodyBG, this.BodyFG);
-            this.Add(this.Box);
-        }
-
-        public void OnTransformed(object? sender, EventArgs e)
-        {
-            Console.WriteLine(sender);
+            this.Add(this.BodyBG, this.BodyFG);
         }
     }
 }

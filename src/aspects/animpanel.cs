@@ -2,7 +2,7 @@ using SFML.System;
 
 namespace Rogui
 {
-    public class AnimPanel : Panel
+    public class AnimPanel : Panel_BKUP
     {
         
         // ███████╗██╗   ██╗███████╗███╗   ██╗████████╗███████╗

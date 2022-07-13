@@ -4,7 +4,7 @@ using SFML.Window;
 
 namespace Rogui
 {
-    public abstract class Aspect : Primitive
+    public class Aspect : Primitive
     {
         public List<Aspect> Children = new List<Aspect>();
 
@@ -42,25 +42,29 @@ namespace Rogui
 
         public override FloatRect Bounds {
             get {
-                var _x = new float[this.Children.Count];
-                var _y = new float[this.Children.Count];
-                var _x2 = new float[this.Children.Count];
-                var _y2 = new float[this.Children.Count];
-
-                for(int i = 0; i < this.Children.Count; i++)
+                if(this.Children.Count > 0)
                 {
-                    var _bnd = this.Children[i].Bounds;
-                    _x[i] = _bnd.Left;
-                    _y[i] = _bnd.Top;
-                    _x2[i] = _bnd.Left + _bnd.Width;
-                    _y2[i] = _bnd.Top + _bnd.Height;
-                }
+                    var _x = new float[this.Children.Count];
+                    var _y = new float[this.Children.Count];
+                    var _x2 = new float[this.Children.Count];
+                    var _y2 = new float[this.Children.Count];
 
-                return new FloatRect(
-                    _x.Min(),
-                    _y.Min(),
-                    _x2.Max() - _x.Min(),
-                    _y2.Max() - _y.Min());
+                    for(int i = 0; i < this.Children.Count; i++)
+                    {
+                        var _bnd = this.Children[i].Bounds;
+                        _x[i] = _bnd.Left;
+                        _y[i] = _bnd.Top;
+                        _x2[i] = _bnd.Left + _bnd.Width;
+                        _y2[i] = _bnd.Top + _bnd.Height;
+                    }
+
+                    return new FloatRect(
+                        _x.Min(),
+                        _y.Min(),
+                        _x2.Max() - _x.Min(),
+                        _y2.Max() - _y.Min());
+                }
+                return new FloatRect();
             }
         }
 
