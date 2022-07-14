@@ -46,23 +46,13 @@ namespace Rogui.Shapes
             }
         }
 
-        // public override Vector2f AbsolutePosition {
-        //     get => base.AbsolutePosition;
-        //     set {
-        //         this.Shape.Position = new Vector2f(
-        //             value.X + this.MarginLeft + this.Position.X,
-        //             value.Y + this.MarginTop + this.Position.Y
-        //         );
-        //         base.AbsolutePosition = value;
-        //     }
-        // }
-
         public override Vector2f Size {
-            get => this.Shape.Size;
+            get => base.Size;
             set {
                 this.Shape.Size = value;
                 this.Origin = new Vector2f(0, value.Y / 2);
                 this.Position = this.PointStart - new Vector2f(0, value.Y / 2);
+                base.Size = value;
             }
         }
 

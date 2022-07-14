@@ -19,8 +19,11 @@ namespace Rogui.Shapes
         }
 
         public override Vector2f Size {
-            get => this.Shape.Size;
-            set => this.Shape.Size = value;
+            get => base.Size;
+            set  {
+                this.Shape.Size = value;
+                base.Size = value;
+            }
         }
 
         public override Color FillColor {

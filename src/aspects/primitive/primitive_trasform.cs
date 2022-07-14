@@ -6,7 +6,7 @@ namespace Rogui
 {
     public abstract partial class Primitive
     {
-        public event EventHandler? Transformed;
+        public virtual event EventHandler? Transformed;
 
 
         // ██╗  ██╗███████╗██╗     ██████╗ ███████╗██████╗ ███████╗
@@ -90,7 +90,7 @@ namespace Rogui
             get => this._Size;
             set {
                 this._Size = value;
-                this.Transformed?.Invoke(this, EventArgs.Empty);
+                // this.Transformed?.Invoke(this, EventArgs.Empty);
             }
         }
 

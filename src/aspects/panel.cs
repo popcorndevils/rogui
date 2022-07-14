@@ -53,9 +53,7 @@ namespace Rogui
             get => this.BodyFG.Size;
             set {
                 this.BodyFG.Size = value;
-                this.BodyBG.Size = new Vector2f(
-                    value.X + this.BorderLeft + this.BorderRight,
-                    value.Y + this.BorderTop + this.BorderBottom);
+                this.BodyBG.Size = value + this.BorderSize;
             }
         }
 
