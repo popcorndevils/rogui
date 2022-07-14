@@ -33,10 +33,10 @@ namespace Rogui
             }
         }
 
-        public Vector2f MaxSize {  
-            get => this._MaxSize;
-            private set {
-                this._MaxSize = value;
+        public override Vector2f MaxSize {  
+            get => base.MaxSize;
+            set {
+                base.MaxSize = value;
                 this._MSGrowth = value / this.AnimSpeed / 1000;
             }
         }
@@ -110,7 +110,6 @@ namespace Rogui
         // ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝
         public void Open()
         {
-            Console.WriteLine("OPENING");
             this.Visible = true;
             this.IsClosed = false;
             this.IsClosing = false;
@@ -120,7 +119,6 @@ namespace Rogui
 
         public void Close()
         {
-            Console.WriteLine("OPENING");
             this.Visible = true;
             this.IsClosed = false;
             this.IsOpen = false;
@@ -184,7 +182,6 @@ namespace Rogui
         // ╚═╝  ╚═╝╚═╝╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝
         private float _AnimSpeed;
         private Vector2f _MSGrowth;
-        private Vector2f _MaxSize;
         private AnimDirection _AnimDirection;
     }
 }

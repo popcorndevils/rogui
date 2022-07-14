@@ -7,29 +7,15 @@ namespace Rogui
     public abstract partial class Primitive
     {
         public event EventHandler? Transformed;
-        // aspect transform
-        private Vector2f _RelativePosition;
-        private Vector2f _AbsolutePosition;
-        private Vector2f _OffsetPosition;
-        // private Vector2f _Position;
-        private Vector2f _Size;
-        private float _MarginLeft;
-        private float _MarginTop;
-        private float _MarginRight;
-        private float _MarginBottom;
-        private float _PaddingLeft;
-        private float _PaddingTop;
-        private float _PaddingRight;
-        private float _PaddingBottom;
-        private float _BorderLeft;
-        private float _BorderTop;
-        private float _BorderRight;
-        private float _BorderBottom;
-        private Color _BorderColor;
-        private Color _FillColor;
-        private Theme _Theme = new Theme();
 
-        // helpers to set multiple properties at once.
+
+        // ██╗  ██╗███████╗██╗     ██████╗ ███████╗██████╗ ███████╗
+        // ██║  ██║██╔════╝██║     ██╔══██╗██╔════╝██╔══██╗██╔════╝
+        // ███████║█████╗  ██║     ██████╔╝█████╗  ██████╔╝███████╗
+        // ██╔══██║██╔══╝  ██║     ██╔═══╝ ██╔══╝  ██╔══██╗╚════██║
+        // ██║  ██║███████╗███████╗██║     ███████╗██║  ██║███████║
+        // ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝
+
         public virtual float Margin {
             set {
                 this._MarginBottom = value;
@@ -40,7 +26,6 @@ namespace Rogui
             }
         }
 
-        // helper to set all padding at once
         public virtual float Padding {
             set {
                 this._PaddingBottom = value;
@@ -51,7 +36,6 @@ namespace Rogui
             }
         }
 
-        // helper to set all borders at once
         public virtual float Border {
             set {
                 this._BorderBottom = value;
@@ -62,14 +46,27 @@ namespace Rogui
             }
         }
 
+        // ██████╗ ██████╗  ██████╗ ██████╗ ███████╗██████╗ ████████╗██╗███████╗███████╗
+        // ██╔══██╗██╔══██╗██╔═══██╗██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██║██╔════╝██╔════╝
+        // ██████╔╝██████╔╝██║   ██║██████╔╝█████╗  ██████╔╝   ██║   ██║█████╗  ███████╗
+        // ██╔═══╝ ██╔══██╗██║   ██║██╔═══╝ ██╔══╝  ██╔══██╗   ██║   ██║██╔══╝  ╚════██║
+        // ██║     ██║  ██║╚██████╔╝██║     ███████╗██║  ██║   ██║   ██║███████╗███████║
+        // ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚══════╝╚══════╝
+
+        /// <summary>
+        /// Position relative to parent.
+        /// </summary>
         public virtual Vector2f Position {
-            get => this._RelativePosition;
+            get => this._Position;
             set {
-                this._RelativePosition = value;
+                this._Position = value;
                 this.Transformed?.Invoke(this, EventArgs.Empty);
             }
         }
 
+        /// <summary>
+        /// The actual placement in 2d space.
+        /// </summary>
         public virtual Vector2f AbsolutePosition {
             get => this._AbsolutePosition;
             set {
@@ -78,6 +75,9 @@ namespace Rogui
             }
         }
 
+        /// <summary>
+        /// Allows some aspects to alter themselves temporarily for animations.
+        /// </summary>
         public virtual Vector2f OffsetPosition {
             get => this._OffsetPosition;
             set {
@@ -90,6 +90,15 @@ namespace Rogui
             get => this._Size;
             set {
                 this._Size = value;
+                this.Transformed?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private Vector2f _MaxSize;
+        public virtual Vector2f MaxSize {
+            get => this._MaxSize;
+            set {
+                this._MaxSize = value;
                 this.Transformed?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -223,5 +232,31 @@ namespace Rogui
                 this.Transformed?.Invoke(this, EventArgs.Empty);
             }
         }
+
+        // ██╗  ██╗██╗██████╗ ██████╗ ███████╗███╗   ██╗
+        // ██║  ██║██║██╔══██╗██╔══██╗██╔════╝████╗  ██║
+        // ███████║██║██║  ██║██║  ██║█████╗  ██╔██╗ ██║
+        // ██╔══██║██║██║  ██║██║  ██║██╔══╝  ██║╚██╗██║
+        // ██║  ██║██║██████╔╝██████╔╝███████╗██║ ╚████║
+        // ╚═╝  ╚═╝╚═╝╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝
+        private Vector2f _Position;
+        private Vector2f _AbsolutePosition;
+        private Vector2f _OffsetPosition;
+        private Vector2f _Size;
+        private float _MarginLeft;
+        private float _MarginTop;
+        private float _MarginRight;
+        private float _MarginBottom;
+        private float _PaddingLeft;
+        private float _PaddingTop;
+        private float _PaddingRight;
+        private float _PaddingBottom;
+        private float _BorderLeft;
+        private float _BorderTop;
+        private float _BorderRight;
+        private float _BorderBottom;
+        private Color _BorderColor;
+        private Color _FillColor;
+        private Theme _Theme = new Theme();
     }
 }
