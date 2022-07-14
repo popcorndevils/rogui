@@ -8,7 +8,6 @@ namespace Rogui
     {
         public virtual event EventHandler? Transformed;
 
-
         // ██╗  ██╗███████╗██╗     ██████╗ ███████╗██████╗ ███████╗
         // ██║  ██║██╔════╝██║     ██╔══██╗██╔════╝██╔══██╗██╔════╝
         // ███████║█████╗  ██║     ██████╔╝█████╗  ██████╔╝███████╗
@@ -16,6 +15,9 @@ namespace Rogui
         // ██║  ██║███████╗███████╗██║     ███████╗██║  ██║███████║
         // ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝
 
+        /// <summary>
+        /// Set a uniform margin width.
+        /// </summary>
         public virtual float Margin {
             set {
                 this._MarginBottom = value;
@@ -26,6 +28,9 @@ namespace Rogui
             }
         }
 
+        /// <summary>
+        /// Set a uniform padding width.
+        /// </summary>
         public virtual float Padding {
             set {
                 this._PaddingBottom = value;
@@ -36,6 +41,9 @@ namespace Rogui
             }
         }
 
+        /// <summary>
+        /// Set a uniform border width.
+        /// </summary>
         public virtual float Border {
             set {
                 this._BorderBottom = value;
@@ -46,13 +54,20 @@ namespace Rogui
             }
         }
 
+        // ephemeral properties
+        public virtual Vector2f MarginPosition => new Vector2f(this.MarginLeft, this.MarginTop);
+        public virtual Vector2f BorderPosition  => new Vector2f(this.BorderLeft, this.BorderTop);
+        public virtual Vector2f BorderSize => new Vector2f(this.BorderLR, this.BorderTB);
+        public virtual float BorderLR => this.BorderLeft + this.BorderTop;
+        public virtual float BorderTB => this.BorderTop + this.BorderBottom;
+
+
         // ██████╗ ██████╗  ██████╗ ██████╗ ███████╗██████╗ ████████╗██╗███████╗███████╗
         // ██╔══██╗██╔══██╗██╔═══██╗██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██║██╔════╝██╔════╝
         // ██████╔╝██████╔╝██║   ██║██████╔╝█████╗  ██████╔╝   ██║   ██║█████╗  ███████╗
         // ██╔═══╝ ██╔══██╗██║   ██║██╔═══╝ ██╔══╝  ██╔══██╗   ██║   ██║██╔══╝  ╚════██║
         // ██║     ██║  ██║╚██████╔╝██║     ███████╗██║  ██║   ██║   ██║███████╗███████║
         // ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚══════╝╚══════╝
-
         /// <summary>
         /// Position relative to parent.
         /// </summary>
@@ -86,25 +101,26 @@ namespace Rogui
             }
         }
 
+        /// <summary>
+        /// Used to set the display size of aspects.
+        /// </summary>
         public virtual Vector2f Size {
             get => this._Size;
             set {
                 this._Size = value;
-                // this.Transformed?.Invoke(this, EventArgs.Empty);
+                this.Transformed?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        private Vector2f _MaxSize;
+        /// <summary>
+        /// Optionally used by aspects to set a maximum size;
+        /// </summary>
         public virtual Vector2f MaxSize {
             get => this._MaxSize;
             set {
                 this._MaxSize = value;
                 this.Transformed?.Invoke(this, EventArgs.Empty);
             }
-        }
-
-        public virtual Vector2f MarginPosition {
-            get => new Vector2f(this.MarginLeft, this.MarginTop);
         }
 
         public virtual float MarginLeft {
@@ -170,12 +186,6 @@ namespace Rogui
                 this.Transformed?.Invoke(this, EventArgs.Empty);
             }
         }
-
-        public virtual Vector2f BorderPosition  => new Vector2f(this.BorderLeft, this.BorderTop);
-        public virtual Vector2f BorderSize => new Vector2f(this.BorderLR, this.BorderTB);
-        public virtual float BorderLR => this.BorderLeft + this.BorderTop;
-        public virtual float BorderTB => this.BorderTop + this.BorderBottom;
-        
 
         public virtual float BorderLeft {
             get => this._BorderLeft;
@@ -243,6 +253,7 @@ namespace Rogui
         private Vector2f _AbsolutePosition;
         private Vector2f _OffsetPosition;
         private Vector2f _Size;
+        private Vector2f _MaxSize;
         private float _MarginLeft;
         private float _MarginTop;
         private float _MarginRight;
