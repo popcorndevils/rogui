@@ -47,7 +47,7 @@ namespace Rogui
             set {
                 this.BodyBG.OffsetPosition = value;
                 this.BodyFG.OffsetPosition = value;
-                this.Contents.Position = value;
+                this.Contents.OffsetPosition = value;
             }
         }
 
