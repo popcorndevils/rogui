@@ -7,16 +7,7 @@ namespace Rogui.Shapes
     {
         private RectangleShape Shape = new RectangleShape();
 
-        public override FloatRect Bounds {
-            get {
-                var _bnds = this.Shape.GetGlobalBounds();
-                return new FloatRect(
-                    _bnds.Left - this.MarginLeft,
-                    _bnds.Top - this.MarginTop,
-                    _bnds.Width + this.MarginLeft + this.MarginRight,
-                    _bnds.Height + this.MarginTop + this.MarginBottom);
-            }
-        }
+        public override FloatRect Bounds => this.Shape.GetGlobalBounds();
 
         public override Vector2f Size {
             get => base.Size;

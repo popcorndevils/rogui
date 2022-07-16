@@ -1,4 +1,5 @@
 using SFML.System;
+using Rogui.Extensions;
 
 namespace Rogui
 {
@@ -74,6 +75,7 @@ namespace Rogui
         public AnimPanel() :
         base() 
         {
+            this.Contents.Visible = this.IsOpen;
             this.CurrentSize = new Vector2f(0, 0);
             this.AnimSpeed = 1f;
         }
@@ -111,6 +113,7 @@ namespace Rogui
         public void Open()
         {
             this.Visible = true;
+            this.Contents.Visible = false;
             this.IsClosed = false;
             this.IsClosing = false;
             this.IsOpen = false;
@@ -120,6 +123,7 @@ namespace Rogui
         public void Close()
         {
             this.Visible = true;
+            this.Contents.Visible = false;
             this.IsClosed = false;
             this.IsOpen = false;
             this.IsOpening = false;
@@ -136,6 +140,7 @@ namespace Rogui
                 this.IsOpen = true;
                 this.OffsetPosition = new Vector2f(0, 0);
                 this.Opened?.Invoke(this, EventArgs.Empty);
+                this.Contents.Visible = true;
             }
             else
             {
@@ -173,6 +178,10 @@ namespace Rogui
             }
         }
 
+        public override void OnTransformed(object? sender, EventArgs e)
+        {
+            this.Size = this.ContentSize;
+        }
 
         // ██╗  ██╗██╗██████╗ ██████╗ ███████╗███╗   ██╗
         // ██║  ██║██║██╔══██╗██╔══██╗██╔════╝████╗  ██║

@@ -34,6 +34,7 @@ namespace Rogui
             this.Body = new AnimPanel();
             this.Body.Add(new Label(text));
             this.Body.CurrentSize = new Vector2f();
+            this.Body.Opened += this.HandleOpen;
             // TODO edit animated panel in order to close and open button.
         }
 
@@ -45,6 +46,11 @@ namespace Rogui
         public void Close()
         {
             this.Body.Close();
+        }
+
+        public void HandleOpen(object? sender, EventArgs e)
+        {
+            Console.WriteLine("Body Opened");
         }
     }
 }

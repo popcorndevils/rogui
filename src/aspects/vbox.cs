@@ -26,7 +26,6 @@ namespace Rogui
                     this.AbsolutePosition.X + this.MarginLeft, _bottom);
                 var _bnds = a.Bounds;
                 _bottom = _bnds.Top + _bnds.Height + this.MarginSeparator;
-                Console.WriteLine(_bottom);
             }
         }
     }

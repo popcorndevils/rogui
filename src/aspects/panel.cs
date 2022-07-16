@@ -12,7 +12,7 @@ namespace Rogui
         protected Shapes.Rectangle BodyFG = new Shapes.Rectangle();
 
         public override FloatRect Bounds => this.BodyBG.Bounds;
-        public FloatRect ContentBounds => this.Contents.Bounds;
+        public Vector2f ContentSize => this.Contents.Bounds.GetSize();
         
         public override Color FillColor {
             get => this.BodyFG.FillColor;
@@ -38,6 +38,7 @@ namespace Rogui
             set {
                 this.BodyBG.Position = value;
                 this.BodyFG.Position = value;
+                this.Contents.Position = value;
             }
         }
 
@@ -153,26 +154,22 @@ namespace Rogui
         {
             foreach(Aspect a in aspects)
             {
-                if(a != this.BodyBG && a != this.BodyFG&& a != this.Contents)
-                {
-                    a.Transformed += this.OnTransformed;
-                    this.Contents.Add(a);
-                }
-                else
-                {
-                    base.Add(a);
-                }
+                a.Transformed += this.OnTransformed;
+                this.Contents.Add(a);
             }
+            this.UpdateLayout();
+            // reapply theme so children can inherit properties
+            this.Theme = this.Theme;
         }
 
         public Panel()
         {
-            this.Add(this.BodyBG, this.BodyFG, this.Contents);
+            base.Add(this.BodyBG, this.BodyFG, this.Contents);
         }
 
-        public void OnTransformed(object? sender, EventArgs e)
+        public virtual void OnTransformed(object? sender, EventArgs e)
         {
-            this.Size = this.ContentBounds.GetSize();
+            this.Size = this.ContentSize;
         }
     }
 }
