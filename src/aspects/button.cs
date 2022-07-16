@@ -80,12 +80,6 @@ namespace Rogui
             base.Add(this.Body);
         }
 
-        private void OnTransform(object? sender, EventArgs e)
-        {
-            var _bnds = this.BtnText.Bounds;
-            this.Body.Size =  new Vector2f(_bnds.Width, _bnds.Height);
-        }
-
         private void OnStateChange(object? sender, EventArgs e)
         {
             if(this.Theme is not null)
