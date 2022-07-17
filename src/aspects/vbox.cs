@@ -25,7 +25,7 @@ namespace Rogui
                 a.AbsolutePosition = new Vector2f(
                     this.AbsolutePosition.X + this.MarginLeft, _bottom);
                 var _bnds = a.Bounds;
-                _bottom = _bnds.Top + _bnds.Height + this.MarginSeparator;
+                _bottom += _bnds.Height + this.MarginSeparator;
             }
         }
     }

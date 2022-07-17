@@ -27,18 +27,11 @@ namespace Rogui
         public bool IsClosed {get; private set; }
         public bool IsClosing { get; private set; }
         public bool IsOpening { get; private set; }
+
         public AnimDirection AnimDirection {
             get => this._AnimDirection;
             set {
                 this._AnimDirection = value;
-            }
-        }
-
-        public override Vector2f MaxSize {  
-            get => base.MaxSize;
-            set {
-                base.MaxSize = value;
-                this._MSGrowth = value / this.AnimSpeed / 1000;
             }
         }
 
@@ -51,17 +44,15 @@ namespace Rogui
         }
 
         public Vector2f CurrentSize {
-            get => base.BodyFG.Size;
-            set {
-                this.BodyFG.Size = value;
-                this.BodyBG.Size = value + this.BorderSize;
-            }
+            get => base.Size;
+            set => base.Size = value;
         }
 
         public override Vector2f Size {
             get => this.MaxSize;
             set {
                 this.MaxSize = value;
+                this._MSGrowth = value / this.AnimSpeed / 1000;
             }
         }
 
