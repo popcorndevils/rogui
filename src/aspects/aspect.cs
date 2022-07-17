@@ -6,6 +6,8 @@ namespace Rogui
 {
     public class Aspect : Primitive
     {
+        public event EventHandler? ChildTransformed;
+
         public List<Aspect> Children = new List<Aspect>();
 
         public override Vector2f AbsolutePosition {
@@ -37,6 +39,59 @@ namespace Rogui
             set {
                 base.Size = value;
                 this.UpdateLayout();
+            }
+        }
+
+        public override float Padding { 
+            set {
+                foreach(Aspect a in this.Children)
+                {
+                    a.Margin = value;
+                }
+            }
+        }
+
+        public override float PaddingLeft {
+            get => base.PaddingLeft;
+            set {
+                foreach(Aspect a in this.Children)
+                {
+                    a.MarginLeft = value;
+                }
+                base.PaddingLeft = value;
+            }
+        }
+
+        public override float PaddingTop {
+            get => base.PaddingTop;
+            set {
+                foreach(Aspect a in this.Children)
+                {
+                    a.MarginTop = value;
+                }
+                base.PaddingTop = value;
+            }
+        }
+
+        public override float PaddingRight {
+            get => base.PaddingRight;
+            set {
+                foreach(Aspect a in this.Children)
+                {
+                    a.MarginRight = value;
+                }
+                base.PaddingRight = value;
+            }
+        }
+
+        public override float PaddingBottom {
+            get => base.PaddingBottom;
+            set {
+                foreach(Aspect a in this.Children)
+                {
+                    a.MarginBottom = value;
+                }
+                base.PaddingBottom = value;
             }
         }
 
@@ -79,6 +134,7 @@ namespace Rogui
             foreach(Aspect a in aspects)
             {
                 a.Parent = this;
+                a.Transformed += this.HandleChildTransformation;
                 this.Children.Add(a);
             }
             this.UpdateLayout();
@@ -86,9 +142,10 @@ namespace Rogui
 
         protected virtual void UpdateLayout()
         {            
+            var _pos = this.AbsolutePosition + this.MarginPosition + this.Position + this.OffsetPosition;
             foreach(Aspect c in this.Children)
             {
-                c.AbsolutePosition = this.AbsolutePosition + this.MarginPosition + this.Position;
+                c.AbsolutePosition = _pos;
             }
         }
 
@@ -156,6 +213,11 @@ namespace Rogui
                 prev = a.ProcessMouseRelease(sender, prev);
             }
             return base.ProcessMouseRelease(sender, prev);
+        }
+
+        public void HandleChildTransformation(object? sender, EventArgs e)
+        {
+            this.ChildTransformed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

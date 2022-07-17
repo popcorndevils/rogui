@@ -24,33 +24,6 @@ namespace Rogui
             set => this.BodyBG.FillColor = value;
         }
 
-        public override Vector2f AbsolutePosition {
-            get => this.BodyBG.AbsolutePosition;
-            set {
-                this.BodyBG.AbsolutePosition = value + this.MarginPosition;
-                this.BodyFG.AbsolutePosition = value + this.MarginPosition + this.BorderPosition;
-                this.Contents.AbsolutePosition = value + this.MarginPosition + this.BorderPosition;
-            }
-        }
-
-        public override Vector2f Position {
-            get => this.BodyBG.Position;
-            set {
-                this.BodyBG.Position = value;
-                this.BodyFG.Position = value;
-                this.Contents.Position = value;
-            }
-        }
-
-        public override Vector2f OffsetPosition {
-            get => this.BodyBG.OffsetPosition;
-            set {
-                this.BodyBG.OffsetPosition = value;
-                this.BodyFG.OffsetPosition = value;
-                this.Contents.OffsetPosition = value;
-            }
-        }
-
         public override Vector2f Size {
             get => this.BodyFG.Size;
             set {
@@ -98,79 +71,48 @@ namespace Rogui
             }
         }
 
-        public override float Padding { 
-            set {
-                foreach(Aspect a in this.Children)
-                {
-                    a.Margin = value;
-                }
-            }
-        }
-
+        public override float Padding { set => this.Contents.Padding = value; }
         public override float PaddingLeft {
-            get => base.PaddingLeft;
-            set {
-                foreach(Aspect a in this.Contents.Children)
-                {
-                    a.MarginLeft = value;
-                }
-                base.PaddingLeft = value;
-            }
+            get => this.Contents.PaddingLeft;
+            set => this.Contents.PaddingLeft = value;
         }
-
         public override float PaddingTop {
-            get => base.PaddingTop;
-            set {
-                foreach(Aspect a in this.Contents.Children)
-                {
-                    a.MarginTop = value;
-                }
-                base.PaddingTop = value;
-            }
+            get => this.Contents.PaddingTop;
+            set => this.Contents.PaddingTop = value;
         }
-
         public override float PaddingRight {
-            get => base.PaddingRight;
-            set {
-                foreach(Aspect a in this.Contents.Children)
-                {
-                    a.MarginRight = value;
-                }
-                base.PaddingRight = value;
-            }
+            get => this.Contents.PaddingRight;
+            set => this.Contents.PaddingRight = value;
         }
-
         public override float PaddingBottom {
-            get => base.PaddingBottom;
-            set {
-                foreach(Aspect a in this.Contents.Children)
-                {
-                    a.MarginBottom = value;
-                }
-                base.PaddingBottom = value;
-            }
+            get => this.Contents.PaddingBottom;
+            set => this.Contents.PaddingBottom = value;
         }
 
         public override void Add(params Aspect[] aspects)
         {
-            foreach(Aspect a in aspects)
-            {
-                a.Transformed += this.OnTransformed;
-                this.Contents.Add(a);
-            }
-            this.UpdateLayout();
-            // reapply theme so children can inherit properties
+            this.Contents.Add(aspects);
+            // reapply theme so children can inherit properties and update layout
             this.Theme = this.Theme;
+            this.UpdateLayout();
         }
 
         public Panel()
         {
             base.Add(this.BodyBG, this.BodyFG, this.Contents);
+            this.Contents.ChildTransformed += this.OnTransformed;
         }
 
         public virtual void OnTransformed(object? sender, EventArgs e)
         {
             this.Size = this.ContentSize;
+        }
+
+        protected override void UpdateLayout()
+        {            
+            base.UpdateLayout();
+            this.BodyFG.AbsolutePosition += this.BorderPosition;
+            this.Contents.AbsolutePosition += this.BorderPosition;
         }
     }
 }
