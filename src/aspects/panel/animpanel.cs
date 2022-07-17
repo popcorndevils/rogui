@@ -1,5 +1,4 @@
 using SFML.System;
-using Rogui.Extensions;
 
 namespace Rogui
 {
@@ -13,8 +12,7 @@ namespace Rogui
         // ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ╚════██║
         // ███████╗ ╚████╔╝ ███████╗██║ ╚████║   ██║   ███████║
         // ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
-        public event EventHandler? Closed;
-        public event EventHandler? Opened;
+        public event EventHandler<AnimState>? AnimationFinished;
 
 
         // ██████╗ ██████╗  ██████╗ ██████╗ ███████╗██████╗ ████████╗██╗███████╗███████╗
@@ -130,7 +128,7 @@ namespace Rogui
                 this.IsOpening = false;
                 this.IsOpen = true;
                 this.OffsetPosition = new Vector2f(0, 0);
-                this.Opened?.Invoke(this, EventArgs.Empty);
+                this.AnimationFinished?.Invoke(this, AnimState.OPEN);
                 this.Contents.Visible = true;
             }
             else
@@ -155,7 +153,7 @@ namespace Rogui
                 this.Visible = false;
                 this.IsClosing = false;
                 this.IsClosed = true;
-                this.Closed?.Invoke(this, EventArgs.Empty);
+                this.AnimationFinished?.Invoke(this, AnimState.CLOSED);
             }
             else
             {

@@ -4,4 +4,9 @@ namespace Rogui
     {
         CENTER, LEFT, TOP_LEFT, TOP, TOP_RIGHT, RIGHT, BOTTOM_RIGHT, BOTTOM, BOTTOM_LEFT
     }
+
+    public enum AnimState
+    {
+        OPEN, CLOSED
+    }
 }

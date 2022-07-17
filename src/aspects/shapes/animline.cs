@@ -11,8 +11,7 @@ namespace Rogui.Shapes
         // ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ╚════██║
         // ███████╗ ╚████╔╝ ███████╗██║ ╚████║   ██║   ███████║
         // ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
-        public event EventHandler? Closed;
-        public event EventHandler? Opened;
+        public event EventHandler<AnimState>? AnimationFinished;
 
 
         // ██████╗ ██████╗  ██████╗ ██████╗ ███████╗██████╗ ████████╗██╗███████╗███████╗
@@ -84,7 +83,7 @@ namespace Rogui.Shapes
                         this.Length = this.MaxLength;
                         this.IsOpening = false;
                         this.IsOpen = true;
-                        this.Opened?.Invoke(this, EventArgs.Empty);
+                        this.AnimationFinished?.Invoke(this, AnimState.OPEN);
                     }
                     else
                     {
@@ -100,7 +99,7 @@ namespace Rogui.Shapes
                         this.Visible = false;
                         this.IsClosing = false;
                         this.IsClosed = true;
-                        this.Closed?.Invoke(this, EventArgs.Empty);
+                        this.AnimationFinished?.Invoke(this, AnimState.CLOSED);
                     }
                     else
                     {
