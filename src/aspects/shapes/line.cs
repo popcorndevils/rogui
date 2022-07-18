@@ -30,7 +30,7 @@ namespace Rogui.Shapes
             }
         }
 
-        protected Vector2f PointStart {
+        public Vector2f PointStart {
             get => this._PointStart;
             set {
                 this._PointStart = value;
@@ -38,7 +38,7 @@ namespace Rogui.Shapes
                 this.CalculateDimensions();
             }
         }
-        protected Vector2f PointEnd {
+        public Vector2f PointEnd {
             get => this._PointEnd;
             set {
                 this._PointEnd = value;
