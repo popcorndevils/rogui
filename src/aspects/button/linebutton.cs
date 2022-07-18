@@ -28,6 +28,16 @@ namespace Rogui
                 this.Line.AnimSpeed = value / 2;
             }
         }
+
+        public Vector2f PointStart {
+            get => this.Line.PointStart;
+            set => this.Line.PointStart = value;
+        }
+
+        public Vector2f PointEnd {
+            get => this.Line.PointEnd;
+            set => this.Line.PointEnd = value;
+        }
         
         public LineButton(string description, Vector2f start, Vector2f end, float width = 1) : base(description)
         {
@@ -49,11 +59,11 @@ namespace Rogui
         {          
             if(this.Line is not null && this.Body is not null)
             {
-                var _origin = this.Line.PointEnd - this.Body.MarginPosition - this.Body.BorderPosition;
+                var _origin = this.Line.PointEnd - this.Body.MarginPosition;
                 switch(this.AnimDirection)
                 {
                     case AnimDirection.TOP_LEFT:
-                        this.Body.AbsolutePosition = _origin;
+                        this.Body.AbsolutePosition = _origin - this.Body.BorderPosition;
                         break;
                     case AnimDirection.CENTER:
                         this.Body.AbsolutePosition = _origin - this.Body.Size / 2;

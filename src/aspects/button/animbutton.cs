@@ -4,6 +4,10 @@ namespace Rogui
     {
         public event EventHandler<AnimState>? AnimationFinished;
         
+        public bool StartOpen { 
+            get => this.Body.StartOpen;
+            set => this.Body.StartOpen = value;
+        }
         public bool IsOpen => this.Body.IsOpen;
         public bool IsClosed => this.Body.IsClosed;
         public bool IsClosing => this.Body.IsClosing;

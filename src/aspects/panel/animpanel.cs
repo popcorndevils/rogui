@@ -21,6 +21,20 @@ namespace Rogui
         // ██╔═══╝ ██╔══██╗██║   ██║██╔═══╝ ██╔══╝  ██╔══██╗   ██║   ██║██╔══╝  ╚════██║
         // ██║     ██║  ██║╚██████╔╝██║     ███████╗██║  ██║   ██║   ██║███████╗███████║
         // ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚══════╝╚══════╝
+        public bool StartOpen { 
+            get => this._StartOpen;
+            set {
+                this._StartOpen = value;
+                if(value)
+                {
+                    this.Size = this.ContentSize;   
+                    this.CurrentSize = this.Size;
+                    this.Visible = true;
+                    this.IsOpen = true;
+                    this.Contents.Visible = true;
+                }
+            }
+        }
         public bool IsOpen { get; private set; }
         public bool IsClosed {get; private set; }
         public bool IsClosing { get; private set; }
@@ -65,10 +79,12 @@ namespace Rogui
         public AnimPanel(params Aspect[] aspects) : base() { this.Init(aspects); }
         private void Init(params Aspect[] aspects)
         {
-            this.Contents.Visible = this.IsOpen;
-            this.CurrentSize = new Vector2f(0, 0);
             this.AnimSpeed = 1f;
             this.Add(aspects);
+            this.CurrentSize = new Vector2f();
+            this.Visible = false;
+            this.IsOpen = false;
+            this.Contents.Visible = false;
         }
 
 
@@ -183,5 +199,6 @@ namespace Rogui
         private float _AnimSpeed;
         private Vector2f _MSGrowth;
         private AnimDirection _AnimDirection;
+        private bool _StartOpen;
     }
 }
