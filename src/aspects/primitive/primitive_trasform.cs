@@ -123,6 +123,14 @@ namespace Rogui
             }
         }
 
+        public virtual float MarginSeparator {
+            get => this._MarginSeparator;
+            set {
+                this._MarginSeparator = value;
+                this.Transformed?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
         public virtual float MarginLeft {
             get => this._MarginLeft;
             set {
@@ -254,6 +262,7 @@ namespace Rogui
         private Vector2f _OffsetPosition;
         private Vector2f _Size;
         private Vector2f _MaxSize;
+        private float _MarginSeparator;
         private float _MarginLeft;
         private float _MarginTop;
         private float _MarginRight;
