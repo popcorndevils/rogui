@@ -17,9 +17,14 @@ namespace Rogui.Shapes
             }
         }
 
-        public override Color FillColor {
+        public override Color? FillColor {
             get => this.Shape.FillColor;
-            set => this.Shape.FillColor = value;
+            set {
+                if(value is not null)
+                {
+                    this.Shape.FillColor = (Color)value;
+                }
+            }
         }
 
         public override void Draw(RenderTarget t, RenderStates s)

@@ -1,3 +1,5 @@
+using SFML.Graphics;
+using SFML.Window;
 using Rogui.Themes;
 
 namespace Rogui
@@ -6,6 +8,8 @@ namespace Rogui
     {
         public T Body = new T();
         public Label BtnText = new Label();
+
+        public override FloatRect Bounds => this.Body.Bounds;
 
         public new ThemeButton? Theme {
             get => this._Theme;
@@ -30,14 +34,15 @@ namespace Rogui
 
         public BaseButton(string? description = null) : base()
         {
+            this.BlockInput = false;
             if(description is not null)
                 { this.DisplayedString = description; }
             this.Body.Add(this.BtnText);
             this.Add(this.Body);
-            base.StateChanged += this.OnStateChange;
+            base.StateChanged += this.HandleBodyState;
         }
 
-        private void OnStateChange(object? sender, EventArgs e)
+        protected virtual void HandleBodyState(object? sender, EventArgs e)
         {
             if(this.Theme is not null)
             {

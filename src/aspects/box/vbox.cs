@@ -4,6 +4,9 @@ namespace Rogui
 {
     public class VBox : Aspect
     {
+        public VBox() : base() {}
+        public VBox(params Aspect[] aspects) : base(aspects) {}
+
         protected override void UpdateLayout()
         {
             float _bottom = this.AbsolutePosition.Y + this.MarginTop;

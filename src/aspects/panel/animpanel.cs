@@ -61,12 +61,14 @@ namespace Rogui
         // ██║     ██║   ██║██║╚██╗██║╚════██║   ██║   ██╔══██╗██║   ██║██║        ██║   
         // ╚██████╗╚██████╔╝██║ ╚████║███████║   ██║   ██║  ██║╚██████╔╝╚██████╗   ██║   
         //  ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝  ╚═════╝   ╚═╝   
-        public AnimPanel() :
-        base() 
+        public AnimPanel() : base() { this.Init(); }
+        public AnimPanel(params Aspect[] aspects) : base() { this.Init(aspects); }
+        private void Init(params Aspect[] aspects)
         {
             this.Contents.Visible = this.IsOpen;
             this.CurrentSize = new Vector2f(0, 0);
             this.AnimSpeed = 1f;
+            this.Add(aspects);
         }
 
 

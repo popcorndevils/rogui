@@ -140,6 +140,14 @@ namespace Rogui
             this.UpdateLayout();
         }
 
+        public virtual void Insert(int index, Aspect aspect)
+        {
+            aspect.Parent = this;
+            aspect.Transformed += this.HandleChildTransformation;
+            this.Children.Insert(index, aspect);
+            this.UpdateLayout();
+        }
+
         protected virtual void UpdateLayout()
         {            
             var _pos = this.AbsolutePosition + this.MarginPosition + this.Position + this.OffsetPosition;

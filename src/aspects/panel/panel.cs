@@ -14,12 +14,12 @@ namespace Rogui
         public override FloatRect Bounds => this.BodyBG.Bounds;
         public Vector2f ContentSize => this.Contents.Bounds.GetSize();
         
-        public override Color FillColor {
+        public override Color? FillColor {
             get => this.BodyFG.FillColor;
             set => this.BodyFG.FillColor = value;
         }
 
-        public override Color BorderColor {
+        public override Color? BorderColor {
             get => this.BodyBG.FillColor;
             set => this.BodyBG.FillColor = value;
         }
@@ -97,10 +97,13 @@ namespace Rogui
             this.UpdateLayout();
         }
 
-        public Panel()
+        public Panel(): base() { this.Init(); }
+        public Panel(params Aspect[] aspects): base() { this.Init(aspects); }
+        private void Init(params Aspect[] aspects)
         {
             base.Add(this.BodyBG, this.BodyFG, this.Contents);
             this.Contents.ChildTransformed += this.OnTransformed;
+            this.Add(aspects);
         }
 
         public virtual void OnTransformed(object? sender, EventArgs e)

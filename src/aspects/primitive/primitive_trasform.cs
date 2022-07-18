@@ -227,7 +227,7 @@ namespace Rogui
             }
         }
 
-        public virtual Color BorderColor {
+        public virtual Color? BorderColor {
             get => this._BorderColor;
             set {
                 this._BorderColor = value;
@@ -235,7 +235,7 @@ namespace Rogui
             }
         }
 
-        public virtual Color FillColor {
+        public virtual Color? FillColor {
             get => this._FillColor;
             set {
                 this._FillColor = value;
@@ -243,7 +243,7 @@ namespace Rogui
             }
         }
 
-        public virtual Theme Theme {
+        public virtual Theme? Theme {
             get => this._Theme;
             set {
                 this._Theme = value;
@@ -275,8 +275,8 @@ namespace Rogui
         private float _BorderTop;
         private float _BorderRight;
         private float _BorderBottom;
-        private Color _BorderColor;
-        private Color _FillColor;
-        private Theme _Theme = new Theme();
+        private Color? _BorderColor;
+        private Color? _FillColor;
+        private Theme? _Theme = new Theme();
     }
 }
