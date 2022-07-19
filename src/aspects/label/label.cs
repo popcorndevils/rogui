@@ -3,7 +3,7 @@ using SFML.Graphics;
 
 namespace Rogui
 {
-    public class Label : Aspect
+    public class Label : BaseLabel
     {
         public new event EventHandler? Transformed;
         public Font Font;
@@ -35,7 +35,7 @@ namespace Rogui
             }
         }
 
-        public string DisplayedString {
+        public override string? DisplayedString {
             get => this.GText.DisplayedString;
             set {
                 this.GText.DisplayedString = value;

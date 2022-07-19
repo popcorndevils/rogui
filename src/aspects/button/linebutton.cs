@@ -1,10 +1,9 @@
-using SFML.Graphics;
 using SFML.System;
 using Rogui.Shapes;
 
 namespace Rogui
 {
-    public class LineButton : BaseButton<AnimPanel>
+    public class LineButton : BaseButton<AnimPanel, AnimLabel>
     {
         public event EventHandler<AnimState>? AnimationFinished;
         

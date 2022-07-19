@@ -1,6 +1,6 @@
 namespace Rogui
 {
-    public class AnimButton : BaseButton<AnimPanel>
+    public class AnimButton : BaseButton<AnimPanel, AnimLabel>
     {
         public event EventHandler<AnimState>? AnimationFinished;
         

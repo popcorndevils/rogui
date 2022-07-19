@@ -5,10 +5,12 @@ using SFML.System;
 
 namespace Rogui
 {
-    public abstract class BaseButton<T> : Aspect where T : Panel, new()
+    public abstract class BaseButton<T, U> : Aspect 
+    where T : Panel, new() 
+    where U : BaseLabel, new()
     {
         public T Body = new T();
-        public Label BtnText = new Label();
+        public U BtnText = new U();
 
         public override FloatRect Bounds => this.Body.Bounds;
         public override Vector2f TruePosition => this.Body.TruePosition;
@@ -30,8 +32,17 @@ namespace Rogui
             set => this.Body.Theme = value;
         }
 
-        public string DisplayedString {
-            get => this.BtnText.DisplayedString;
+        public string DisplayString {
+            get {
+                if(this.BtnText.DisplayedString is not null)
+                {
+                    return this.BtnText.DisplayedString;
+                }
+                else
+                {
+                    return "";
+                }
+            }
             set => this.BtnText.DisplayedString = value;
         }
 
@@ -39,7 +50,7 @@ namespace Rogui
         {
             this.BlockInput = false;
             if(description is not null)
-                { this.DisplayedString = description; }
+                { this.DisplayString = description; }
             this.Body.Add(this.BtnText);
             this.Add(this.Body);
             base.StateChanged += this.HandleBodyState;

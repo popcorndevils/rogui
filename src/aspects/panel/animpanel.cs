@@ -108,6 +108,7 @@ namespace Rogui
                     this.AnimClose(chg_amt);
                 }
             }
+            base.Update(ms);
         }
 
 
