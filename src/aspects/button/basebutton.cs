@@ -1,6 +1,7 @@
 using SFML.Graphics;
 using SFML.Window;
 using Rogui.Themes;
+using SFML.System;
 
 namespace Rogui
 {
@@ -10,6 +11,8 @@ namespace Rogui
         public Label BtnText = new Label();
 
         public override FloatRect Bounds => this.Body.Bounds;
+        public override Vector2f TruePosition => this.Body.TruePosition;
+        public override Vector2f TrueCenter => this.Body.TrueCenter;
 
         public new ThemeButton? Theme {
             get => this._Theme;

@@ -1,3 +1,4 @@
+using SFML.Graphics;
 using SFML.System;
 
 namespace Rogui
@@ -21,12 +22,12 @@ namespace Rogui
         protected override void UpdateLayout()
         {
             base.UpdateLayout();
-            var _origin = this.Body.AbsolutePosition + (this.Body.Size / 2);
+            var _origin = this.TrueCenter;
             foreach(Aspect a in this.Buttons.Children)
             {
                 if(a is LineButton b)
                 {
-                    b.PointStart =_origin;
+                    b.PointStart = _origin;
                 }
             }
         }
@@ -41,6 +42,29 @@ namespace Rogui
                         { b.Open(); }
                     else
                         { b.Close(); }
+                }
+            }
+        }
+
+        public override void Draw(RenderTarget t, RenderStates s)
+        {
+            if(this.Visible)
+            {
+                foreach(Aspect a in this.Buttons.Children)
+                {
+                    if(a is LineButton b)
+                    {
+                        b.Line.Draw(t, s);
+                    }
+                }
+                this.Body.Draw(t, s);
+                
+                foreach(Aspect a in this.Buttons.Children)
+                {
+                    if(a is LineButton b)
+                    {
+                        b.Body.Draw(t, s);
+                    }
                 }
             }
         }

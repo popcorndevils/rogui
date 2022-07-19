@@ -79,17 +79,8 @@ namespace Rogui
             }
         }
 
-        /// <summary>
-        /// Position relative to parent.
-        /// </summary>
-        public virtual Vector2f AbsoluteCenter {
-            set {
-                
-            }
-            get {
-                return this.AbsolutePosition + (this.Size / 2);
-            }
-        }
+        public virtual Vector2f TruePosition { get; }
+        public virtual Vector2f TrueCenter { get; }
 
         /// <summary>
         /// The actual placement in 2d space.

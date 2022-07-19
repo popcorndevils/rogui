@@ -12,7 +12,11 @@ namespace Rogui
         protected Shapes.Rectangle BodyFG = new Shapes.Rectangle();
 
         public override FloatRect Bounds => this.BodyBG.Bounds;
+        public FloatRect InteriorBounds => this.BodyFG.Bounds;
         public Vector2f ContentSize => this.Contents.Bounds.GetSize();
+
+        public override Vector2f TruePosition => this.BodyBG.TruePosition;
+        public override Vector2f TrueCenter => this.BodyBG.TrueCenter;
         
         public override Color? FillColor {
             get => this.BodyFG.FillColor;

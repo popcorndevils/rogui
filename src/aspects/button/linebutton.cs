@@ -8,7 +8,7 @@ namespace Rogui
     {
         public event EventHandler<AnimState>? AnimationFinished;
         
-        private AnimLine Line;
+        public AnimLine Line;
 
         public bool IsOpen => this.Body.IsOpen;
         public bool IsClosed => this.Body.IsClosed;
@@ -63,10 +63,10 @@ namespace Rogui
                 switch(this.AnimDirection)
                 {
                     case AnimDirection.TOP_LEFT:
-                        this.Body.AbsolutePosition = _origin - this.Body.BorderPosition;
+                        this.Body.AbsolutePosition = _origin - this.BorderPosition;
                         break;
                     case AnimDirection.CENTER:
-                        this.Body.AbsolutePosition = _origin - this.Body.Size / 2;
+                        this.Body.AbsolutePosition = _origin - (this.Body.Size / 2);
                         break;
                 }
             }

@@ -9,6 +9,9 @@ namespace Rogui.Shapes
 
         public override FloatRect Bounds => this.Shape.GetGlobalBounds();
 
+        public override Vector2f TruePosition => this.AbsolutePosition + this.Position + this.MarginPosition + this.OffsetPosition;
+        public override Vector2f TrueCenter => this.TruePosition + (this.Shape.Size / 2);
+
         public override Vector2f Size {
             get => base.Size;
             set  {
