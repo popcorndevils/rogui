@@ -11,6 +11,9 @@ namespace Rogui
         public AnimLine Line;
         public AnimButton Button;
 
+        public Vector2f ButtonMarginPos => this.Button.Body.MarginPosition;
+        public Vector2f ButtonSize => this.Button.Body.Size;
+
         public float AnimSpeed {
             get => this.Button.AnimSpeed + this.Line.AnimSpeed;
             set {
@@ -85,14 +88,14 @@ namespace Rogui
 
         protected override void UpdateLayout()
         {          
-            var _origin = this.Line.PointEnd - (this.Button.MarginPosition * 2);
+            var _origin = this.Line.PointEnd - this.Button.Body.MarginPosition;
             switch(this.AnimDirection)
             {
                 case AnimDirection.TOP_LEFT:
                     this.Button.AbsolutePosition = _origin;
                     break;
                 case AnimDirection.CENTER:
-                    this.Button.AbsolutePosition = _origin;
+                    this.Button.AbsolutePosition = _origin - (this.ButtonSize / 2);
                     break;
             }
         }
@@ -105,7 +108,6 @@ namespace Rogui
                 {
                     case AnimState.OPEN:
                         this.AnimationFinished?.Invoke(this, state);
-
                         break;
                     case AnimState.CLOSED:
                         this.Line.Close();
