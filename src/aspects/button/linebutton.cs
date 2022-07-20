@@ -1,31 +1,27 @@
 using SFML.System;
 using Rogui.Shapes;
+using Rogui.Themes;
 
 namespace Rogui
 {
-    public class LineButton : BaseButton<AnimPanel, AnimLabel>
+    public class LineButton : Aspect, IAnimate
     {
         public event EventHandler<AnimState>? AnimationFinished;
-        
+
         public AnimLine Line;
-
-        public bool IsOpen => this.Body.IsOpen;
-        public bool IsClosed => this.Body.IsClosed;
-        public bool IsClosing => this.Body.IsClosing;
-        public bool IsOpening => this.Body.IsOpening;
-
-        public AnimDirection AnimDirection {
-            get => this.Body.AnimDirection;
-            set => this.Body.AnimDirection = value;
-        }
+        public AnimButton Button;
 
         public float AnimSpeed {
-            get => this._AnimSpeed;
+            get => this.Button.AnimSpeed + this.Line.AnimSpeed;
             set {
-                this._AnimSpeed = value;
-                this.Body.AnimSpeed = value / 2;
+                this.Button.AnimSpeed = value / 2;
                 this.Line.AnimSpeed = value / 2;
             }
+        }
+
+        public new ThemeButton? Theme {
+            get => this.Button.Theme;
+            set => this.Button.Theme = value;
         }
 
         public Vector2f PointStart {
@@ -37,96 +33,97 @@ namespace Rogui
             get => this.Line.PointEnd;
             set => this.Line.PointEnd = value;
         }
-        
-        public LineButton(string description, Vector2f start, Vector2f end, float width = 1) : base(description)
-        {
-            this.Line = new AnimLine(start, end, width);
-            this.Insert(0, this.Line);
-            this.Line.AnimationFinished += this.HandleLineAnimation;
-            this.Body.AnimationFinished += this.HandleBodyAnimation;
+
+        public AnimState State { 
+            get {
+                if(this.Line.State == AnimState.OPEN)
+                {
+                    return this.Button.State;
+                }
+                else
+                {
+                    return this.Line.State;
+                }
+            }
+            set {}
         }
 
-        public void Open() { this.Line.Open(); }
-        public void Close() { this.Body.Close(); }
-
-        public void HandleAnimationFinished(object? sender, AnimState state)
+        public AnimDirection AnimDirection {
+            get => this.Button.AnimDirection;
+            set {
+                this.Button.AnimDirection = value;
+                this.Line.AnimDirection = value;
+            }
+        }
+        
+        public bool StartOpen {
+            get => this.Button.StartOpen;
+            set {
+                this.Button.StartOpen = value;
+                this.Line.StartOpen = value;
+            }
+        }
+        
+        public LineButton(string description, Vector2f start, Vector2f end, float width = 1) : base()
         {
-            this.AnimationFinished?.Invoke(this, state);
+            this.Line = new AnimLine(start, end, width);
+            this.Button = new AnimButton(description);
+            this.Add(this.Line, this.Button);
+            this.Button.AnimationFinished += this.HandleAnimation;
+            this.Line.AnimationFinished += this.HandleAnimation;
+        }
+
+        public void Open()
+        {
+            this.Line.Open();
+        }
+
+        public void Close()
+        {
+            this.Button.Close();
         }
 
         protected override void UpdateLayout()
         {          
-            if(this.Line is not null && this.Body is not null)
+            var _origin = this.Line.PointEnd - this.Button.MarginPosition;
+            switch(this.AnimDirection)
             {
-                var _origin = this.Line.PointEnd - this.Body.MarginPosition;
-                switch(this.AnimDirection)
+                case AnimDirection.TOP_LEFT:
+                    this.Button.AbsolutePosition = _origin;
+                    break;
+                case AnimDirection.CENTER:
+                    this.Button.AbsolutePosition = _origin;
+                    break;
+            }
+        }
+
+        public void HandleAnimation(object? sender, AnimState state)
+        {
+            if(sender is AnimButton a)
+            {
+                switch(state)
                 {
-                    case AnimDirection.TOP_LEFT:
-                        this.Body.AbsolutePosition = _origin - this.BorderPosition;
+                    case AnimState.OPEN:
+                        this.AnimationFinished?.Invoke(this, state);
+                        
                         break;
-                    case AnimDirection.CENTER:
-                        this.Body.AbsolutePosition = _origin - (this.Body.Size / 2);
+                    case AnimState.CLOSED:
+                        this.Line.Close();
+                        break;
+                }
+            }
+            else
+            {
+                switch(state)
+                {
+                    case AnimState.OPEN:
+                        this.Button.Open();
+                        break;
+                    case AnimState.CLOSED:
+                        this.AnimationFinished?.Invoke(this, state);
                         break;
                 }
             }
         }
-
-        protected override void HandleBodyState(object? sender, EventArgs e)
-        {
-            if(this.Theme is not null)
-            {
-                if(this.Body.Pressed && this.Theme.Pressed is not null)
-                {
-                    this.DisplayTheme = this.Theme.Pressed;
-                    this.Line.FillColor = this.Theme.Pressed.BorderColor;
-                }
-                else if(this.Body.Hover && this.Theme.Hover is not null)
-                {
-                    this.DisplayTheme = this.Theme.Hover;
-                    this.Line.FillColor = this.Theme.Hover.BorderColor;
-                }
-                else if(this.Theme.Normal is not null)
-                {
-                    this.DisplayTheme = this.Theme.Normal;
-                    this.Line.FillColor = this.Theme.Normal.BorderColor;
-                }
-                
-            }
-        }
-
-        public void HandleLineAnimation(object? sender, AnimState state)
-        {
-            switch(state)
-            {
-                case AnimState.OPEN:
-                    this.Body.Open();
-                    break;
-                case AnimState.CLOSED:
-                    this.AnimationFinished?.Invoke(this, AnimState.CLOSED);
-                    break;
-            }
-        }
-
-        public void HandleBodyAnimation(object? sender, AnimState state)
-        {
-            switch(state)
-            {
-                case AnimState.OPEN:
-                    this.AnimationFinished?.Invoke(this, AnimState.OPEN);
-                    break;
-                case AnimState.CLOSED:
-                    this.Line.Close();
-                    break;
-            }
-        }
-
-
-        // ██╗  ██╗██╗██████╗ ██████╗ ███████╗███╗   ██╗
-        // ██║  ██║██║██╔══██╗██╔══██╗██╔════╝████╗  ██║
-        // ███████║██║██║  ██║██║  ██║█████╗  ██╔██╗ ██║
-        // ██╔══██║██║██║  ██║██║  ██║██╔══╝  ██║╚██╗██║
-        // ██║  ██║██║██████╔╝██████╔╝███████╗██║ ╚████║
-        // ╚═╝  ╚═╝╚═╝╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝
-        private float _AnimSpeed;
     }
 }

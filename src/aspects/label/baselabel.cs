@@ -43,11 +43,18 @@ namespace Rogui
             }
         }
 
+        public override void Update(float? ms)
+        {
+            if(this.TextShape is not null)
+            {
+                this.TextShape.Position = this.RenderPosition;
+            }
+        }
+
         public override void Draw(RenderTarget t, RenderStates s)
         {
             if(this.Visible && this.TextShape is not null)
             {
-                this.TextShape.Position = this.AbsolutePosition + this.Position + this.MarginPosition + this.OffsetPosition;
                 this.TextShape.Draw(t, s);
             }
         }

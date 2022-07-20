@@ -1,13 +1,53 @@
 using SFML.System;
 using SFML.Graphics;
+using Rogui.Extensions;
 
 namespace Rogui
 {
-    public class AnimLabel : BaseLabel
+    public class AnimLabel : BaseLabel, IAnimate
     {
+        
+        // ███████╗██╗   ██╗███████╗███╗   ██╗████████╗███████╗
+        // ██╔════╝██║   ██║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
+        // █████╗  ██║   ██║█████╗  ██╔██╗ ██║   ██║   ███████╗
+        // ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ╚════██║
+        // ███████╗ ╚████╔╝ ███████╗██║ ╚████║   ██║   ███████║
+        // ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
+        public event EventHandler<AnimState>? AnimationFinished;
         public new event EventHandler? Transformed;
+
         public Text BoundsText;
         public float Timer;
+
+        public AnimState State { get; set; }
+        public AnimDirection AnimDirection { get; set; }
+        public bool StartOpen { 
+            get => this._StartOpen;
+            set {
+                this._StartOpen = value;
+                if(value)
+                {
+                    this.Visible = true;
+                    this.CurrentString = this.DisplayedString;
+                    this.State = AnimState.OPEN;
+                }
+            }
+        }
+
+        public float AnimSpeed {
+            get => this._AnimSpeed;
+            set {
+                this._AnimSpeed = value;
+                if(this.DisplayedString is not null)
+                {
+                    this._TXTGrowth = value / this.DisplayedString.Length * 1000;
+                }
+                if(this.DisplayedString is not null)
+                {
+                    this._MVGrowth = this.BoundsText.GetGlobalBounds().GetSize() / this.DisplayedString.Length;
+                }
+            }
+        }
 
         public override FloatRect Bounds {
             get {
@@ -22,8 +62,22 @@ namespace Rogui
         } 
 
         public string? CurrentString {
-            get => base.DisplayedString;
-            set => base.DisplayedString = value;
+            get {
+                if(this.TextShape is not null)
+                {
+                    return this.TextShape.DisplayedString;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set {
+                if(this.TextShape is not null)
+                {
+                    this.TextShape.DisplayedString = value;
+                }
+            }
         }
 
         public override string? DisplayedString {
@@ -34,38 +88,28 @@ namespace Rogui
             }
         }
 
+
+        //  ██████╗ ██╗   ██╗███████╗██████╗ ██████╗ ██╗██████╗ ███████╗███████╗
+        // ██╔═══██╗██║   ██║██╔════╝██╔══██╗██╔══██╗██║██╔══██╗██╔════╝██╔════╝
+        // ██║   ██║██║   ██║█████╗  ██████╔╝██████╔╝██║██║  ██║█████╗  ███████╗
+        // ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗██╔══██╗██║██║  ██║██╔══╝  ╚════██║
+        // ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║██║  ██║██║██████╔╝███████╗███████║
+        //  ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═════╝ ╚══════╝╚══════╝
         public override void Update(float? ms)
         {
             if(ms is not null)
             {
-                this.Timer += (float)ms;
-            }
-            if(this.Timer >= 1000)
-            {
-                this.Timer = 0;
-                if(this.DisplayedString is not null && this.CurrentString is not null && 
-                   this.CurrentString.Length < this.DisplayedString.Length)
+                switch(this.State)
                 {
-                    this.CurrentString = this.DisplayedString.Substring(0, this.CurrentString.Length + 1);
-                    
-                }
-                else
-                {
-                    this.CurrentString = "";
+                    case AnimState.OPENING:
+                        this.AnimOpen((float)ms);
+                        break;
+                    case AnimState.CLOSING:
+                        this.AnimClose((float)ms);
+                        break;
                 }
             }
-
-        }
-
-        public override void Draw(RenderTarget t, RenderStates s)
-        {
-            if(this.Visible)
-            {
-                var _pos = this.AbsolutePosition + this.Position + this.MarginPosition + this.OffsetPosition;
-                this.TextShape.Position = _pos;
-                this.BoundsText.Position = _pos;
-                this.TextShape.Draw(t, s);
-            }
+            base.Update(ms);
         }
 
         public AnimLabel()
@@ -81,5 +125,109 @@ namespace Rogui
             this.TextShape = new Text("", this.Font, 24);
             this.BoundsText = new Text(text, this.Font, 24);
         }
+
+        // ███╗   ███╗███████╗████████╗██╗  ██╗ ██████╗ ██████╗ ███████╗
+        // ████╗ ████║██╔════╝╚══██╔══╝██║  ██║██╔═══██╗██╔══██╗██╔════╝
+        // ██╔████╔██║█████╗     ██║   ███████║██║   ██║██║  ██║███████╗
+        // ██║╚██╔╝██║██╔══╝     ██║   ██╔══██║██║   ██║██║  ██║╚════██║
+        // ██║ ╚═╝ ██║███████╗   ██║   ██║  ██║╚██████╔╝██████╔╝███████║
+        // ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝
+        public void Open()
+        {
+            this.Visible = true;
+            this.State = AnimState.OPENING;
+        }
+
+        public void Close()
+        {
+            this.Visible = true;
+            this.State = AnimState.CLOSING;
+        }
+
+        public void Toggle()
+        {
+            if(this.State == AnimState.OPEN || this.State == AnimState.OPENING)
+            {
+                this.Close();
+            }
+            else
+            {
+                this.Open();
+            }
+        }
+
+        private void AdjustOffset()
+        {
+            if(this.CurrentString is not null && this.DisplayedString is not null)
+            {
+                var _char_diff = this.DisplayedString.Length - this.CurrentString.Length;
+                switch(this.AnimDirection)
+                {
+                    case AnimDirection.CENTER:
+                        var _amt = new Vector2f(this._MVGrowth.X * _char_diff / 2, 0);
+                        this.OffsetPosition = new Vector2f() + _amt;
+                        break;
+                }
+            }
+        }
+
+        public void AnimOpen(float ms)
+        {
+            if(this.DisplayedString is not null && this.CurrentString is not null)
+            {
+                this.Timer += ms;
+                if(this.Timer >= this._TXTGrowth)
+                {
+                    this.Timer = 0;
+                    if(this.CurrentString.Length >= this.DisplayedString.Length)
+                    {
+                        this.CurrentString = this.DisplayedString;
+                        this.State = AnimState.OPEN;
+                        this.AnimationFinished?.Invoke(this, this.State);
+                    }
+                    else
+                    {
+                        this.CurrentString = this.DisplayedString.Substring(0, this.CurrentString.Length + 1);
+                    }
+                    this.AdjustOffset();
+                }
+            }
+        }
+
+        public void AnimClose(float ms)
+        {
+            if(this.DisplayedString is not null && this.CurrentString is not null)
+            {
+                this.Timer += ms;
+                if(this.Timer >= this._TXTGrowth)
+                {
+                    this.Timer = 0;
+                    if(this.CurrentString.Length <= 0)
+                    {
+                        this.CurrentString = "";
+                        this.State = AnimState.CLOSED;
+                        this.AnimationFinished?.Invoke(this, this.State);
+                    }
+                    else
+                    {
+                        this.CurrentString = this.CurrentString.Substring(0, this.CurrentString.Length - 1);
+                    }
+                    this.AdjustOffset();
+                }
+            }
+        }
+                
+        
+        // ██╗  ██╗██╗██████╗ ██████╗ ███████╗███╗   ██╗
+        // ██║  ██║██║██╔══██╗██╔══██╗██╔════╝████╗  ██║
+        // ███████║██║██║  ██║██║  ██║█████╗  ██╔██╗ ██║
+        // ██╔══██║██║██║  ██║██║  ██║██╔══╝  ██║╚██╗██║
+        // ██║  ██║██║██████╔╝██████╔╝███████╗██║ ╚████║
+        // ╚═╝  ╚═╝╚═╝╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝
+        private float _AnimSpeed;
+        private float _TXTGrowth;
+        private Vector2f _MVGrowth;
+        // private AnimDirection _AnimDirection;
+        private bool _StartOpen;
     }
 }

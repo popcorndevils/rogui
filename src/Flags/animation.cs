@@ -7,6 +7,6 @@ namespace Rogui
 
     public enum AnimState
     {
-        OPEN, CLOSED
+        OPEN, CLOSED, OPENING, CLOSING
     }
 }

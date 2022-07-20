@@ -1,22 +1,27 @@
 using SFML.Graphics;
-using SFML.System;
 
 namespace Rogui
 {
-    public class CrownButton : AnimButton
+    public class CrownButton : AnimButton, IAnimate
     {
         private VBox Buttons = new VBox();
 
         public CrownButton(string description) :
         base(description)
         {
+            this.OnClick += this.HandleClick;
             this.Add(this.Buttons);
         }
 
-        public void AddButtons(params LineButton[] buttons)
+        public void AddButtons(params Aspect[] buttons)
         {
-            this.Buttons.Add(buttons);
-            this.OnClick += this.HandleClick;
+            foreach(Aspect a in buttons)
+            {
+                if(a is LineButton c)
+                {
+                    this.Buttons.Add(c);
+                }
+            }
         }
 
         protected override void UpdateLayout()
@@ -25,9 +30,9 @@ namespace Rogui
             var _origin = this.TrueCenter;
             foreach(Aspect a in this.Buttons.Children)
             {
-                if(a is LineButton b)
+                if(a is LineButton c)
                 {
-                    b.PointStart = _origin;
+                    c.PointStart = _origin;
                 }
             }
         }
@@ -36,12 +41,9 @@ namespace Rogui
         {
             foreach(Aspect a in this.Buttons.Children)
             {
-                if(a is LineButton b)
+                if(a is IAnimate c)
                 {
-                    if(!b.IsOpening && !b.IsOpen)
-                        { b.Open(); }
-                    else
-                        { b.Close(); }
+                    c.Toggle();
                 }
             }
         }
@@ -58,12 +60,11 @@ namespace Rogui
                     }
                 }
                 this.Body.Draw(t, s);
-                
                 foreach(Aspect a in this.Buttons.Children)
                 {
                     if(a is LineButton b)
                     {
-                        b.Body.Draw(t, s);
+                        b.Button.Draw(t, s);
                     }
                 }
             }

@@ -1,5 +1,4 @@
 using SFML.Graphics;
-using SFML.Window;
 using Rogui.Themes;
 using SFML.System;
 
@@ -10,7 +9,7 @@ namespace Rogui
     where U : BaseLabel, new()
     {
         public T Body = new T();
-        public U BtnText = new U();
+        public U Text = new U();
 
         public override FloatRect Bounds => this.Body.Bounds;
         public override Vector2f TruePosition => this.Body.TruePosition;
@@ -34,16 +33,16 @@ namespace Rogui
 
         public string DisplayString {
             get {
-                if(this.BtnText.DisplayedString is not null)
+                if(this.Text.DisplayedString is not null)
                 {
-                    return this.BtnText.DisplayedString;
+                    return this.Text.DisplayedString;
                 }
                 else
                 {
                     return "";
                 }
             }
-            set => this.BtnText.DisplayedString = value;
+            set => this.Text.DisplayedString = value;
         }
 
         public BaseButton(string? description = null) : base()
@@ -51,7 +50,7 @@ namespace Rogui
             this.BlockInput = false;
             if(description is not null)
                 { this.DisplayString = description; }
-            this.Body.Add(this.BtnText);
+            this.Body.Add(this.Text);
             this.Add(this.Body);
             base.StateChanged += this.HandleBodyState;
         }
@@ -77,7 +76,7 @@ namespace Rogui
 
         public override string ToString()
         {
-            return $"{this.GetType()}: {this.BtnText.DisplayedString}";
+            return $"{this.GetType()}: {this.Text.DisplayedString}";
         }
 
         // ██╗  ██╗██╗██████╗ ██████╗ ███████╗███╗   ██╗

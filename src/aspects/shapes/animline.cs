@@ -3,7 +3,7 @@ using Rogui.Extensions;
 
 namespace Rogui.Shapes
 {
-    public class AnimLine : Line
+    public class AnimLine : Line, IAnimate
     {
         // ███████╗██╗   ██╗███████╗███╗   ██╗████████╗███████╗
         // ██╔════╝██║   ██║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
@@ -20,10 +20,8 @@ namespace Rogui.Shapes
         // ██╔═══╝ ██╔══██╗██║   ██║██╔═══╝ ██╔══╝  ██╔══██╗   ██║   ██║██╔══╝  ╚════██║
         // ██║     ██║  ██║╚██████╔╝██║     ███████╗██║  ██║   ██║   ██║███████╗███████║
         // ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚══════╝╚══════╝
-        public bool IsOpen { get; private set; }
-        public bool IsClosed {get; private set; }
-        public bool IsClosing { get; private set; }
-        public bool IsOpening { get; private set; }
+        public AnimState State { get; set; }
+        public AnimDirection AnimDirection { get; set; }
 
         public float MaxLength {  
             get => this._MaxLength;
@@ -38,6 +36,23 @@ namespace Rogui.Shapes
             set {
                 this._AnimSpeed = value;
                 this._MSGrowth = this.MaxLength / value / 1000;
+            }
+        }
+
+        public bool StartOpen {
+            get => this._StartOpen;
+            set {
+                this._StartOpen = value;
+                if(value)
+                {
+                    this.State = AnimState.OPEN;
+                    this.Length = this.MaxLength;
+                }
+                else
+                {
+                    this.State = AnimState.CLOSED;
+                    this.Length = 0;
+                }
             }
         }
 
@@ -72,47 +87,47 @@ namespace Rogui.Shapes
         //  ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═════╝ ╚══════╝╚══════╝
         public override void Update(float? ms)
         {
-            if(ms is not null)
+            ((IAnimate)this).UpdateAnimations(ms);
+            base.Update(ms);
+        }
+
+        public void AnimClose(float ms)
+        {
+            float _growth_amt = this._MSGrowth * ms;
+            var _new_len = this.Length - _growth_amt;
+            if(_new_len < 0)
             {
-                float _growth_amt = this._MSGrowth * (float)ms;
-                if(this.IsOpening)
-                {
-                    var _new_len = this.Length + _growth_amt;
-                    if(_new_len > this.MaxLength)
-                    {
-                        this.Length = this.MaxLength;
-                        this.IsOpening = false;
-                        this.IsOpen = true;
-                        this.AnimationFinished?.Invoke(this, AnimState.OPEN);
-                    }
-                    else
-                    {
-                        this.Length = _new_len;
-                    }
-                }
-                else if(this.IsClosing)
-                {
-                    var _new_len = this.Length - _growth_amt;
-                    if(_new_len < 0)
-                    {
-                        this.Length = 0;
-                        this.Visible = false;
-                        this.IsClosing = false;
-                        this.IsClosed = true;
-                        this.AnimationFinished?.Invoke(this, AnimState.CLOSED);
-                    }
-                    else
-                    {
-                        this.Length = _new_len;
-                    }
-                }
+                this.Length = 0;
+                this.Visible = false;
+                this.State = AnimState.CLOSED;
+                this.AnimationFinished?.Invoke(this, AnimState.CLOSED);
+            }
+            else
+            {
+                this.Length = _new_len;
+            }
+        }
+
+        public void AnimOpen(float ms)
+        {
+            float _growth_amt = this._MSGrowth * ms;
+            var _new_len = this.Length + _growth_amt;
+            if(_new_len > this.MaxLength)
+            {
+                this.Length = this.MaxLength;
+                this.State = AnimState.OPEN;
+                this.AnimationFinished?.Invoke(this, this.State);
+            }
+            else
+            {
+                this.Length = _new_len;
             }
         }
 
         protected override void CalculateDimensions()
         {
             this.MaxLength = this.PointStart.GetDistanceTo(this.PointEnd);
-            if(this.IsOpen)
+            if(this.State == AnimState.OPEN)
             {
                 this.Length = this.MaxLength;
             }
@@ -130,19 +145,13 @@ namespace Rogui.Shapes
         public void Open()
         {
             this.Visible = true;
-            this.IsClosed = false;
-            this.IsClosing = false;
-            this.IsOpen = false;
-            this.IsOpening = true;
+            this.State = AnimState.OPENING;
         }
 
         public void Close()
         {
             this.Visible = true;
-            this.IsClosed = false;
-            this.IsOpen = false;
-            this.IsOpening = false;
-            this.IsClosing = true;
+            this.State = AnimState.CLOSING;
         }
 
         // ██╗  ██╗██╗██████╗ ██████╗ ███████╗███╗   ██╗
@@ -154,5 +163,6 @@ namespace Rogui.Shapes
         private float _MaxLength;
         private float _AnimSpeed;
         private float _MSGrowth;
+        private bool _StartOpen;
     }
 }
