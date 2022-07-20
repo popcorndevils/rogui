@@ -6,20 +6,8 @@ namespace Rogui
     public class AnimLabel : BaseLabel
     {
         public new event EventHandler? Transformed;
-        public Font Font;
-        public Text TextShape;
         public Text BoundsText;
         public float Timer;
-        public Drawable Shape {
-            get => this.TextShape;
-        }
-
-        public string CurrentString {
-            get => this.TextShape.DisplayedString;
-            set {
-                this.TextShape.DisplayedString = value;
-            }
-        }
 
         public override FloatRect Bounds {
             get {
@@ -33,15 +21,9 @@ namespace Rogui
             }
         } 
 
-        public override Vector2f AbsolutePosition {
-            get => base.AbsolutePosition;
-            set {
-                this.TextShape.Position = new Vector2f(
-                    value.X + this.MarginLeft + this.Position.X,
-                    value.Y + this.MarginTop + this.Position.Y
-                );
-                base.AbsolutePosition = value;
-            }
+        public string? CurrentString {
+            get => base.DisplayedString;
+            set => base.DisplayedString = value;
         }
 
         public override string? DisplayedString {
@@ -61,7 +43,8 @@ namespace Rogui
             if(this.Timer >= 1000)
             {
                 this.Timer = 0;
-                if(this.DisplayedString is not null && this.CurrentString.Length < this.DisplayedString.Length)
+                if(this.DisplayedString is not null && this.CurrentString is not null && 
+                   this.CurrentString.Length < this.DisplayedString.Length)
                 {
                     this.CurrentString = this.DisplayedString.Substring(0, this.CurrentString.Length + 1);
                     
