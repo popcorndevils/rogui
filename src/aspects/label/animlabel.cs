@@ -164,6 +164,7 @@ namespace Rogui
                 switch(this.AnimDirection)
                 {
                     case AnimDirection.CENTER:
+                        Console.WriteLine("HERE");
                         var _amt = new Vector2f(this._MVGrowth.X * _char_diff / 2, 0);
                         this.OffsetPosition = new Vector2f() + _amt;
                         break;

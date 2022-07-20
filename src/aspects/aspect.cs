@@ -145,7 +145,7 @@ namespace Rogui
             aspect.Parent = this;
             aspect.Transformed += this.HandleChildTransformation;
             this.Children.Insert(index, aspect);
-            this.UpdateLayout();
+            // this.UpdateLayout();
         }
 
         protected virtual void UpdateLayout()
@@ -162,6 +162,7 @@ namespace Rogui
             foreach(Aspect a in this.Children)
             {
                 a.Update(ms);
+                a.UpdateLayout();
             }
         }
 

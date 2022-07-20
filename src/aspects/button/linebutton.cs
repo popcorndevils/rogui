@@ -85,7 +85,7 @@ namespace Rogui
 
         protected override void UpdateLayout()
         {          
-            var _origin = this.Line.PointEnd - this.Button.MarginPosition;
+            var _origin = this.Line.PointEnd - (this.Button.MarginPosition * 2);
             switch(this.AnimDirection)
             {
                 case AnimDirection.TOP_LEFT:
@@ -105,7 +105,7 @@ namespace Rogui
                 {
                     case AnimState.OPEN:
                         this.AnimationFinished?.Invoke(this, state);
-                        
+
                         break;
                     case AnimState.CLOSED:
                         this.Line.Close();
