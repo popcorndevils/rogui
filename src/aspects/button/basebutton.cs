@@ -10,6 +10,8 @@ namespace Rogui
     {
         public T Body = new T();
         public U Text = new U();
+        
+        public new event EventHandler? StateChanged;
 
         public override FloatRect Bounds => this.Body.Bounds;
         public override Vector2f TruePosition => this.Body.TruePosition;
@@ -72,6 +74,7 @@ namespace Rogui
                     this.DisplayTheme = this.Theme.Normal;
                 }
             }
+            this.StateChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public override string ToString()

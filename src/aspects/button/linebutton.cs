@@ -74,6 +74,7 @@ namespace Rogui
             this.Add(this.Line, this.Button);
             this.Button.AnimationFinished += this.HandleAnimation;
             this.Line.AnimationFinished += this.HandleAnimation;
+            this.Button.StateChanged += this.HandleButtonState;
         }
 
         public void Open()
@@ -98,6 +99,12 @@ namespace Rogui
                     this.Button.AbsolutePosition = _origin - (this.ButtonSize / 2);
                     break;
             }
+        }
+
+        public void HandleButtonState(object? sender, EventArgs e)
+        {
+            
+            this.Line.FillColor = this.Button.BorderColor;
         }
 
         public void HandleAnimation(object? sender, AnimState state)

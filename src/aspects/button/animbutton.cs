@@ -1,3 +1,5 @@
+using SFML.Graphics;
+
 namespace Rogui
 {
     public class AnimButton : BaseButton<AnimPanel, AnimLabel>, IAnimate
@@ -11,6 +13,8 @@ namespace Rogui
                 this.Text.StartOpen = value;
             }
         }
+
+        public new Color? BorderColor => this.Body.BorderColor;
         
         public AnimState State {
             get => this.Body.State;
