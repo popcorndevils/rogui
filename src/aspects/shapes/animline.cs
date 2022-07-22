@@ -91,6 +91,7 @@ namespace Rogui.Shapes
             base.Update(ms);
         }
 
+        public void AdjustOffset() {}
         public void AnimClose(float ms)
         {
             float _growth_amt = this._MSGrowth * ms;

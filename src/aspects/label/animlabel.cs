@@ -97,18 +97,7 @@ namespace Rogui
         //  ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═════╝ ╚══════╝╚══════╝
         public override void Update(float? ms)
         {
-            if(ms is not null)
-            {
-                switch(this.State)
-                {
-                    case AnimState.OPENING:
-                        this.AnimOpen((float)ms);
-                        break;
-                    case AnimState.CLOSING:
-                        this.AnimClose((float)ms);
-                        break;
-                }
-            }
+            ((IAnimate)this).UpdateAnimations(ms);
             base.Update(ms);
         }
 
@@ -144,19 +133,7 @@ namespace Rogui
             this.State = AnimState.CLOSING;
         }
 
-        public void Toggle()
-        {
-            if(this.State == AnimState.OPEN || this.State == AnimState.OPENING)
-            {
-                this.Close();
-            }
-            else
-            {
-                this.Open();
-            }
-        }
-
-        private void AdjustOffset()
+        public void AdjustOffset()
         {
             if(this.CurrentString is not null && this.DisplayedString is not null)
             {
@@ -189,7 +166,6 @@ namespace Rogui
                     {
                         this.CurrentString = this.DisplayedString.Substring(0, this.CurrentString.Length + 1);
                     }
-                    this.AdjustOffset();
                 }
             }
         }
@@ -212,7 +188,6 @@ namespace Rogui
                     {
                         this.CurrentString = this.CurrentString.Substring(0, this.CurrentString.Length - 1);
                     }
-                    this.AdjustOffset();
                 }
             }
         }

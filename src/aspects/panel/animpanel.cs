@@ -136,6 +136,17 @@ namespace Rogui
             this.State = AnimState.CLOSING;
         }
 
+        public void AdjustOffset()
+        {
+            switch(this.AnimDirection)
+            {
+                case AnimDirection.CENTER:
+                    this.OffsetPosition = (this.MaxSize / 2) + (this.CurrentSize / -2);
+                    break;
+            }
+            this.Contents.OffsetPosition = new Vector2f(0, 0) - this.OffsetPosition;
+        }
+
         public void AnimOpen(float ms)
         {
             Vector2f chg_amt = this._MSGrowth * (float)ms;
@@ -151,14 +162,6 @@ namespace Rogui
             else
             {
                 this.CurrentSize = _new_size;
-                switch(this.AnimDirection)
-                {
-                    case AnimDirection.CENTER:
-                        this.OffsetPosition = (this.MaxSize / 2) + (_new_size / -2);
-                        break;
-                    
-                }
-                this.Contents.OffsetPosition = new Vector2f(0, 0) - this.OffsetPosition;
             }
         }
 
@@ -176,13 +179,6 @@ namespace Rogui
             else
             {
                 this.CurrentSize = _new_size;
-                switch(this.AnimDirection)
-                {
-                    case AnimDirection.CENTER:
-                        this.OffsetPosition = (this.MaxSize / 2) + (_new_size / -2);
-                        break;
-                }
-                this.Contents.OffsetPosition = new Vector2f(0, 0) - this.OffsetPosition;
             }
         }
 
