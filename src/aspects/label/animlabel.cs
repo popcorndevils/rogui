@@ -18,17 +18,9 @@ namespace Rogui
 
         public Text BoundsText;
         public float Timer;
-
-        public override Vector2f AbsolutePosition { 
-            get => base.AbsolutePosition; 
-            set {
-                base.AbsolutePosition = value; 
-                this.AdjustOffset();
-            }
-        }
-
         public AnimState State { get; set; }
         public AnimDirection AnimDirection { get; set; }
+
         public bool StartOpen { 
             get => this._StartOpen;
             set {
@@ -173,7 +165,7 @@ namespace Rogui
                 {
                     case AnimDirection.CENTER:
                         var _amt = new Vector2f(this._MVGrowth.X * _char_diff / 2, 0);
-                        this.Position = new Vector2f() + _amt;
+                        this.OffsetPosition = new Vector2f() + _amt;
                         break;
                 }
             }
@@ -197,6 +189,7 @@ namespace Rogui
                     {
                         this.CurrentString = this.DisplayedString.Substring(0, this.CurrentString.Length + 1);
                     }
+                    this.AdjustOffset();
                 }
             }
         }
@@ -219,6 +212,7 @@ namespace Rogui
                     {
                         this.CurrentString = this.CurrentString.Substring(0, this.CurrentString.Length - 1);
                     }
+                    this.AdjustOffset();
                 }
             }
         }
@@ -233,7 +227,6 @@ namespace Rogui
         private float _AnimSpeed;
         private float _TXTGrowth;
         private Vector2f _MVGrowth;
-        // private AnimDirection _AnimDirection;
         private bool _StartOpen;
     }
 }
