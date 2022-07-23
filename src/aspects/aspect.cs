@@ -10,38 +10,6 @@ namespace Rogui
 
         public List<Aspect> Children = new List<Aspect>();
 
-        public override Vector2f AbsolutePosition {
-            get => base.AbsolutePosition;
-            set {
-                base.AbsolutePosition = value;
-                this.UpdateLayout();
-            }
-        }
-        
-        public override Vector2f Position {
-            get => base.Position;
-            set {
-                base.Position = value;
-                this.UpdateLayout();
-            }
-        }
-        
-        public override Vector2f OffsetPosition {
-            get => base.OffsetPosition;
-            set {
-                base.OffsetPosition = value;
-                this.UpdateLayout();
-            }
-        }
-
-        public override Vector2f Size {
-            get => base.Size;
-            set {
-                base.Size = value;
-                this.UpdateLayout();
-            }
-        }
-
         public override float Padding { 
             set {
                 foreach(Aspect a in this.Children)
@@ -137,7 +105,6 @@ namespace Rogui
                 a.Transformed += this.HandleChildTransformation;
                 this.Children.Add(a);
             }
-            this.UpdateLayout();
         }
 
         public virtual void Insert(int index, Aspect aspect)
@@ -145,7 +112,6 @@ namespace Rogui
             aspect.Parent = this;
             aspect.Transformed += this.HandleChildTransformation;
             this.Children.Insert(index, aspect);
-            // this.UpdateLayout();
         }
 
         protected virtual void UpdateLayout()
