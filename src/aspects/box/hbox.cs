@@ -2,8 +2,11 @@ using SFML.System;
 
 namespace Rogui
 {
-    public class HBox : Aspect
+    public class HBox : BaseBox
     {
+        public HBox() : base() {}
+        public HBox(params Aspect[] aspects) : base(aspects) {}
+
         protected override void UpdateLayout()
         {
             float _left = this.AbsolutePosition.X + this.MarginLeft;

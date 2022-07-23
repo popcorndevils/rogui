@@ -11,7 +11,7 @@ namespace Rogui.Shapes
         // ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ╚════██║
         // ███████╗ ╚████╔╝ ███████╗██║ ╚████║   ██║   ███████║
         // ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
-        public event EventHandler<AnimState>? AnimationFinished;
+        public event EventHandler<AnimateState>? AnimationFinished;
 
 
         // ██████╗ ██████╗  ██████╗ ██████╗ ███████╗██████╗ ████████╗██╗███████╗███████╗
@@ -20,8 +20,8 @@ namespace Rogui.Shapes
         // ██╔═══╝ ██╔══██╗██║   ██║██╔═══╝ ██╔══╝  ██╔══██╗   ██║   ██║██╔══╝  ╚════██║
         // ██║     ██║  ██║╚██████╔╝██║     ███████╗██║  ██║   ██║   ██║███████╗███████║
         // ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚══════╝╚══════╝
-        public AnimState State { get; set; }
-        public AnimDirection AnimDirection { get; set; }
+        public AnimateState State { get; set; }
+        public AnimateDirection AnimDirection { get; set; }
 
         public float MaxLength {  
             get => this._MaxLength;
@@ -45,12 +45,12 @@ namespace Rogui.Shapes
                 this._StartOpen = value;
                 if(value)
                 {
-                    this.State = AnimState.OPEN;
+                    this.State = AnimateState.OPEN;
                     this.Length = this.MaxLength;
                 }
                 else
                 {
-                    this.State = AnimState.CLOSED;
+                    this.State = AnimateState.CLOSED;
                     this.Length = 0;
                 }
             }
@@ -100,8 +100,8 @@ namespace Rogui.Shapes
             {
                 this.Length = 0;
                 this.Visible = false;
-                this.State = AnimState.CLOSED;
-                this.AnimationFinished?.Invoke(this, AnimState.CLOSED);
+                this.State = AnimateState.CLOSED;
+                this.AnimationFinished?.Invoke(this, AnimateState.CLOSED);
             }
             else
             {
@@ -116,7 +116,7 @@ namespace Rogui.Shapes
             if(_new_len > this.MaxLength)
             {
                 this.Length = this.MaxLength;
-                this.State = AnimState.OPEN;
+                this.State = AnimateState.OPEN;
                 this.AnimationFinished?.Invoke(this, this.State);
             }
             else
@@ -128,7 +128,7 @@ namespace Rogui.Shapes
         protected override void CalculateDimensions()
         {
             this.MaxLength = this.PointStart.GetDistanceTo(this.PointEnd);
-            if(this.State == AnimState.OPEN)
+            if(this.State == AnimateState.OPEN)
             {
                 this.Length = this.MaxLength;
             }
@@ -146,13 +146,13 @@ namespace Rogui.Shapes
         public void Open()
         {
             this.Visible = true;
-            this.State = AnimState.OPENING;
+            this.State = AnimateState.OPENING;
         }
 
         public void Close()
         {
             this.Visible = true;
-            this.State = AnimState.CLOSING;
+            this.State = AnimateState.CLOSING;
         }
 
         // ██╗  ██╗██╗██████╗ ██████╗ ███████╗███╗   ██╗

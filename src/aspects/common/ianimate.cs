@@ -1,12 +1,22 @@
 
 namespace Rogui
 {
+    public enum AnimateDirection
+    {
+        CENTER, LEFT, TOP_LEFT, TOP, TOP_RIGHT, RIGHT, BOTTOM_RIGHT, BOTTOM, BOTTOM_LEFT
+    }
+
+    public enum AnimateState
+    {
+        OPEN, CLOSED, OPENING, CLOSING
+    }
+
     public interface IAnimate
     {
-        public event EventHandler<AnimState>? AnimationFinished;
+        public event EventHandler<AnimateState>? AnimationFinished;
 
-        public AnimState State { get; set; }
-        public AnimDirection AnimDirection { get; set; }
+        public AnimateState State { get; set; }
+        public AnimateDirection AnimDirection { get; set; }
         public float AnimSpeed { get; set; }
         public bool StartOpen { get; set; }
 
@@ -15,7 +25,7 @@ namespace Rogui
         public void Close();
         public void Toggle()
         {
-            if(this.State == AnimState.OPEN || this.State == AnimState.OPENING)
+            if(this.State == AnimateState.OPEN || this.State == AnimateState.OPENING)
             {
                 this.Close();
             }
@@ -31,11 +41,11 @@ namespace Rogui
             {
                 switch(this.State)
                 {
-                    case AnimState.OPENING:
+                    case AnimateState.OPENING:
                         this.AnimOpen((float)ms);
                         this.AdjustOffset();
                         break;
-                    case AnimState.CLOSING:
+                    case AnimateState.CLOSING:
                         this.AnimClose((float)ms);
                         this.AdjustOffset();
                         break;

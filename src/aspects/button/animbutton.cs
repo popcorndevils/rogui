@@ -4,7 +4,7 @@ namespace Rogui
 {
     public class AnimButton : BaseButton<AnimPanel, AnimLabel>, IAnimate
     {
-        public event EventHandler<AnimState>? AnimationFinished;
+        public event EventHandler<AnimateState>? AnimationFinished;
         
         public bool StartOpen { 
             get => this.Body.StartOpen;
@@ -16,12 +16,12 @@ namespace Rogui
 
         public new Color? BorderColor => this.Body.BorderColor;
         
-        public AnimState State {
+        public AnimateState State {
             get => this.Body.State;
             set => this.Body.State = value;
         }
 
-        public AnimDirection AnimDirection {
+        public AnimateDirection AnimDirection {
             get => this.Body.AnimDirection;
             set {
                 this.Body.AnimDirection = value;
@@ -57,7 +57,7 @@ namespace Rogui
             this.Text.Close(); 
         }
 
-        public void HandleAnimation(object? sender, AnimState state)
+        public void HandleAnimation(object? sender, AnimateState state)
         {
             var _txt_match = this.Text.State == state;
             var _bdy_match = this.Body.State == state;

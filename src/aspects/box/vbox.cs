@@ -2,7 +2,7 @@ using SFML.System;
 
 namespace Rogui
 {
-    public class VBox : Aspect
+    public class VBox : BaseBox
     {
         public VBox() : base() {}
         public VBox(params Aspect[] aspects) : base(aspects) {}

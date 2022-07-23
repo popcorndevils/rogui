@@ -12,7 +12,7 @@ namespace Rogui
         // ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ╚════██║
         // ███████╗ ╚████╔╝ ███████╗██║ ╚████║   ██║   ███████║
         // ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
-        public event EventHandler<AnimState>? AnimationFinished;
+        public event EventHandler<AnimateState>? AnimationFinished;
 
 
         // ██████╗ ██████╗  ██████╗ ██████╗ ███████╗██████╗ ████████╗██╗███████╗███████╗
@@ -21,7 +21,7 @@ namespace Rogui
         // ██╔═══╝ ██╔══██╗██║   ██║██╔═══╝ ██╔══╝  ██╔══██╗   ██║   ██║██╔══╝  ╚════██║
         // ██║     ██║  ██║╚██████╔╝██║     ███████╗██║  ██║   ██║   ██║███████╗███████║
         // ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚══════╝╚══════╝
-        public AnimState State { get; set; }
+        public AnimateState State { get; set; }
 
         public bool StartOpen { 
             get => this._StartOpen;
@@ -33,12 +33,12 @@ namespace Rogui
                     this.CurrentSize = this.Size;
                     this.Visible = true;
                     this.Contents.Visible = true;
-                    this.State = AnimState.OPEN;
+                    this.State = AnimateState.OPEN;
                 }
             }
         }
 
-        public AnimDirection AnimDirection {
+        public AnimateDirection AnimDirection {
             get => this._AnimDirection;
             set {
                 this._AnimDirection = value;
@@ -81,7 +81,7 @@ namespace Rogui
             this.Add(aspects);
             this.CurrentSize = new Vector2f();
             this.Visible = false;
-            this.State = AnimState.CLOSED;
+            this.State = AnimateState.CLOSED;
             this.Contents.Visible = false;
         }
 
@@ -112,35 +112,35 @@ namespace Rogui
         {
             this.Visible = true;
             this.Contents.Visible = false;
-            this.State = AnimState.OPENING;
+            this.State = AnimateState.OPENING;
         }
 
         public void Open(bool visible_contents = false)
         {
             this.Visible = true;
             this.Contents.Visible = visible_contents;
-            this.State = AnimState.OPENING;
+            this.State = AnimateState.OPENING;
         }
 
         public void Close()
         {
             this.Visible = true;
             this.Contents.Visible = false;
-            this.State = AnimState.CLOSING;
+            this.State = AnimateState.CLOSING;
         }
 
         public void Close(bool visible_contents = false)
         {
             this.Visible = true;
             this.Contents.Visible = visible_contents;
-            this.State = AnimState.CLOSING;
+            this.State = AnimateState.CLOSING;
         }
 
         public void AdjustOffset()
         {
             switch(this.AnimDirection)
             {
-                case AnimDirection.CENTER:
+                case AnimateDirection.CENTER:
                     this.OffsetPosition = (this.MaxSize / 2) + (this.CurrentSize / -2);
                     break;
             }
@@ -154,7 +154,7 @@ namespace Rogui
             if(_new_size.X > this.MaxSize.X || _new_size.Y > this.MaxSize.Y)
             {
                 this.CurrentSize = this.MaxSize;
-                this.State = AnimState.OPEN;
+                this.State = AnimateState.OPEN;
                 this.OffsetPosition = new Vector2f(0, 0);
                 this.AnimationFinished?.Invoke(this, this.State);
                 this.Contents.Visible = true;
@@ -173,7 +173,7 @@ namespace Rogui
             {
                 this.CurrentSize = new Vector2f();
                 this.Visible = false;
-                this.State = AnimState.CLOSED;
+                this.State = AnimateState.CLOSED;
                 this.AnimationFinished?.Invoke(this, this.State);
             }
             else
@@ -195,7 +195,7 @@ namespace Rogui
         // ╚═╝  ╚═╝╚═╝╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝
         private float _AnimSpeed;
         private Vector2f _MSGrowth;
-        private AnimDirection _AnimDirection;
+        private AnimateDirection _AnimDirection;
         private bool _StartOpen;
     }
 }

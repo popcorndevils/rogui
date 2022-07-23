@@ -13,13 +13,13 @@ namespace Rogui
         // ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ╚════██║
         // ███████╗ ╚████╔╝ ███████╗██║ ╚████║   ██║   ███████║
         // ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
-        public event EventHandler<AnimState>? AnimationFinished;
+        public event EventHandler<AnimateState>? AnimationFinished;
         public new event EventHandler? Transformed;
 
         public Text BoundsText;
         public float Timer;
-        public AnimState State { get; set; }
-        public AnimDirection AnimDirection { get; set; }
+        public AnimateState State { get; set; }
+        public AnimateDirection AnimDirection { get; set; }
 
         public bool StartOpen { 
             get => this._StartOpen;
@@ -29,7 +29,7 @@ namespace Rogui
                 {
                     this.Visible = true;
                     this.CurrentString = this.DisplayedString;
-                    this.State = AnimState.OPEN;
+                    this.State = AnimateState.OPEN;
                 }
             }
         }
@@ -124,13 +124,13 @@ namespace Rogui
         public void Open()
         {
             this.Visible = true;
-            this.State = AnimState.OPENING;
+            this.State = AnimateState.OPENING;
         }
 
         public void Close()
         {
             this.Visible = true;
-            this.State = AnimState.CLOSING;
+            this.State = AnimateState.CLOSING;
         }
 
         public void AdjustOffset()
@@ -140,7 +140,7 @@ namespace Rogui
                 var _char_diff = this.DisplayedString.Length - this.CurrentString.Length;
                 switch(this.AnimDirection)
                 {
-                    case AnimDirection.CENTER:
+                    case AnimateDirection.CENTER:
                         var _amt = new Vector2f(this._MVGrowth.X * _char_diff / 2, 0);
                         this.OffsetPosition = new Vector2f() + _amt;
                         break;
@@ -159,7 +159,7 @@ namespace Rogui
                     if(this.CurrentString.Length >= this.DisplayedString.Length)
                     {
                         this.CurrentString = this.DisplayedString;
-                        this.State = AnimState.OPEN;
+                        this.State = AnimateState.OPEN;
                         this.AnimationFinished?.Invoke(this, this.State);
                     }
                     else
@@ -181,7 +181,7 @@ namespace Rogui
                     if(this.CurrentString.Length <= 0)
                     {
                         this.CurrentString = "";
-                        this.State = AnimState.CLOSED;
+                        this.State = AnimateState.CLOSED;
                         this.AnimationFinished?.Invoke(this, this.State);
                     }
                     else

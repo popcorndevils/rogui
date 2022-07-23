@@ -6,13 +6,18 @@ namespace Rogui
 {
     public class LineButton : Aspect, IAnimate
     {
-        public event EventHandler<AnimState>? AnimationFinished;
+        public event EventHandler<AnimateState>? AnimationFinished;
 
         public AnimLine Line;
         public AnimButton Button;
 
         public Vector2f ButtonMarginPos => this.Button.Body.MarginPosition;
         public Vector2f ButtonSize => this.Button.Body.Size;
+
+        public override Vector2f AbsolutePosition {
+            get => this.PointEnd; 
+            set => this.PointEnd = value;
+        }
 
         public float AnimSpeed {
             get => this.Button.AnimSpeed + this.Line.AnimSpeed;
@@ -37,9 +42,9 @@ namespace Rogui
             set => this.Line.PointEnd = value;
         }
 
-        public AnimState State { 
+        public AnimateState State { 
             get {
-                if(this.Line.State == AnimState.OPEN)
+                if(this.Line.State == AnimateState.OPEN)
                 {
                     return this.Button.State;
                 }
@@ -51,7 +56,7 @@ namespace Rogui
             set {}
         }
 
-        public AnimDirection AnimDirection {
+        public AnimateDirection AnimDirection {
             get => this.Button.AnimDirection;
             set {
                 this.Button.AnimDirection = value;
@@ -89,13 +94,17 @@ namespace Rogui
 
         protected override void UpdateLayout()
         {          
+            if(this.Parent is not null)
+            {
+                this.PointStart = this.Parent.TrueCenter;
+            }
             var _origin = this.Line.PointEnd - this.Button.Body.MarginPosition;
             switch(this.AnimDirection)
             {
-                case AnimDirection.TOP_LEFT:
+                case AnimateDirection.TOP_LEFT:
                     this.Button.AbsolutePosition = _origin;
                     break;
-                case AnimDirection.CENTER:
+                case AnimateDirection.CENTER:
                     this.Button.AbsolutePosition = _origin - (this.ButtonSize / 2);
                     break;
             }
@@ -107,16 +116,16 @@ namespace Rogui
             this.Line.FillColor = this.Button.BorderColor;
         }
 
-        public void HandleAnimation(object? sender, AnimState state)
+        public void HandleAnimation(object? sender, AnimateState state)
         {
             if(sender is AnimButton a)
             {
                 switch(state)
                 {
-                    case AnimState.OPEN:
+                    case AnimateState.OPEN:
                         this.AnimationFinished?.Invoke(this, state);
                         break;
-                    case AnimState.CLOSED:
+                    case AnimateState.CLOSED:
                         this.Line.Close();
                         break;
                 }
@@ -125,10 +134,10 @@ namespace Rogui
             {
                 switch(state)
                 {
-                    case AnimState.OPEN:
+                    case AnimateState.OPEN:
                         this.Button.Open();
                         break;
-                    case AnimState.CLOSED:
+                    case AnimateState.CLOSED:
                         this.AnimationFinished?.Invoke(this, state);
                         break;
                 }

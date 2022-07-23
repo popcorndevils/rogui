@@ -2,9 +2,14 @@ using SFML.Graphics;
 
 namespace Rogui
 {
-    public class CrownButton : AnimButton, IAnimate
+    public enum CrownDisplaySide {
+        LEFT, TOP_LEFT, TOP, TOP_RIGHT, RIGHT, BOTTOM_RIGHT, BOTTOM, BOTTOM_LEFT
+    }
+
+    public class CrownButton<T> : AnimButton, IAnimate
+    where T : BaseBox, new()
     {
-        private VBox Buttons = new VBox();
+        private T Buttons = new T();
 
         public CrownButton(string description) :
         base(description)
@@ -24,19 +29,6 @@ namespace Rogui
             }
         }
 
-        protected override void UpdateLayout()
-        {
-            base.UpdateLayout();
-            var _origin = this.TrueCenter;
-            foreach(Aspect a in this.Buttons.Children)
-            {
-                if(a is LineButton c)
-                {
-                    c.PointStart = _origin;
-                }
-            }
-        }
-
         public void HandleClick(object? sender, EventArgs e)
         {
             foreach(Aspect a in this.Buttons.Children)
@@ -46,6 +38,13 @@ namespace Rogui
                     c.Toggle();
                 }
             }
+        }
+
+        protected override void UpdateLayout()
+        {
+            base.UpdateLayout();
+            // TODO Logic to offset buttons container
+            this.Buttons.AbsolutePosition += new SFML.System.Vector2f(500, 500);
         }
 
         public override void Draw(RenderTarget t, RenderStates s)
