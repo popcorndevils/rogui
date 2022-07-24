@@ -18,14 +18,11 @@ namespace Rogui
             this.Add(this.Buttons);
         }
 
-        public void AddButtons(params Aspect[] buttons)
+        public void AddButtons(params LineButton[] buttons)
         {
-            foreach(Aspect a in buttons)
+            foreach(LineButton a in buttons)
             {
-                if(a is LineButton c)
-                {
-                    this.Buttons.Add(c);
-                }
+                this.Buttons.Add(a);
             }
         }
 
@@ -42,9 +39,16 @@ namespace Rogui
 
         protected override void UpdateLayout()
         {
+            foreach(Aspect a in this.Buttons.Children)
+            {
+                if(a is LineButton b)
+                {
+                    b.PointStart = this.TrueCenter;
+                }
+            }
             base.UpdateLayout();
             // TODO Logic to offset buttons container
-            this.Buttons.AbsolutePosition += new SFML.System.Vector2f(500, 500);
+            this.Buttons.AbsolutePosition += new SFML.System.Vector2f(300, 0);
         }
 
         public override void Draw(RenderTarget t, RenderStates s)

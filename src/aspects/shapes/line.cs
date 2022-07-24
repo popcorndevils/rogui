@@ -35,14 +35,12 @@ namespace Rogui.Shapes
             set {
                 this._PointStart = value;
                 this.Position = this.PointStart - new Vector2f(0, this.Width / 2);
-                this.CalculateDimensions();
             }
         }
         public Vector2f PointEnd {
             get => this._PointEnd;
             set {
                 this._PointEnd = value;
-                this.CalculateDimensions();
             }
         }
 
@@ -93,7 +91,6 @@ namespace Rogui.Shapes
             this.Width = width;
             this._PointStart = new Vector2f(x1, y1);
             this._PointEnd = new Vector2f(x2, y2);
-            this.CalculateDimensions();
         }
 
 
@@ -118,7 +115,7 @@ namespace Rogui.Shapes
         // ██╔══██║██╔══╝  ██║     ██╔═══╝ ██╔══╝  ██╔══██╗╚════██║
         // ██║  ██║███████╗███████╗██║     ███████╗██║  ██║███████║
         // ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝
-        protected virtual void CalculateDimensions()
+        protected override void UpdateLayout()
         {
             this.Length = this.PointStart.GetDistanceTo(this.PointEnd);
             this.Rotation = this.PointStart.GetAngleTo(this.PointEnd);

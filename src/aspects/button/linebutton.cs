@@ -15,8 +15,10 @@ namespace Rogui
         public Vector2f ButtonSize => this.Button.Body.Size;
 
         public override Vector2f AbsolutePosition {
-            get => this.PointEnd; 
-            set => this.PointEnd = value;
+            get => this.Button.AbsolutePosition; 
+            set {
+                this.Button.AbsolutePosition = value;
+            }
         }
 
         public float AnimSpeed {
@@ -93,19 +95,20 @@ namespace Rogui
         }
 
         protected override void UpdateLayout()
-        {          
+        {
             if(this.Parent is not null)
             {
                 this.PointStart = this.Parent.TrueCenter;
             }
-            var _origin = this.Line.PointEnd - this.Button.Body.MarginPosition;
+
             switch(this.AnimDirection)
             {
                 case AnimateDirection.TOP_LEFT:
-                    this.Button.AbsolutePosition = _origin;
+                    this.PointEnd = this.Button.InteriorPosition;
                     break;
                 case AnimateDirection.CENTER:
-                    this.Button.AbsolutePosition = _origin - (this.ButtonSize / 2);
+                    // TODO - find out why this doesn't point to true center until after opened once.
+                    this.PointEnd = this.Button.TrueCenter;
                     break;
             }
         }

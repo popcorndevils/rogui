@@ -65,6 +65,8 @@ namespace Rogui
                 this._MSGrowth = value / this.AnimSpeed / 1000;
             }
         }
+        public override Vector2f TruePosition => this.BodyBG.TruePosition;
+        public override Vector2f TrueCenter => this.BodyBG.TrueCenter;
 
 
         //  ██████╗ ██████╗ ███╗   ██╗███████╗████████╗██████╗ ██╗   ██╗ ██████╗████████╗

@@ -16,6 +16,7 @@ namespace Rogui
         public override FloatRect Bounds => this.Body.Bounds;
         public override Vector2f TruePosition => this.Body.TruePosition;
         public override Vector2f TrueCenter => this.Body.TrueCenter;
+        public Vector2f InteriorPosition => this.Body.InteriorPosition;
 
         public new ThemeButton? Theme {
             get => this._Theme;
@@ -49,7 +50,7 @@ namespace Rogui
 
         public BaseButton(string? description = null) : base()
         {
-            this.BlockInput = false;
+            this.BlockInput = true;
             if(description is not null)
                 { this.DisplayString = description; }
             this.Body.Add(this.Text);

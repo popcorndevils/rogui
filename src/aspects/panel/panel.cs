@@ -17,6 +17,7 @@ namespace Rogui
 
         public override Vector2f TruePosition => this.BodyBG.TruePosition;
         public override Vector2f TrueCenter => this.BodyBG.TrueCenter;
+        public Vector2f InteriorPosition => this.BodyFG.TruePosition;
         
         public override Color? FillColor {
             get => this.BodyFG.FillColor;

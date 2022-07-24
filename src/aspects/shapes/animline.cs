@@ -125,7 +125,7 @@ namespace Rogui.Shapes
             }
         }
 
-        protected override void CalculateDimensions()
+        protected override void UpdateLayout()
         {
             this.MaxLength = this.PointStart.GetDistanceTo(this.PointEnd);
             if(this.State == AnimateState.OPEN)
