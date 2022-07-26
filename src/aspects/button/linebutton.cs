@@ -107,7 +107,6 @@ namespace Rogui
                     this.PointEnd = this.Button.InteriorPosition;
                     break;
                 case AnimateDirection.CENTER:
-                    // TODO - find out why this doesn't point to true center until after opened once.
                     this.PointEnd = this.Button.TrueCenter;
                     break;
             }

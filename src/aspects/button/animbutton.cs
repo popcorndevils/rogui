@@ -6,6 +6,14 @@ namespace Rogui
     public class AnimButton : BaseButton<AnimPanel, AnimLabel>, IAnimate
     {
         public event EventHandler<AnimateState>? AnimationFinished;
+
+        public override Vector2f TrueCenter {
+            get {
+                // TODO somewhat works, need to account for slight difference
+                var _pos = this.Body.TruePosition - this.Body.OffsetPosition;
+                return _pos + (this.Body.MaxSize / 2);
+            }
+        }
         
         public bool StartOpen { 
             get => this.Body.StartOpen;
