@@ -105,6 +105,10 @@ namespace Rogui.Shapes
             if(this.Visible)
             {
                 this.Shape.Position = this.AbsolutePosition + this.Position + this.MarginPosition + this.OffsetPosition;
+
+                // TODO temporary offset for line, not sure why this works
+                this.Shape.Position +=  new Vector2f(0, this.Shape.GetGlobalBounds().Height);
+
                 this.Shape.Draw(t, s);
             }
         }
