@@ -11,7 +11,7 @@ namespace Rogui
         protected Shapes.Rectangle BodyBG = new Shapes.Rectangle();
         protected Shapes.Rectangle BodyFG = new Shapes.Rectangle();
 
-        public override FloatRect Bounds => this.BodyBG.Bounds;
+        // public override FloatRect Bounds => this.BodyBG.Bounds;
         public FloatRect InteriorBounds => this.BodyFG.Bounds;
         public Vector2f ContentSize => this.Contents.Bounds.GetSize();
 
@@ -34,6 +34,16 @@ namespace Rogui
             set {
                 this.BodyFG.Size = value;
                 this.BodyBG.Size = value + this.BorderSize;
+            }
+        }
+
+        public override FloatRect Bounds {
+            get {
+                return new FloatRect(
+                    this.TruePosition.X, 
+                    this.TruePosition.Y,
+                    this.Size.X  + this.BorderLeft + this.BorderRight,
+                    this.Size.Y + this.BorderTop + this.BorderBottom);
             }
         }
 

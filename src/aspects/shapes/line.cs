@@ -34,7 +34,7 @@ namespace Rogui.Shapes
             get => this._PointStart;
             set {
                 this._PointStart = value;
-                this.Position = this.PointStart - new Vector2f(0, this.Width / 2);
+                this.Position = this.PointStart + new Vector2f(0, this.Shape.GetLocalBounds().Height);
             }
         }
         public Vector2f PointEnd {
@@ -49,7 +49,6 @@ namespace Rogui.Shapes
             set {
                 this.Shape.Size = value;
                 this.Origin = new Vector2f(0, value.Y / 2);
-                this.Position = this.PointStart - new Vector2f(0, value.Y / 2);
                 base.Size = value;
             }
         }
@@ -105,10 +104,6 @@ namespace Rogui.Shapes
             if(this.Visible)
             {
                 this.Shape.Position = this.AbsolutePosition + this.Position + this.MarginPosition + this.OffsetPosition;
-
-                // TODO temporary offset for line, not sure why this works
-                this.Shape.Position +=  new Vector2f(0, this.Shape.GetGlobalBounds().Height);
-
                 this.Shape.Draw(t, s);
             }
         }

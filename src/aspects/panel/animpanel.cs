@@ -1,3 +1,4 @@
+using SFML.Graphics;
 using SFML.System;
 
 namespace Rogui
@@ -65,6 +66,17 @@ namespace Rogui
                 this._MSGrowth = value / this.AnimSpeed / 1000;
             }
         }
+
+        public override FloatRect Bounds {
+            get {
+                return new FloatRect(
+                    this.TruePosition.X, 
+                    this.TruePosition.Y,
+                    this.MaxSize.X + this.BorderLeft + this.BorderRight,
+                    this.MaxSize.Y + this.BorderTop + this.BorderBottom);
+            }
+        }
+
         public override Vector2f TruePosition => this.BodyBG.TruePosition;
         public override Vector2f TrueCenter => this.BodyBG.TrueCenter;
 

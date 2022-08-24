@@ -11,6 +11,11 @@ namespace Rogui
     {
         private T Buttons = new T();
 
+        public override float MarginSeparator {
+            get => this.Buttons.MarginSeparator;
+            set => this.Buttons.MarginSeparator = value;
+        }
+
         public CrownButton(string description) :
         base(description)
         {
