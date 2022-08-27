@@ -34,7 +34,7 @@ namespace Rogui.Shapes
         {
             if(this.Visible)
             {
-                this.Shape.Position = this.AbsolutePosition + this.Position + this.MarginPosition + this.OffsetPosition;
+                this.Shape.Position = this.TruePosition;
                 this.Shape.Draw(t, s);
             }
         }

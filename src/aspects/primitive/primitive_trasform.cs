@@ -55,11 +55,15 @@ namespace Rogui
         }
 
         // ephemeral properties
+        public virtual float MarginWidth => this.MarginLeft + this.MarginRight;
+        public virtual float MarginHeight => this.MarginTop + this.MarginBottom;
+        public virtual float BorderWidth => this.BorderLeft + this.BorderRight;
+        public virtual float BorderHeight => this.BorderTop + this.BorderBottom;
         public virtual Vector2f MarginPosition => new Vector2f(this.MarginLeft, this.MarginTop);
+        public virtual Vector2f MarginSize => new Vector2f( this.MarginWidth, this.MarginHeight);
         public virtual Vector2f BorderPosition  => new Vector2f(this.BorderLeft, this.BorderTop);
-        public virtual Vector2f BorderSize => new Vector2f(this.BorderLR, this.BorderTB);
-        public virtual float BorderLR => this.BorderLeft + this.BorderTop;
-        public virtual float BorderTB => this.BorderTop + this.BorderBottom;
+        public virtual Vector2f BorderSize => new Vector2f(this.BorderWidth, this.BorderHeight);
+        public virtual FloatRect InputBounds => this.Bounds;
 
 
         // ██████╗ ██████╗  ██████╗ ██████╗ ███████╗██████╗ ████████╗██╗███████╗███████╗

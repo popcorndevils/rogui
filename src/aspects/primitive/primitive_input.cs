@@ -1,5 +1,6 @@
 using SFML.Window;
 using Rogui.Extensions;
+using SFML.Graphics;
 
 namespace Rogui
 {
@@ -18,7 +19,7 @@ namespace Rogui
 
         public virtual MouseMoveEventArgs? ProcessMouseMove(object? sender, MouseMoveEventArgs? e)
         {
-            if(e is not null && this.Bounds.Contains(e))
+            if(e is not null && this.Visible && this.InputBounds.Contains(e))
             {
                 this.Hover = true;
             }

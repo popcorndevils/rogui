@@ -14,6 +14,7 @@ namespace Rogui
         public new event EventHandler? StateChanged;
 
         public override FloatRect Bounds => this.Body.Bounds;
+        public override FloatRect InputBounds => this.Body.InputBounds;
         public override Vector2f TruePosition => this.Body.TruePosition;
         public override Vector2f TrueCenter => this.Body.TrueCenter;
         public Vector2f InteriorPosition => this.Body.InteriorPosition;

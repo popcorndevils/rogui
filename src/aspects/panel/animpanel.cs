@@ -70,10 +70,10 @@ namespace Rogui
         public override FloatRect Bounds {
             get {
                 return new FloatRect(
-                    this.TruePosition.X, 
-                    this.TruePosition.Y,
-                    this.MaxSize.X + this.BorderLeft + this.BorderRight,
-                    this.MaxSize.Y + this.BorderTop + this.BorderBottom);
+                    this.AbsolutePosition.X, 
+                    this.AbsolutePosition.Y,
+                    this.MaxSize.X + this.MarginWidth,
+                    this.MaxSize.Y + this.MarginHeight);
             }
         }
 

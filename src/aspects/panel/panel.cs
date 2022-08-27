@@ -40,11 +40,25 @@ namespace Rogui
         public override FloatRect Bounds {
             get {
                 return new FloatRect(
-                    this.TruePosition.X, 
-                    this.TruePosition.Y,
-                    this.Size.X  + this.BorderLeft + this.BorderRight,
-                    this.Size.Y + this.BorderTop + this.BorderBottom);
+                    this.AbsolutePosition.X, 
+                    this.AbsolutePosition.Y,
+                    this.Size.X + this.MarginWidth,
+                    this.Size.Y + this.MarginHeight);
             }
+        }
+
+        public override FloatRect InputBounds {
+            get {
+                var _orig = this.Bounds;
+
+                var _bnds = new FloatRect(
+                    this.TruePosition.X,
+                    this.TruePosition.Y,
+                    _orig.Width - this.MarginRight - this.BorderRight,
+                    _orig.Height - this.MarginBottom - this.BorderBottom);
+                
+                return _bnds;
+            } 
         }
 
         private ThemePanel? _Theme;

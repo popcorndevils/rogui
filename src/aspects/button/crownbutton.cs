@@ -52,8 +52,9 @@ namespace Rogui
                 }
             }
             base.UpdateLayout();
-            // TODO Logic to offset buttons container
-            this.Buttons.AbsolutePosition += new SFML.System.Vector2f(300, 0);
+            // TODO Logic to offset buttons container, this example offsets to right side of parent
+            var _xoffset = this.Parent != null ? this.Parent.Bounds.Width : 0;
+            this.Buttons.AbsolutePosition += new SFML.System.Vector2f(_xoffset, 0);
         }
 
         public override void Draw(RenderTarget t, RenderStates s)

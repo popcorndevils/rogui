@@ -9,8 +9,8 @@ namespace Rogui
 
         protected override void UpdateLayout()
         {
-            float _bottom = this.AbsolutePosition.Y + this.MarginTop;
-            float _left = this.AbsolutePosition.X + this.MarginLeft;
+            float _bottom = this.AbsolutePosition.Y;
+            float _left = this.AbsolutePosition.X;
             foreach(Aspect a in this.Children)
             {
                 a.AbsolutePosition = new Vector2f(_left, _bottom);
