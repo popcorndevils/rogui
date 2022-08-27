@@ -1,18 +1,35 @@
 using SFML.System;
 using Rogui.Shapes;
 using Rogui.Themes;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace Rogui
 {
     public class LineButton : Aspect, IAnimate
     {
         public event EventHandler<AnimateState>? AnimationFinished;
+        public new event EventHandler? OnClick;
 
         public AnimLine Line;
         public AnimButton Button;
 
         public Vector2f ButtonMarginPos => this.Button.Body.MarginPosition;
         public Vector2f ButtonSize => this.Button.Body.Size;
+
+        public override bool AcceptInput { 
+            get => this.Button.AcceptInput;
+            set => this.Button.AcceptInput = value;
+        }
+        public override bool Visible { 
+            get => this.Button.Visible;
+            set => this.Button.Visible = value;
+        }
+        public override FloatRect Bounds => this.Button.Bounds;
+        public override FloatRect InputBounds => this.Button.InputBounds;
+        public override Vector2f TruePosition => this.Button.TruePosition;
+        public override Vector2f TrueCenter => this.Button.TrueCenter;
+        public Vector2f InteriorPosition => this.Button.InteriorPosition;
 
         public override Vector2f AbsolutePosition {
             get => this.Button.AbsolutePosition; 
@@ -79,6 +96,7 @@ namespace Rogui
             this.Line = new AnimLine(start, end, width);
             this.Button = new AnimButton(description);
             this.Add(this.Line, this.Button);
+            this.Button.OnClick += this.HandleClick;
             this.Button.AnimationFinished += this.HandleAnimation;
             this.Line.AnimationFinished += this.HandleAnimation;
             this.Button.StateChanged += this.HandleButtonState;
@@ -92,6 +110,11 @@ namespace Rogui
         public void Close()
         {
             this.Button.Close();
+        }
+
+        public void HandleClick(object? sender, EventArgs e)
+        {
+            this.OnClick?.Invoke(sender, e);
         }
 
         protected override void UpdateLayout()

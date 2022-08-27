@@ -13,6 +13,14 @@ namespace Rogui
         
         public new event EventHandler? StateChanged;
 
+        public override bool Visible { 
+            get => this.Body.Visible; 
+            set => this.Body.Visible = value;
+        }
+        public override bool AcceptInput { 
+            get => this.Body.AcceptInput; 
+            set => this.Body.AcceptInput = value;
+        }
         public override FloatRect Bounds => this.Body.Bounds;
         public override FloatRect InputBounds => this.Body.InputBounds;
         public override Vector2f TruePosition => this.Body.TruePosition;

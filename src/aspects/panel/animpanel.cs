@@ -67,20 +67,9 @@ namespace Rogui
             }
         }
 
-        public override FloatRect Bounds {
-            get {
-                return new FloatRect(
-                    this.AbsolutePosition.X, 
-                    this.AbsolutePosition.Y,
-                    this.MaxSize.X + this.MarginWidth,
-                    this.MaxSize.Y + this.MarginHeight);
-            }
-        }
-
+        protected override Vector2f DrawSize => this.MaxSize;
         public override Vector2f TruePosition => this.BodyBG.TruePosition;
         public override Vector2f TrueCenter => this.BodyBG.TrueCenter;
-
-
         //  ██████╗ ██████╗ ███╗   ██╗███████╗████████╗██████╗ ██╗   ██╗ ██████╗████████╗
         // ██╔════╝██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║   ██║██╔════╝╚══██╔══╝
         // ██║     ██║   ██║██╔██╗ ██║███████╗   ██║   ██████╔╝██║   ██║██║        ██║   

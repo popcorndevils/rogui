@@ -11,6 +11,7 @@ namespace Rogui
         private bool _Hover;
         private bool _Pressed;
         public virtual bool Visible { get; set; } = true;
+        public virtual bool AcceptInput { get; set; } = true;
         public virtual bool BlockInput { get; set; } = false;
 
         public virtual bool Hover {

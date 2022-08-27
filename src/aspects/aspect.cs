@@ -10,6 +10,14 @@ namespace Rogui
 
         public List<Aspect> Children = new List<Aspect>();
 
+        public override bool Visible {
+            get => base.Visible;
+            set {
+                base.Visible = value;
+                base.AcceptInput = value;
+            }
+        }
+
         public override float Padding { 
             set {
                 foreach(Aspect a in this.Children)
@@ -157,13 +165,20 @@ namespace Rogui
         public override MouseMoveEventArgs? ProcessMouseMove(
             object? sender, MouseMoveEventArgs? e)
         {
-            MouseMoveEventArgs? prev = e;
-            for(int i = this.Children.Count - 1; i >= 0; i--)
+            if(this.AcceptInput)
             {
-                Aspect a = this.Children[i];
-                prev = a.ProcessMouseMove(sender, prev);
+                MouseMoveEventArgs? prev = e;
+                for(int i = this.Children.Count - 1; i >= 0; i--)
+                {
+                    Aspect a = this.Children[i];
+                    prev = a.ProcessMouseMove(sender, prev);
+                }
+                return base.ProcessMouseMove(sender, prev);
             }
-            return base.ProcessMouseMove(sender, prev);
+            else
+            {
+                return e;
+            }
         }
 
         public override MouseButtonEventArgs? ProcessMousePress(

@@ -19,7 +19,7 @@ namespace Rogui
 
         public virtual MouseMoveEventArgs? ProcessMouseMove(object? sender, MouseMoveEventArgs? e)
         {
-            if(e is not null && this.Visible && this.InputBounds.Contains(e))
+            if(e is not null && this.InputBounds.Contains(e))
             {
                 this.Hover = true;
             }
