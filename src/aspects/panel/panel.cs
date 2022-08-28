@@ -15,9 +15,9 @@ namespace Rogui
         public Vector2f ContentSize => this.Contents.Bounds.GetSize();
 
         protected virtual Vector2f DrawSize => this.Size;
-        public override Vector2f TruePosition => this.BodyBG.TruePosition;
+        public override Vector2f WindowPosition => this.BodyBG.WindowPosition;
         public override Vector2f TrueCenter => this.BodyBG.TrueCenter;
-        public Vector2f InteriorPosition => this.BodyFG.TruePosition;
+        public Vector2f InteriorPosition => this.BodyFG.WindowPosition;
         
         public override Color? FillColor {
             get => this.BodyFG.FillColor;
@@ -40,8 +40,8 @@ namespace Rogui
         public override FloatRect Bounds {
             get {
                 return new FloatRect(
-                    this.AbsolutePosition.X, 
-                    this.AbsolutePosition.Y,
+                    this.PositionGlobal.X, 
+                    this.PositionGlobal.Y,
                     this.DrawSize.X + this.MarginWidth + this.BorderWidth,
                     this.DrawSize.Y + this.MarginHeight + this.BorderHeight);
             }
@@ -52,8 +52,8 @@ namespace Rogui
                 var _orig = this.Bounds;
 
                 var _bnds = new FloatRect(
-                    this.TruePosition.X,
-                    this.TruePosition.Y,
+                    this.WindowPosition.X,
+                    this.WindowPosition.Y,
                     _orig.Width - this.MarginWidth,
                     _orig.Height - this.MarginHeight);
                 
@@ -143,8 +143,8 @@ namespace Rogui
         protected override void UpdateLayout()
         {            
             base.UpdateLayout();
-            this.BodyFG.AbsolutePosition += this.BorderPosition;
-            this.Contents.AbsolutePosition += this.BorderPosition;
+            this.BodyFG.PositionGlobal += this.BorderPosition;
+            this.Contents.PositionGlobal += this.BorderPosition;
         }
     }
 }

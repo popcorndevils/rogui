@@ -11,6 +11,7 @@ namespace Rogui
         public T Body = new T();
         public U Text = new U();
         
+        public new event EventHandler? OnClick;
         public new event EventHandler? StateChanged;
 
         public override bool Visible { 
@@ -23,7 +24,7 @@ namespace Rogui
         }
         public override FloatRect Bounds => this.Body.Bounds;
         public override FloatRect InputBounds => this.Body.InputBounds;
-        public override Vector2f TruePosition => this.Body.TruePosition;
+        public override Vector2f WindowPosition => this.Body.WindowPosition;
         public override Vector2f TrueCenter => this.Body.TrueCenter;
         public Vector2f InteriorPosition => this.Body.InteriorPosition;
 
@@ -65,6 +66,12 @@ namespace Rogui
             this.Body.Add(this.Text);
             this.Add(this.Body);
             base.StateChanged += this.HandleBodyState;
+            this.Body.OnClick += this.HandleClick;
+        }
+
+        public void HandleClick(object? sender, EventArgs e)
+        {
+            this.OnClick?.Invoke(this, e);
         }
 
         protected virtual void HandleBodyState(object? sender, EventArgs e)

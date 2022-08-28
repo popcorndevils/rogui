@@ -55,6 +55,17 @@ namespace Rogui
         }
 
         // ephemeral properties
+        public virtual Vector2f WindowPosition {
+            get {
+                var _out = this.PositionGlobal + 
+                           this.PositionLocal + 
+                           this.MarginPosition + 
+                           this.PositionOffset;
+                return _out;
+            }
+        }
+        public virtual Vector2f TrueCenter { get; }
+
         public virtual float MarginWidth => this.MarginLeft + this.MarginRight;
         public virtual float MarginHeight => this.MarginTop + this.MarginBottom;
         public virtual float BorderWidth => this.BorderLeft + this.BorderRight;
@@ -75,24 +86,22 @@ namespace Rogui
         /// <summary>
         /// Position relative to parent.
         /// </summary>
-        public virtual Vector2f Position {
-            get => this._Position;
+        public virtual Vector2f PositionLocal {
+            get => this._PositionLocal;
             set {
-                this._Position = value;
+                this._PositionLocal = value;
                 this.Transformed?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public virtual Vector2f TruePosition { get; }
-        public virtual Vector2f TrueCenter { get; }
 
         /// <summary>
         /// The actual placement in 2d space.
         /// </summary>
-        public virtual Vector2f AbsolutePosition {
-            get => this._AbsolutePosition;
+        public virtual Vector2f PositionGlobal {
+            get => this._PositionGlobal;
             set {
-                this._AbsolutePosition = value;
+                this._PositionGlobal = value;
                 this.Transformed?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -100,7 +109,7 @@ namespace Rogui
         /// <summary>
         /// Allows some aspects to alter themselves temporarily for animations.
         /// </summary>
-        public virtual Vector2f OffsetPosition {
+        public virtual Vector2f PositionOffset {
             get => this._OffsetPosition;
             set {
                 this._OffsetPosition = value;
@@ -264,8 +273,8 @@ namespace Rogui
         // ██╔══██║██║██║  ██║██║  ██║██╔══╝  ██║╚██╗██║
         // ██║  ██║██║██████╔╝██████╔╝███████╗██║ ╚████║
         // ╚═╝  ╚═╝╚═╝╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝
-        private Vector2f _Position;
-        private Vector2f _AbsolutePosition;
+        private Vector2f _PositionLocal;
+        private Vector2f _PositionGlobal;
         private Vector2f _OffsetPosition;
         private Vector2f _Size;
         private Vector2f _MaxSize;

@@ -52,7 +52,7 @@ namespace Rogui
         public override FloatRect Bounds {
             get {
                 var _bnds = this.BoundsText.GetLocalBounds();
-                var _pos = this.AbsolutePosition;
+                var _pos = this.PositionGlobal;
                 return new FloatRect(
                     _pos.X - this.MarginLeft,
                     _pos.Y - this.MarginTop,
@@ -142,7 +142,7 @@ namespace Rogui
                 {
                     case AnimateDirection.CENTER:
                         var _amt = new Vector2f(this._MVGrowth.X * _char_diff / 2, 0);
-                        this.OffsetPosition = new Vector2f() + _amt;
+                        this.PositionOffset = new Vector2f() + _amt;
                         break;
                 }
             }

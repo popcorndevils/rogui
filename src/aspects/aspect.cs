@@ -124,10 +124,10 @@ namespace Rogui
 
         protected virtual void UpdateLayout()
         {            
-            var _pos = this.AbsolutePosition + this.MarginPosition + this.Position + this.OffsetPosition;
+            var _pos = this.PositionGlobal + this.MarginPosition + this.PositionLocal + this.PositionOffset;
             foreach(Aspect c in this.Children)
             {
-                c.AbsolutePosition = _pos;
+                c.PositionGlobal = _pos;
             }
         }
 

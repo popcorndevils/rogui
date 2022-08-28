@@ -8,14 +8,14 @@ namespace Rogui
         public new event EventHandler? Transformed;
         public virtual Text? TextShape { get; init; }
         public Font? Font { get; init; }
-        public Vector2f RenderPosition => this.AbsolutePosition + this.Position + this.MarginPosition + this.OffsetPosition;
+        public Vector2f RenderPosition => this.PositionGlobal + this.PositionLocal + this.MarginPosition + this.PositionOffset;
         
         public override FloatRect Bounds {
             get {
                 if(this.TextShape is not null)
                 {
                     var _bnds = this.TextShape.GetLocalBounds();
-                    var _pos = this.AbsolutePosition;
+                    var _pos = this.PositionGlobal;
                     return new FloatRect(
                         _pos.X - this.MarginLeft,
                         _pos.Y - this.MarginTop,
@@ -29,17 +29,17 @@ namespace Rogui
             }
         } 
 
-        public override Vector2f AbsolutePosition {
-            get => base.AbsolutePosition;
+        public override Vector2f PositionGlobal {
+            get => base.PositionGlobal;
             set {
                 if(this.TextShape is not null)
                 {
                     this.TextShape.Position = new Vector2f(
-                        value.X + this.MarginLeft + this.Position.X,
-                        value.Y + this.MarginTop + this.Position.Y
+                        value.X + this.MarginLeft + this.PositionLocal.X,
+                        value.Y + this.MarginTop + this.PositionLocal.Y
                     );
                 }
-                base.AbsolutePosition = value;
+                base.PositionGlobal = value;
             }
         }
 

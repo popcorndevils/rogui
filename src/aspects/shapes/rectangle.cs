@@ -8,9 +8,7 @@ namespace Rogui.Shapes
         private RectangleShape Shape = new RectangleShape();
 
         public override FloatRect Bounds => this.Shape.GetGlobalBounds();
-
-        public override Vector2f TruePosition => this.AbsolutePosition + this.Position + this.MarginPosition + this.OffsetPosition;
-        public override Vector2f TrueCenter => this.TruePosition + (this.Shape.Size / 2);
+        public override Vector2f TrueCenter => this.WindowPosition + (this.Shape.Size / 2);
 
         public override Vector2f Size {
             get => base.Size;
@@ -34,7 +32,7 @@ namespace Rogui.Shapes
         {
             if(this.Visible)
             {
-                this.Shape.Position = this.TruePosition;
+                this.Shape.Position = this.WindowPosition;
                 this.Shape.Draw(t, s);
             }
         }

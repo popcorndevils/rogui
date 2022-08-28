@@ -10,7 +10,7 @@ namespace Rogui
         public override Vector2f TrueCenter {
             get {
                 // TODO somewhat works, need to account for slight difference
-                var _pos = this.Body.TruePosition - this.Body.OffsetPosition;
+                var _pos = this.Body.WindowPosition - this.Body.PositionOffset;
                 return _pos + (this.Body.MaxSize / 2);
             }
         }

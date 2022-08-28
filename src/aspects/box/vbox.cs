@@ -9,11 +9,11 @@ namespace Rogui
 
         protected override void UpdateLayout()
         {
-            float _bottom = this.AbsolutePosition.Y;
-            float _left = this.AbsolutePosition.X;
+            float _bottom = this.WindowPosition.Y;
+            float _left = this.WindowPosition.X;
             foreach(Aspect a in this.Children)
             {
-                a.AbsolutePosition = new Vector2f(_left, _bottom);
+                a.PositionGlobal = new Vector2f(_left, _bottom);
                 _bottom += a.Bounds.Height + this.MarginSeparator;
             }
         }

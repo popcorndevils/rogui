@@ -2,7 +2,6 @@ using SFML.System;
 using Rogui.Shapes;
 using Rogui.Themes;
 using SFML.Graphics;
-using SFML.Window;
 
 namespace Rogui
 {
@@ -27,14 +26,14 @@ namespace Rogui
         }
         public override FloatRect Bounds => this.Button.Bounds;
         public override FloatRect InputBounds => this.Button.InputBounds;
-        public override Vector2f TruePosition => this.Button.TruePosition;
+        public override Vector2f WindowPosition => this.Button.WindowPosition;
         public override Vector2f TrueCenter => this.Button.TrueCenter;
         public Vector2f InteriorPosition => this.Button.InteriorPosition;
 
-        public override Vector2f AbsolutePosition {
-            get => this.Button.AbsolutePosition; 
+        public override Vector2f PositionGlobal {
+            get => this.Button.PositionGlobal; 
             set {
-                this.Button.AbsolutePosition = value;
+                this.Button.PositionGlobal = value;
             }
         }
 
@@ -96,10 +95,10 @@ namespace Rogui
             this.Line = new AnimLine(start, end, width);
             this.Button = new AnimButton(description);
             this.Add(this.Line, this.Button);
-            this.Button.OnClick += this.HandleClick;
             this.Button.AnimationFinished += this.HandleAnimation;
             this.Line.AnimationFinished += this.HandleAnimation;
             this.Button.StateChanged += this.HandleButtonState;
+            this.Button.OnClick += this.HandleClick;
         }
 
         public void Open()
@@ -114,7 +113,7 @@ namespace Rogui
 
         public void HandleClick(object? sender, EventArgs e)
         {
-            this.OnClick?.Invoke(sender, e);
+            this.OnClick?.Invoke(this, e);
         }
 
         protected override void UpdateLayout()

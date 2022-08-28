@@ -34,7 +34,7 @@ namespace Rogui.Shapes
             get => this._PointStart;
             set {
                 this._PointStart = value;
-                this.Position = this.PointStart + new Vector2f(0, this.Shape.GetLocalBounds().Height);
+                this.PositionLocal = this.PointStart + new Vector2f(0, this.Shape.GetLocalBounds().Height);
             }
         }
         public Vector2f PointEnd {
@@ -103,7 +103,7 @@ namespace Rogui.Shapes
         {
             if(this.Visible)
             {
-                this.Shape.Position = this.AbsolutePosition + this.Position + this.MarginPosition + this.OffsetPosition;
+                this.Shape.Position = this.PositionGlobal + this.PositionLocal + this.MarginPosition + this.PositionOffset;
                 this.Shape.Draw(t, s);
             }
         }

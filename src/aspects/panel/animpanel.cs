@@ -68,7 +68,7 @@ namespace Rogui
         }
 
         protected override Vector2f DrawSize => this.MaxSize;
-        public override Vector2f TruePosition => this.BodyBG.TruePosition;
+        public override Vector2f WindowPosition => this.BodyBG.WindowPosition;
         public override Vector2f TrueCenter => this.BodyBG.TrueCenter;
         //  ██████╗ ██████╗ ███╗   ██╗███████╗████████╗██████╗ ██╗   ██╗ ██████╗████████╗
         // ██╔════╝██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║   ██║██╔════╝╚══██╔══╝
@@ -144,10 +144,10 @@ namespace Rogui
             switch(this.AnimDirection)
             {
                 case AnimateDirection.CENTER:
-                    this.OffsetPosition = (this.MaxSize / 2) + (this.CurrentSize / -2);
+                    this.PositionOffset = (this.MaxSize / 2) + (this.CurrentSize / -2);
                     break;
             }
-            this.Contents.OffsetPosition = new Vector2f(0, 0) - this.OffsetPosition;
+            this.Contents.PositionOffset = new Vector2f(0, 0) - this.PositionOffset;
         }
 
         public void AnimOpen(float ms)
@@ -158,7 +158,7 @@ namespace Rogui
             {
                 this.CurrentSize = this.MaxSize;
                 this.State = AnimateState.OPEN;
-                this.OffsetPosition = new Vector2f(0, 0);
+                this.PositionOffset = new Vector2f(0, 0);
                 this.AnimationFinished?.Invoke(this, this.State);
                 this.Contents.Visible = true;
             }
