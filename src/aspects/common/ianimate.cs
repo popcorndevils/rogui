@@ -1,4 +1,3 @@
-
 namespace Rogui
 {
     public enum AnimateDirection
