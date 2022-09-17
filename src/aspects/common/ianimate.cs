@@ -8,7 +8,7 @@ namespace Rogui
 
     public enum AnimateState
     {
-        OPEN, CLOSED, OPENING, CLOSING
+        OPEN, CLOSED, OPENING, CLOSING, CYCLE
     }
 
     public interface IAnimate
@@ -35,7 +35,7 @@ namespace Rogui
             }
         }
 
-        public void UpdateAnimations(float? ms)
+        public void Animate(float? ms)
         {
             if(ms is not null)
             {
@@ -47,6 +47,10 @@ namespace Rogui
                         break;
                     case AnimateState.CLOSING:
                         this.AnimClose((float)ms);
+                        this.AdjustOffset();
+                        break;
+                    case AnimateState.CYCLE:
+                        this.AnimCycle((float)ms);
                         this.AdjustOffset();
                         break;
                 }
@@ -77,6 +81,16 @@ namespace Rogui
         /// </summary>
         /// <param name="ms">Delta time from last frame in milliseconds.</param>
         public void AnimClose(float ms)
+        {
+            throw new NotImplementedException(
+                $"IAnimate.AnimClose not implemented for type {this.GetType().ToString()}");
+        }
+
+        /// <summary>
+        /// Update elements during cycle animation;
+        /// </summary>
+        /// <param name="ms">Delta time from last frame in milliseconds.</param>
+        public void AnimCycle(float ms)
         {
             throw new NotImplementedException(
                 $"IAnimate.AnimClose not implemented for type {this.GetType().ToString()}");

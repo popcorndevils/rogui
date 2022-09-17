@@ -99,7 +99,7 @@ namespace Rogui
         {
             if(ms is not null)
             {
-                ((IAnimate)this).UpdateAnimations((float)ms);
+                ((IAnimate)this).Animate((float)ms);
             }
             base.Update(ms);
         }

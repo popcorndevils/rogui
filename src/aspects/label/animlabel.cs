@@ -97,7 +97,7 @@ namespace Rogui
         //  ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═════╝ ╚══════╝╚══════╝
         public override void Update(float? ms)
         {
-            ((IAnimate)this).UpdateAnimations(ms);
+            ((IAnimate)this).Animate(ms);
             base.Update(ms);
         }
 
