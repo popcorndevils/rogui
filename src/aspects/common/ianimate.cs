@@ -15,14 +15,54 @@ namespace Rogui
     {
         public event EventHandler<AnimateState>? AnimationFinished;
 
-        public AnimateState State { get; set; }
-        public AnimateDirection AnimDirection { get; set; }
-        public float AnimSpeed { get; set; }
-        public bool StartOpen { get; set; }
+        public AnimateState State { 
+            get { throw new NotImplementedException(
+                $"IAnimate.StartOpen not implemented for type {this.GetType().ToString()}");
+            }
+            set { throw new NotImplementedException(
+                $"IAnimate.StartOpen not implemented for type {this.GetType().ToString()}");
+            }
+        }
 
+        public AnimateDirection AnimDirection { 
+            get { throw new NotImplementedException(
+                $"IAnimate.StartOpen not implemented for type {this.GetType().ToString()}");
+            }
+            set { throw new NotImplementedException(
+                $"IAnimate.StartOpen not implemented for type {this.GetType().ToString()}");
+            }
+        }
 
-        public void Open();
-        public void Close();
+        public float AnimSpeed { 
+            get { throw new NotImplementedException(
+                $"IAnimate.StartOpen not implemented for type {this.GetType().ToString()}");
+            }
+            set { throw new NotImplementedException(
+                $"IAnimate.StartOpen not implemented for type {this.GetType().ToString()}");
+            }
+        }
+
+        public bool StartOpen { 
+            get { throw new NotImplementedException(
+                $"IAnimate.StartOpen not implemented for type {this.GetType().ToString()}");
+            }
+            set { throw new NotImplementedException(
+                $"IAnimate.StartOpen not implemented for type {this.GetType().ToString()}");
+            }
+        }
+
+        public void Open()
+        {
+            throw new NotImplementedException(
+                $"IAnimate.Open not implemented for type {this.GetType().ToString()}");
+        }
+
+        public void Close()
+        {
+            throw new NotImplementedException(
+                $"IAnimate.Close not implemented for type {this.GetType().ToString()}");
+        }
+
         public void Toggle()
         {
             if(this.State == AnimateState.OPEN || this.State == AnimateState.OPENING)
